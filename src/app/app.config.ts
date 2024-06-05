@@ -22,6 +22,11 @@ import { PaginatorI18nService } from '@shared';
 import { InMemDataService } from '@shared/in-mem/in-mem-data.service';
 import { routes } from './app.routes';
 import { FormlyConfigModule } from './formly-config.module';
+import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
+import { getAuth, provideAuth } from '@angular/fire/auth';
+import { getFirestore, provideFirestore } from '@angular/fire/firestore';
+import { getStorage, provideStorage } from '@angular/fire/storage';
+import { getVertexAI, provideVertexAI } from '@angular/fire/vertexai-preview';
 
 // Required for AOT compilation
 export function TranslateHttpLoaderFactory(http: HttpClient) {
@@ -105,5 +110,20 @@ export const appConfig: ApplicationConfig = {
         popupHeaderDateLabel: 'MMM DD, ddd',
       },
     }),
+    provideFirebaseApp(() =>
+      initializeApp({
+        projectId: 'internationalisation-mou',
+        appId: '1:413796382094:web:7d7092a4562d5d7f2320df',
+        storageBucket: 'internationalisation-mou.appspot.com',
+        apiKey: 'AIzaSyDjU-3ak4Gsv6ZQe81_cSOA3p4N0WFaTHg',
+        authDomain: 'internationalisation-mou.firebaseapp.com',
+        messagingSenderId: '413796382094',
+        measurementId: 'G-JETK7J7M5S',
+      })
+    ),
+    provideAuth(() => getAuth()),
+    provideFirestore(() => getFirestore()),
+    provideStorage(() => getStorage()),
+    provideVertexAI(() => getVertexAI()),
   ],
 };
