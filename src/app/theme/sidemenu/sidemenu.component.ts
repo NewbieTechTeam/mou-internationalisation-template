@@ -47,7 +47,7 @@ export class SidemenuComponent {
   @Input() ripple = false;
 
   private readonly menu = inject(MenuService);
-
+  //TODO: seehow forebase auth can  plugin into this
   menu$ = this.menu.getAll();
 
   buildRoute = this.menu.buildRoute;

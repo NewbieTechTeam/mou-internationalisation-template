@@ -43,6 +43,8 @@ export class TokenService implements OnDestroy {
 
   set(token?: Token) {
     this.save(token);
+    console.log('token 2');
+    console.log(token);
 
     return this;
   }

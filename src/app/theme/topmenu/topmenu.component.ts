@@ -56,6 +56,9 @@ export class TopmenuComponent implements OnDestroy {
   constructor() {
     this.menuSubscription = this.menu$.subscribe(res => {
       this.menuList = res;
+      console.log('menu lsir');
+      console.log(this.menuList);
+
       this.menuList.forEach(item => {
         this.menuStates.push({
           active: this.router.url.split('/').includes(item.route),

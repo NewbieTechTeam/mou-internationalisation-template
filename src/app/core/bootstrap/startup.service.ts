@@ -17,6 +17,7 @@ export class StartupService {
    * Load the application only after get the menu or other essential informations
    * such as permissions and roles.
    */
+  //TODO : load menu from here
   load() {
     return new Promise<void>((resolve, reject) => {
       this.authService
