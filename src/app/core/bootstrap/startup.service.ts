@@ -21,11 +21,11 @@ export class StartupService {
     return new Promise<void>((resolve, reject) => {
       this.authService
         .change()
-        .pipe(
-          tap(user => this.setPermissions(user)),
-          switchMap(() => this.authService.menu()),
-          tap(menu => this.setMenu(menu))
-        )
+        .pipe
+        // tap(user => this.setPermissions(user)),
+        // switchMap(() => this.authService.menu()),
+        // tap(menu => this.setMenu(menu))
+        ()
         .subscribe({
           next: () => resolve(),
           error: () => resolve(),

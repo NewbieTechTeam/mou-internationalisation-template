@@ -1,79 +1,67 @@
-import { Injectable, inject } from '@angular/core';
-import { BehaviorSubject, catchError, iif, map, merge, of, share, switchMap, tap } from 'rxjs';
-import { filterObject, isEmptyObject } from './helpers';
-import { User } from './interface';
+import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable, of } from 'rxjs';
+import { catchError, map, share, switchMap, tap } from 'rxjs/operators';
 import { LoginService } from './login.service';
-import { TokenService } from './token.service';
+import { User } from './interface';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private readonly loginService = inject(LoginService);
-  private readonly tokenService = inject(TokenService);
-
   private user$ = new BehaviorSubject<User>({});
-  private change$ = merge(
-    this.tokenService.change(),
-    this.tokenService.refresh().pipe(switchMap(() => this.refresh()))
-  ).pipe(
-    switchMap(() => this.assignUser()),
-    share()
-  );
 
-  init() {
-    return new Promise<void>(resolve => this.change$.subscribe(() => resolve()));
-  }
+  constructor(private loginService: LoginService) {}
 
-  change() {
-    return this.change$;
-  }
-
-  check() {
-    return this.tokenService.valid();
-  }
-
-  login(username: string, password: string, rememberMe = false) {
-    return this.loginService.login(username, password, rememberMe).pipe(
-      tap(token => this.tokenService.set(token)),
-      map(() => this.check())
+  init(): Observable<void> {
+    return this.loginService.me().pipe(
+      tap(user => {
+        if (user) {
+          this.user$.next(user);
+        } else {
+          this.user$.next({});
+        }
+      }),
+      map(() => undefined), // Map the emission to void
+      catchError(() => of(undefined)) // Handle errors and emit void
     );
   }
 
-  refresh() {
-    return this.loginService
-      .refresh(filterObject({ refresh_token: this.tokenService.getRefreshToken() }))
-      .pipe(
-        catchError(() => of(undefined)),
-        tap(token => this.tokenService.set(token)),
-        map(() => this.check())
-      );
+  change(): Observable<void> {
+    return this.init();
   }
 
-  logout() {
+  check(): boolean {
+    // You can directly check if user$ has value or not
+    return !!this.user$.getValue().id;
+  }
+
+  login(username: string, password: string): Observable<boolean> {
+    return this.loginService.login(username, password).pipe(
+      tap(user => {
+        if (user) {
+          //this.user$.next(user);
+        } else {
+          //this.user$.next({}); // Emit empty user object if login fails
+        }
+      }),
+      map(user => !!user), // Map to boolean indicating login success or failure
+      catchError(() => of(false))
+    );
+  }
+
+  logout(): Observable<boolean> {
     return this.loginService.logout().pipe(
-      tap(() => this.tokenService.clear()),
-      map(() => !this.check())
+      tap(() => this.user$.next({})), // Reset user$ to empty object
+      map(() => true), // Map to boolean indicating logout success
+      catchError(() => of(false))
     );
   }
 
-  user() {
-    return this.user$.pipe(share());
+  user(): Observable<User> {
+    return this.user$.asObservable();
   }
 
-  menu() {
-    return iif(() => this.check(), this.loginService.menu(), of([]));
-  }
-
-  private assignUser() {
-    if (!this.check()) {
-      return of({}).pipe(tap(user => this.user$.next(user)));
-    }
-
-    if (!isEmptyObject(this.user$.getValue())) {
-      return of(this.user$.getValue());
-    }
-
-    return this.loginService.me().pipe(tap(user => this.user$.next(user)));
+  menu(): Observable<any[]> {
+    return this.check() ? this.loginService.menu() : of([]);
   }
 }

@@ -24,18 +24,18 @@ export class TokenInterceptor implements HttpInterceptor {
       }
     };
 
-    if (this.tokenService.valid() && this.shouldAppendToken(request.url)) {
+    if (this.shouldAppendToken(request.url)) {
       return next
         .handle(
           request.clone({
-            headers: request.headers.append('Authorization', this.tokenService.getBearerToken()),
+            headers: request.headers.append('Authorization', 'this.tokenService.getBearerToken()'),
             withCredentials: true,
           })
         )
         .pipe(
           catchError((error: HttpErrorResponse) => {
             if (error.status === 401) {
-              this.tokenService.clear();
+              // this.tokenService.clear();
             }
             return throwError(() => error);
           }),
