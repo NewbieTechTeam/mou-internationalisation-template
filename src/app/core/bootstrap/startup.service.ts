@@ -21,11 +21,11 @@ export class StartupService {
     return new Promise<void>((resolve, reject) => {
       this.authService
         .change()
-        .pipe
-        // tap(user => this.setPermissions(user)),
-        // switchMap(() => this.authService.menu()),
-        // tap(menu => this.setMenu(menu))
-        ()
+        .pipe(
+          tap(user => this.setPermissions('user')),
+          switchMap(() => this.authService.menu()),
+          tap(menu => this.setMenu(menu))
+        )
         .subscribe({
           next: () => resolve(),
           error: () => resolve(),
@@ -38,7 +38,7 @@ export class StartupService {
     this.menuService.set(menu);
   }
 
-  private setPermissions(user: User) {
+  private setPermissions(user: any) {
     // In a real app, you should get permissions and roles from the user information.
     const permissions = ['canAdd', 'canDelete', 'canEdit', 'canRead'];
     this.permissonsService.loadPermissions(permissions);
