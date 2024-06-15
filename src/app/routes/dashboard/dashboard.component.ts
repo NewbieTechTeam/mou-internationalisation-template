@@ -1,3 +1,7 @@
+import { FormsDynamicComponent } from './../forms/dynamic/dynamic.component';
+import { TablesRemoteDataComponent } from './../tables/remote-data/remote-data.component';
+import { TablesKitchenSinkComponent } from './../tables/kitchen-sink/kitchen-sink.component';
+import { TableComponent } from './../material/table/table.component';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -14,13 +18,14 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatListModule } from '@angular/material/list';
 import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
-import { RouterLink } from '@angular/router';
+import { RouterLink, RouterModule } from '@angular/router';
 import { MtxProgressModule } from '@ng-matero/extensions/progress';
 import { Subscription } from 'rxjs';
 
 import { SettingsService } from '@core';
 import { BreadcrumbComponent } from '@shared';
 import { DashboardService } from './dashboard.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
@@ -40,9 +45,15 @@ import { DashboardService } from './dashboard.service';
     MatTabsModule,
     MtxProgressModule,
     BreadcrumbComponent,
+    TableComponent,
+    TablesKitchenSinkComponent,
+    TablesRemoteDataComponent,
+    RouterModule,
   ],
 })
 export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
+  constructor(private router: Router) {}
+
   private readonly ngZone = inject(NgZone);
   private readonly settings = inject(SettingsService);
   private readonly dashboardSrv = inject(DashboardService);
@@ -67,24 +78,16 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit() {
-    this.ngZone.runOutsideAngular(() => this.initChart());
+    // this.ngZone.runOutsideAngular(() => this.initChart());
   }
 
   ngOnDestroy() {
-    if (this.chart1) {
-      this.chart1?.destroy();
-    }
-    if (this.chart2) {
-      this.chart2?.destroy();
-    }
-
     this.notifySubscription.unsubscribe();
   }
 
-  initChart() {
-    this.chart1 = new ApexCharts(document.querySelector('#chart1'), this.charts[0]);
-    this.chart1?.render();
-    this.chart2 = new ApexCharts(document.querySelector('#chart2'), this.charts[1]);
-    this.chart2?.render();
+  initChart() {}
+
+  navigateToForm() {
+    this.router.navigate(['/forms/dynamic']);
   }
 }

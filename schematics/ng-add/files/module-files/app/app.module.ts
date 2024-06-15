@@ -46,6 +46,7 @@ import { FakeLoginService } from './fake-login.service';
       },
     }),
   ],
+  TODO://❌ remove all
   providers: [<% if(animations!='excluded') { %>
     provideAnimationsAsync(<% if(animations=='disabled') { %>'noop'<% } %>),<% } %>
     { provide: BASE_URL, useValue: environment.baseUrl },
