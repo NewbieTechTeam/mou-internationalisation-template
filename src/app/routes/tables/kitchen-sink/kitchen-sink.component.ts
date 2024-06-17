@@ -11,9 +11,6 @@ import { TranslateService } from '@ngx-translate/core';
 import { PageHeaderComponent } from '@shared';
 import { TablesDataService } from '../data.service';
 import { TablesKitchenSinkEditComponent } from './edit/edit.component';
-
-//Firebase Stuuf
-
 import { getStorage, ref, uploadBytes, getDownloadURL } from '@angular/fire/storage';
 import {
   Firestore,
@@ -55,7 +52,7 @@ export class TablesKitchenSinkComponent implements OnInit {
 
   items$: Observable<any[]> = new Observable<any[]>();
 
-  itemCollection = collection(this.firestore, 'items');
+  itemCollection = collection(this.firestore, 'cleanedsampledatav2');
 
   constructor(private router: Router) {
     this.items$ = collectionData(this.itemCollection, {
@@ -71,6 +68,163 @@ export class TablesKitchenSinkComponent implements OnInit {
   }
   //
   columns2: any = [
+    // {
+    //   header: this.translate.stream('table_kitchen_sink.africa'),
+    //   field: 'africa',
+    //   sortable: true,
+    //   minWidth: 100,
+    //   width: '100px',
+    // },
+    {
+      header: this.translate.stream('table_kitchen_sink.category'),
+      field: 'category',
+      sortable: true,
+      minWidth: 100,
+      width: '100px',
+    },
+    {
+      header: this.translate.stream('table_kitchen_sink.countryOfPartnerInstitution'),
+      field: 'countryOfPartnerInstitution',
+      sortable: true,
+      minWidth: 100,
+      width: '100px',
+    },
+    {
+      header: this.translate.stream('table_kitchen_sink.durationOfMoU'),
+      field: 'durationOfMoU',
+      sortable: true,
+      minWidth: 100,
+      width: '100px',
+    },
+    {
+      header: this.translate.stream('table_kitchen_sink.expiryDate'),
+      field: 'expiryDate',
+      sortable: true,
+      minWidth: 100,
+      width: '100px',
+    },
+    {
+      header: this.translate.stream('table_kitchen_sink.highlights'),
+      field: 'highlights',
+      sortable: true,
+      minWidth: 100,
+      width: '100px',
+    },
+    {
+      header: this.translate.stream('table_kitchen_sink.nameOfPartnerInstitution2'),
+      field: 'nameOfPartnerInstitution2',
+      sortable: true,
+      minWidth: 100,
+      width: '100px',
+    },
+    {
+      header: this.translate.stream('table_kitchen_sink.partnerSignitory'),
+      field: 'partnerSignitory',
+      sortable: true,
+      minWidth: 100,
+      width: '100px',
+    },
+    {
+      header: this.translate.stream('table_kitchen_sink.purposeOfTheMoU'),
+      field: 'purposeOfTheMoU',
+      sortable: true,
+      minWidth: 100,
+      width: '100px',
+    },
+    {
+      header: this.translate.stream('table_kitchen_sink.responsiblePartnerDepartment'),
+      field: 'responsiblePartnerDepartment',
+      sortable: true,
+      minWidth: 100,
+      width: '100px',
+    },
+    {
+      header: this.translate.stream('table_kitchen_sink.responsiblePartnerOfficiaEmail'),
+      field: 'responsiblePartnerOfficiaEmail',
+      sortable: true,
+      minWidth: 100,
+      width: '100px',
+    },
+    {
+      header: this.translate.stream('table_kitchen_sink.responsiblePatnerFaculty'),
+      field: 'responsiblePatnerFaculty',
+      sortable: true,
+      minWidth: 100,
+      width: '100px',
+    },
+    {
+      header: this.translate.stream('table_kitchen_sink.responsiblePatnerOfficiaTell'),
+      field: 'responsiblePatnerOfficiaTell',
+      sortable: true,
+      minWidth: 100,
+      width: '100px',
+    },
+    {
+      header: this.translate.stream('table_kitchen_sink.responsiblePatnerOfficial'),
+      field: 'responsiblePatnerOfficial',
+      sortable: true,
+      minWidth: 100,
+      width: '100px',
+    },
+    {
+      header: this.translate.stream('table_kitchen_sink.responsibleTUTDepartment'),
+      field: 'responsibleTUTDepartment',
+      sortable: true,
+      minWidth: 100,
+      width: '100px',
+    },
+    {
+      header: this.translate.stream('table_kitchen_sink.responsibleTUTFaculty'),
+      field: 'responsibleTUTFaculty',
+      sortable: true,
+      minWidth: 100,
+      width: '100px',
+    },
+    {
+      header: this.translate.stream('table_kitchen_sink.responsibleTUTOfficiaEmail'),
+      field: 'responsibleTUTOfficiaEmail',
+      sortable: true,
+      minWidth: 100,
+      width: '100px',
+    },
+    {
+      header: this.translate.stream('table_kitchen_sink.responsibleTUTOfficiaTell'),
+      field: 'responsibleTUTOfficiaTell',
+      sortable: true,
+      minWidth: 100,
+      width: '100px',
+    },
+    {
+      header: this.translate.stream('table_kitchen_sink.startDate'),
+      field: 'startDate',
+      sortable: true,
+      minWidth: 100,
+      width: '100px',
+    },
+    {
+      header: this.translate.stream('table_kitchen_sink.responsibleTUTOfficial'),
+      field: 'responsibleTUTOfficial',
+      sortable: true,
+      minWidth: 100,
+      width: '100px',
+    },
+    {
+      header: this.translate.stream('table_kitchen_sink.status'),
+      field: 'status',
+      sortable: true,
+      minWidth: 100,
+      width: '100px',
+    },
+    {
+      header: this.translate.stream('table_kitchen_sink.tUTSigantory'),
+      field: 'tUTSigantory',
+      sortable: true,
+      minWidth: 100,
+      width: '100px',
+    },
+  ];
+
+  columns3: any = [
     {
       header: this.translate.stream('table_kitchen_sink.africa'),
       field: 'africa',
@@ -87,7 +241,7 @@ export class TablesKitchenSinkComponent implements OnInit {
     },
     {
       header: this.translate.stream('table_kitchen_sink.Name of Partner Institution'),
-      field: 'Name of Partner Institution',
+      field: 'partnerInstitution',
       sortable: true,
       minWidth: 100,
       width: '100px',
@@ -99,153 +253,153 @@ export class TablesKitchenSinkComponent implements OnInit {
       minWidth: 100,
       width: '100px',
     },
-    /* {
+    {
       header: this.translate.stream('table_kitchen_sink.Purpose of the MoU'),
-      field: 'Purpose of the MoU ',
+      field: 'purposeOfTheMoU',
       sortable: true,
       minWidth: 100,
       width: '100px',
     },
     {
       header: this.translate.stream('table_kitchen_sink.Status'),
-      field: 'Status',
+      field: 'status',
       sortable: true,
       minWidth: 100,
       width: '100px',
     },
     {
       header: this.translate.stream('table_kitchen_sink.Highlight'),
-      field: 'Highlights',
+      field: 'highlights',
       sortable: true,
       minWidth: 100,
       width: '100px',
     },
     {
       header: this.translate.stream('table_kitchen_sink.Duration of  MoU'),
-      field: 'Duration of  MoU',
+      field: 'durationOfMoU',
       sortable: true,
       minWidth: 100,
       width: '100px',
     },
     {
       header: this.translate.stream('table_kitchen_sink.Start date'),
-      field: 'Start date',
+      field: 'startDate',
       sortable: true,
       minWidth: 100,
       width: '100px',
     },
     {
       header: this.translate.stream('table_kitchen_sink.Expiry date'),
-      field: 'Expiry date',
+      field: 'expiryDate',
       sortable: true,
       minWidth: 100,
       width: '100px',
     },
     {
       header: this.translate.stream('table_kitchen_sink.Responsible TUT Faculty'),
-      field: 'Responsible TUT Faculty',
+      field: 'responsibleTutFaculty',
       sortable: true,
       minWidth: 100,
       width: '100px',
     },
     {
       header: this.translate.stream('table_kitchen_sink.Responsible TUT  Department'),
-      field: 'Responsible TUT  Department',
+      field: 'responsibleTutDepartment',
       sortable: true,
       minWidth: 100,
       width: '100px',
     },
     {
       header: this.translate.stream('table_kitchen_sink.Responsible TUT  Official'),
-      field: 'Responsible TUT  Official',
+      field: 'responsibleTutOfficial',
       sortable: true,
       minWidth: 100,
       width: '100px',
     },
     {
       header: this.translate.stream('table_kitchen_sink.Responsible TUT  Telephone'),
-      field: 'Responsible TUT  Telephone',
+      field: 'responsibleTutTelephone',
       sortable: true,
       minWidth: 100,
       width: '100px',
     },
     {
       header: this.translate.stream('table_kitchen_sink.Responsible TUT  Official Telephone'),
-      field: 'Responsible TUT  Official Telephone',
+      field: 'responsibleTutOfficialTelephone',
       sortable: true,
       minWidth: 100,
       width: '100px',
     },
     {
       header: this.translate.stream('table_kitchen_sink.Responsible TUT  Official Email'),
-      field: 'Responsible TUT  Official Email',
+      field: 'responsibleTutOfficialEmail',
       sortable: true,
       minWidth: 100,
       width: '100px',
     },
     {
       header: this.translate.stream('table_kitchen_sink.Responsible TUT  Official Email'),
-      field: 'Responsible TUT  Official Email',
+      field: 'responsibleTutOfficialEmail',
       sortable: true,
       minWidth: 100,
       width: '100px',
     },
     {
       header: this.translate.stream('table_kitchen_sink.Responsible Partner Faculty'),
-      field: 'Responsible Partner Faculty',
+      field: 'responsiblePartnerFaculty',
       sortable: true,
       minWidth: 100,
       width: '100px',
     },
     {
       header: this.translate.stream('table_kitchen_sink.Responsible Partner  Department'),
-      field: 'Responsible Partner  Department',
+      field: 'responsiblePartnerDepartment',
       sortable: true,
       minWidth: 100,
       width: '100px',
     },
     {
       header: this.translate.stream('table_kitchen_sink.Responsible Partner  Official'),
-      field: 'Responsible Partner  Official',
+      field: 'responsiblePartnerOfficial',
       sortable: true,
       minWidth: 100,
       width: '100px',
     },
     {
       header: this.translate.stream('table_kitchen_sink.position'),
-      field: 'Responsible Partner  Official Telephone',
+      field: 'responsiblePartnerOfficialTelephone',
       sortable: true,
       minWidth: 100,
       width: '100px',
     },
     {
       header: this.translate.stream('table_kitchen_sink.Responsible Partner Official Email'),
-      field: 'Responsible Partner Official Email',
+      field: 'responsiblePartnerOfficialEmail',
       sortable: true,
       minWidth: 100,
       width: '100px',
     },
     {
       header: this.translate.stream('table_kitchen_sink.Partner Signitory'),
-      field: 'Partner Signitory',
+      field: 'partnerSignatory',
       sortable: true,
       minWidth: 100,
       width: '100px',
     },
     {
       header: this.translate.stream('table_kitchen_sink.TUT Signatory'),
-      field: 'TUT Signatory',
+      field: 'tutSignatory',
       sortable: true,
       minWidth: 100,
       width: '100px',
     },
     {
       header: this.translate.stream('table_kitchen_sink.MOU PDF'),
-      field: 'MOU PDF',
+      field: 'mouPdf',
       sortable: true,
       minWidth: 100,
       width: '100px',
-    }, */
+    },
   ];
   columns: MtxGridColumn[] = [
     {

@@ -32,6 +32,7 @@
     >View more examples</a
   >
 </div>
+  <!-- [data]="" -->
 
 <mtx-grid
   [data]="dataSource.data"
@@ -62,69 +63,3 @@
 <ng-template #expansionTpl let-row>
   {{ row.title }}
 </ng-template>
-
-<table class="table" mat-table [dataSource]="dataSource">
-  <ng-container matColumnDef="title">
-    <th mat-header-cell *matHeaderCellDef>Country</th>
-    <td mat-cell *matCellDef="let item">{{ item.country }}</td>
-  </ng-container>
-
-  <ng-container matColumnDef="t2">
-    <th mat-header-cell *matHeaderCellDef>Partner</th>
-    <td mat-cell *matCellDef="let item">{{ item.title }}</td>
-  </ng-container>
-  <ng-container matColumnDef="description">
-    <th mat-header-cell *matHeaderCellDef>Category</th>
-    <td mat-cell *matCellDef="let item">{{ item.category }}</td>
-  </ng-container>
-
-  <ng-container matColumnDef="purpose of MOU">
-    <th mat-header-cell *matHeaderCellDef>Purpose Of MOU</th>
-    <td mat-cell *matCellDef="let item">{{ item.purposeOfMOU }}</td>
-  </ng-container>
-  <ng-container matColumnDef="reponsible Officer">
-    <th mat-header-cell *matHeaderCellDef>Reponsible Officer</th>
-    <td mat-cell *matCellDef="let item">{{ item.responsibleOsficer }}</td>
-  </ng-container>
-
-  <ng-container matColumnDef="reponsible Department">
-    <th mat-header-cell *matHeaderCellDef>Reponsible Officer</th>
-    <td mat-cell *matCellDef="let item">{{ item.responsibleDepartment }}</td>
-  </ng-container>
-
-  <ng-container matColumnDef="actions">
-    <th mat-header-cell *matHeaderCellDef>Actions</th>
-    <td mat-cell *matCellDef="let item">
-      <button mat-button>Edit</button>
-      <button mat-button color="warn">Delete</button>
-    </td>
-  </ng-container>
-
-  <tr
-    mat-header-row
-    *matHeaderRowDef="[
-      'title',
-      't2',
-      'description',
-      'purpose of MOU',
-      'reponsible Officer',
-      'reponsible Department',
-      'actions'
-    ]"
-  ></tr>
-  <tr
-    mat-row
-    *matRowDef="
-      let row;
-      columns: [
-        'title',
-        't2',
-        'description',
-        'purpose of MOU',
-        'reponsible Officer',
-        'reponsible Department',
-        'actions'
-      ]
-    "
-  ></tr>
-</table>

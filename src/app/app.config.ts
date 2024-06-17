@@ -112,12 +112,13 @@ export const appConfig: ApplicationConfig = {
     }),
     provideFirebaseApp(() =>
       initializeApp({
-        apiKey: 'AIzaSyB9kstrvRIjyBKyuUhV4lF35CuUWR3Y_tA',
-        authDomain: 'mou-internalisation-dept.firebaseapp.com',
-        projectId: 'mou-internalisation-dept',
-        storageBucket: 'mou-internalisation-dept.appspot.com',
-        messagingSenderId: '492654303679',
-        appId: '1:492654303679:web:eb9eb1d55ed29c6d29a90a',
+        projectId: 'internationalisation-mou',
+        appId: '1:413796382094:web:7d7092a4562d5d7f2320df',
+        storageBucket: 'internationalisation-mou.appspot.com',
+        apiKey: 'AIzaSyDjU-3ak4Gsv6ZQe81_cSOA3p4N0WFaTHg',
+        authDomain: 'internationalisation-mou.firebaseapp.com',
+        messagingSenderId: '413796382094',
+        measurementId: 'G-JETK7J7M5S',
       })
     ),
     provideAuth(() => getAuth()),

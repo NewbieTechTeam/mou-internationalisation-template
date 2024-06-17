@@ -1,15 +1,29 @@
 <page-header></page-header>
-
+<!--
 <p>
   The dynamic forms are powered by
   <a href="https://github.com/ngx-formly/ngx-formly" target="_blank">
     <code>ngx-formly</code>
   </a>.
 </p>
+ -->
 
+ <mat-card>
+  <mat-card-header>
+    <mat-card-title>Simple</mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content>
+  <h2>Dynamic Form</h2>
+  <form [formGroup]="form3" (ngSubmit)="submit()">
+    <formly-form [form]="form3" [fields]="fields3" [model]="model"></formly-form>
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+  </mat-card-content>
+</mat-card>
 <mat-card>
   <mat-card-header>
-    <mat-card-title>Advanced Layout</mat-card-title>
+    <mat-card-title>Add New Data</mat-card-title>
   </mat-card-header>
 
   <mat-card-content>
