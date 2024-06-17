@@ -521,7 +521,7 @@ export class TablesKitchenSinkComponent implements OnInit {
   columnResizable = false;
 
   ngOnInit() {
-    this.list = this.dataSrv.getData();
+    this.list = this.dataSource.data;
     this.isLoading = false;
   }
 

@@ -1,3 +1,4 @@
+import { FormlyFieldFileComponent } from './file-type.component';
 import { ModuleWithProviders, NgModule, Provider } from '@angular/core';
 
 import { FormlyModule } from '@ngx-formly/core';
@@ -14,6 +15,11 @@ const formlyModuleProviders = FormlyModule.forRoot({
     {
       name: 'combobox',
       component: FormlyFieldComboboxComponent,
+      wrappers: ['form-field'],
+    },
+    {
+      name: 'file',
+      component: FormlyFieldFileComponent,
       wrappers: ['form-field'],
     },
   ],
@@ -34,6 +40,7 @@ const formlyModuleProviders = FormlyModule.forRoot({
   imports: [
     FormlyMaterialModule,
     FormlyFieldComboboxComponent,
+    FormlyFieldFileComponent,
     FormlyWrapperCardComponent,
     FormlyWrapperDivComponent,
   ],

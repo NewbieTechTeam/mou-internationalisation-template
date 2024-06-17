@@ -1,7 +1,7 @@
 <page-header class="bg-green-600"></page-header>
 
 <div class="data-grid-options">
-  <mat-checkbox [(ngModel)]="rowSelectable">Row Selectable</mat-checkbox>
+ <!--  <mat-checkbox [(ngModel)]="rowSelectable">Row Selectable</mat-checkbox>
   <mat-checkbox [(ngModel)]="hideRowSelectionCheckbox">Hide checkbox</mat-checkbox>
   <mat-radio-group [(ngModel)]="multiSelectable">
     <mat-radio-button [value]="false">Single Selectable</mat-radio-button>
@@ -18,10 +18,10 @@
   </mat-checkbox>
   <mat-checkbox [(ngModel)]="showPaginator">Show Paginator</mat-checkbox>
   <mat-checkbox [(ngModel)]="isLoading">Loading Status</mat-checkbox>
-  <mat-checkbox [(ngModel)]="columnResizable">Column Resizable</mat-checkbox>
+  <mat-checkbox [(ngModel)]="columnResizable">Column Resizable</mat-checkbox> -->
 </div>
 <div class="m-y-8">
-  <button mat-button (click)="navigateToForm()">Add New Data</button>
+  <button mat-button mat-raised-button  color="accent" (click)="navigateToForm()"><strong>Add New MOU</strong></button>
   <button mat-button (click)="updateCell()">Update cell</button>
   <button mat-button (click)="updateList()">Update list</button>
   <a
