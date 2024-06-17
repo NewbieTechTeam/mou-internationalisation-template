@@ -20,19 +20,8 @@
   <mat-checkbox [(ngModel)]="isLoading">Loading Status</mat-checkbox>
   <mat-checkbox [(ngModel)]="columnResizable">Column Resizable</mat-checkbox> -->
 </div>
-<div class="m-y-8">
-  <button mat-button mat-raised-button  color="accent" (click)="navigateToForm()"><strong>Add New MOU</strong></button>
-  <button mat-button (click)="updateCell()">Update cell</button>
-  <button mat-button (click)="updateList()">Update list</button>
-  <a
-    mat-button
-    class="text-blue-600"
-    href="https://ng-matero.github.io/extensions/components/data-grid"
-    target="_blank"
-    >View more examples</a
-  >
-</div>
-  <!-- [data]="" -->
+
+
 
 <mtx-grid
   [data]="dataSource.data"
@@ -45,7 +34,7 @@
   [rowHover]="rowHover"
   [rowStriped]="rowStriped"
   [showToolbar]="showToolbar"
-  [toolbarTitle]="'Data Grid Toolbar'"
+  [toolbarTitle]="'MOU List'"
   [columnHideable]="columnHideable"
   [columnSortable]="columnSortable"
   [columnPinnable]="columnPinnable"
