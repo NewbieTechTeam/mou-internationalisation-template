@@ -78,14 +78,19 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit() {
-    // this.ngZone.runOutsideAngular(() => this.initChart());
+    this.ngZone.runOutsideAngular(() => this.initChart());
   }
 
   ngOnDestroy() {
     this.notifySubscription.unsubscribe();
   }
 
-  initChart() {}
+  initChart() {
+    this.chart1 = new ApexCharts(document.querySelector('#chart1'), this.charts[0]);
+    this.chart1?.render();
+    this.chart2 = new ApexCharts(document.querySelector('#chart2'), this.charts[1]);
+    this.chart2?.render();
+  }
 
   navigateToForm() {
     this.router.navigate(['/forms/dynamic']);

@@ -59,32 +59,32 @@ const MESSAGES = [
 export class DashboardService {
   stats = [
     {
-      title: 'Total Sales',
-      amount: '180,200',
+      title: 'Total MOUs',
+      amount: '1802',
       progress: {
         value: 50,
       },
       color: 'bg-indigo-500',
     },
     {
-      title: 'Revenue',
-      amount: '70,205',
+      title: 'Expiring Soon',
+      amount: '70',
       progress: {
         value: 70,
       },
       color: 'bg-blue-500',
     },
     {
-      title: 'Traffic',
-      amount: '1,291,922',
+      title: 'In Progress',
+      amount: '12',
       progress: {
         value: 80,
       },
       color: 'bg-green-500',
     },
     {
-      title: 'New User',
-      amount: '1,922',
+      title: 'Assigned',
+      amount: '9',
       progress: {
         value: 40,
       },
