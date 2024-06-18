@@ -1,0 +1,1 @@
+import{b as o,c as t}from"./chunk-LNEINJRS.js";import"./chunk-NFLANURK.js";import"./chunk-TX5TDJMI.js";import"./chunk-6MVZ6MQQ.js";import"./chunk-HZDITKJE.js";import"./chunk-5GDWYFRL.js";import"./chunk-7MKG4DJY.js";var m=[{path:"kitchen-sink",component:t},{path:"remote-data",component:o}];export{m as routes};
