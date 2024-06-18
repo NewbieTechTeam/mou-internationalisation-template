@@ -1,3 +1,4 @@
+import { MatToolbarModule } from '@angular/material/toolbar';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -23,7 +24,6 @@ import {
 } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-
 import { Router } from '@angular/router';
 
 @Component({
@@ -44,6 +44,7 @@ import { Router } from '@angular/router';
     MatFormFieldModule,
     MatIconModule,
     CommonModule,
+    MatToolbarModule,
   ],
 })
 export class TablesKitchenSinkComponent implements OnInit {
@@ -53,28 +54,20 @@ export class TablesKitchenSinkComponent implements OnInit {
   //firebase stuff
   dataSource: MatTableDataSource<any> = new MatTableDataSource();
   firestore: Firestore = inject(Firestore);
+
   items$: Observable<any[]> = new Observable<any[]>();
-  itemCollection = collection(this.firestore, 'cleanedsampledatav2');
+  itemCollection = collection(this.firestore, 'mous');
   constructor(private router: Router) {
     collectionData(this.itemCollection).subscribe((items: any[]) => {
       this.list = items;
-      console.log('________');
-      console.log({ items });
       this.filteredData = items;
     });
   }
   //
   columns3: any = [
-    // {
-    //   header: this.translate.stream('table_kitchen_sink.africa'),
-    //   field: 'africa',
-    //   sortable: true,
-    //   minWidth: 100,
-    //   width: '100px',
-    // },
     {
-      header: this.translate.stream('table_kitchen_sink.category'),
-      field: 'category',
+      header: this.translate.stream('table_kitchen_sink.continent'),
+      field: 'continent',
       sortable: true,
       minWidth: 100,
       width: '100px',
@@ -87,27 +80,6 @@ export class TablesKitchenSinkComponent implements OnInit {
       width: '100px',
     },
     {
-      header: this.translate.stream('table_kitchen_sink.durationOfMoU'),
-      field: 'durationOfMoU',
-      sortable: true,
-      minWidth: 100,
-      width: '100px',
-    },
-    {
-      header: this.translate.stream('table_kitchen_sink.expiryDate'),
-      field: 'expiryDate',
-      sortable: true,
-      minWidth: 100,
-      width: '100px',
-    },
-    {
-      header: this.translate.stream('table_kitchen_sink.highlights'),
-      field: 'highlights',
-      sortable: true,
-      minWidth: 100,
-      width: '100px',
-    },
-    {
       header: this.translate.stream('table_kitchen_sink.nameOfPartnerInstitution2'),
       field: 'nameOfPartnerInstitution2',
       sortable: true,
@@ -115,8 +87,8 @@ export class TablesKitchenSinkComponent implements OnInit {
       width: '100px',
     },
     {
-      header: this.translate.stream('table_kitchen_sink.partnerSignitory'),
-      field: 'partnerSignitory',
+      header: this.translate.stream('table_kitchen_sink.category'),
+      field: 'category',
       sortable: true,
       minWidth: 100,
       width: '100px',
@@ -129,64 +101,22 @@ export class TablesKitchenSinkComponent implements OnInit {
       width: '100px',
     },
     {
-      header: this.translate.stream('table_kitchen_sink.responsiblePartnerDepartment'),
-      field: 'responsiblePartnerDepartment',
+      header: this.translate.stream('table_kitchen_sink.status'),
+      field: 'status',
       sortable: true,
       minWidth: 100,
       width: '100px',
     },
     {
-      header: this.translate.stream('table_kitchen_sink.responsiblePartnerOfficiaEmail'),
-      field: 'responsiblePartnerOfficiaEmail',
+      header: this.translate.stream('table_kitchen_sink.highlights'),
+      field: 'highlights',
       sortable: true,
       minWidth: 100,
       width: '100px',
     },
     {
-      header: this.translate.stream('table_kitchen_sink.responsiblePatnerFaculty'),
-      field: 'responsiblePatnerFaculty',
-      sortable: true,
-      minWidth: 100,
-      width: '100px',
-    },
-    {
-      header: this.translate.stream('table_kitchen_sink.responsiblePatnerOfficiaTell'),
-      field: 'responsiblePatnerOfficiaTell',
-      sortable: true,
-      minWidth: 100,
-      width: '100px',
-    },
-    {
-      header: this.translate.stream('table_kitchen_sink.responsiblePatnerOfficial'),
-      field: 'responsiblePatnerOfficial',
-      sortable: true,
-      minWidth: 100,
-      width: '100px',
-    },
-    {
-      header: this.translate.stream('table_kitchen_sink.responsibleTUTDepartment'),
-      field: 'responsibleTUTDepartment',
-      sortable: true,
-      minWidth: 100,
-      width: '100px',
-    },
-    {
-      header: this.translate.stream('table_kitchen_sink.responsibleTUTFaculty'),
-      field: 'responsibleTUTFaculty',
-      sortable: true,
-      minWidth: 100,
-      width: '100px',
-    },
-    {
-      header: this.translate.stream('table_kitchen_sink.responsibleTUTOfficiaEmail'),
-      field: 'responsibleTUTOfficiaEmail',
-      sortable: true,
-      minWidth: 100,
-      width: '100px',
-    },
-    {
-      header: this.translate.stream('table_kitchen_sink.responsibleTUTOfficiaTell'),
-      field: 'responsibleTUTOfficiaTell',
+      header: this.translate.stream('table_kitchen_sink.durationOfMoU'),
+      field: 'durationOfMoU',
       sortable: true,
       minWidth: 100,
       width: '100px',
@@ -199,6 +129,28 @@ export class TablesKitchenSinkComponent implements OnInit {
       width: '100px',
     },
     {
+      header: this.translate.stream('table_kitchen_sink.expiryDate'),
+      field: 'expiryDate',
+      sortable: true,
+      minWidth: 100,
+      width: '100px',
+    },
+    {
+      header: this.translate.stream('table_kitchen_sink.responsibleTUTFaculty'),
+      field: 'responsibleTUTFaculty',
+      sortable: true,
+      minWidth: 100,
+      width: '100px',
+    },
+
+    {
+      header: this.translate.stream('table_kitchen_sink.responsibleTUTDepartment'),
+      field: 'responsibleTUTDepartment',
+      sortable: true,
+      minWidth: 100,
+      width: '100px',
+    },
+    {
       header: this.translate.stream('table_kitchen_sink.responsibleTUTOfficial'),
       field: 'responsibleTUTOfficial',
       sortable: true,
@@ -206,12 +158,63 @@ export class TablesKitchenSinkComponent implements OnInit {
       width: '100px',
     },
     {
-      header: this.translate.stream('table_kitchen_sink.status'),
-      field: 'status',
+      header: this.translate.stream('table_kitchen_sink.responsibleTUTOfficiaTell'),
+      field: 'responsibleTUTOfficiaTell',
       sortable: true,
       minWidth: 100,
       width: '100px',
     },
+
+    {
+      header: this.translate.stream('table_kitchen_sink.responsibleTUTOfficiaEmail'),
+      field: 'responsibleTUTOfficiaEmail',
+      sortable: true,
+      minWidth: 100,
+      width: '100px',
+    },
+    {
+      header: this.translate.stream('table_kitchen_sink.responsiblePatnerFaculty'),
+      field: 'responsiblePatnerFaculty',
+      sortable: true,
+      minWidth: 100,
+      width: '100px',
+    },
+    {
+      header: this.translate.stream('table_kitchen_sink.responsiblePartnerDepartment'),
+      field: 'responsiblePartnerDepartment',
+      sortable: true,
+      minWidth: 100,
+      width: '100px',
+    },
+    {
+      header: this.translate.stream('table_kitchen_sink.responsiblePatnerOfficial'),
+      field: 'responsiblePatnerOfficial',
+      sortable: true,
+      minWidth: 100,
+      width: '100px',
+    },
+    {
+      header: this.translate.stream('table_kitchen_sink.responsiblePatnerOfficiaTell'),
+      field: 'responsiblePatnerOfficiaTell',
+      sortable: true,
+      minWidth: 100,
+      width: '100px',
+    },
+    {
+      header: this.translate.stream('table_kitchen_sink.responsiblePartnerOfficiaEmail'),
+      field: 'responsiblePartnerOfficiaEmail',
+      sortable: true,
+      minWidth: 100,
+      width: '100px',
+    },
+    {
+      header: this.translate.stream('table_kitchen_sink.partnerSignitory'),
+      field: 'partnerSignitory',
+      sortable: true,
+      minWidth: 100,
+      width: '100px',
+    },
+
     {
       header: this.translate.stream('table_kitchen_sink.tUTSigantory'),
       field: 'tUTSigantory',
@@ -227,7 +230,7 @@ export class TablesKitchenSinkComponent implements OnInit {
   multiSelectable = true;
   rowSelectable = true;
   hideRowSelectionCheckbox = false;
-  showToolbar = true;
+  showToolbar = false;
   columnHideable = true;
   columnSortable = true;
   columnPinnable = true;

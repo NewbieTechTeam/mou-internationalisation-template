@@ -1,33 +1,14 @@
-<page-header class="bg-green-600"></page-header>
-
-<div class="data-grid-options">
-  <!--  <mat-checkbox [(ngModel)]="rowSelectable">Row Selectable</mat-checkbox>
-  <mat-checkbox [(ngModel)]="hideRowSelectionCheckbox">Hide checkbox</mat-checkbox>
-  <mat-radio-group [(ngModel)]="multiSelectable">
-    <mat-radio-button [value]="false">Single Selectable</mat-radio-button>
-    <mat-radio-button [value]="true">Multiple Selectable</mat-radio-button>
-  </mat-radio-group>
-  <mat-checkbox [(ngModel)]="showToolbar">Show Toolbar</mat-checkbox>
-  <mat-checkbox [(ngModel)]="columnHideable">Column Hiding</mat-checkbox>
-  <mat-checkbox [(ngModel)]="columnSortable">Column Sorting</mat-checkbox>
-  <mat-checkbox [(ngModel)]="columnPinnable">Column Pinning</mat-checkbox>
-  <mat-checkbox [(ngModel)]="rowHover">Hover</mat-checkbox>
-  <mat-checkbox [(ngModel)]="rowStriped">Striped</mat-checkbox>
-  <mat-checkbox [(ngModel)]="expandable" (change)="enableRowExpandable()"
-    >Row Expandable
-  </mat-checkbox>
-  <mat-checkbox [(ngModel)]="showPaginator">Show Paginator</mat-checkbox>
-  <mat-checkbox [(ngModel)]="isLoading">Loading Status</mat-checkbox>
-  <mat-checkbox [(ngModel)]="columnResizable">Column Resizable</mat-checkbox> -->
+<div class="container">
+  <div class="search-container">
+    <input type="text" [(ngModel)]="searchTerm" (input)="applyFilter()" placeholder="Search..." />
+    <mat-icon>search</mat-icon>
+  </div>
+  <button mat-button mat-raised-button color="primary" (click)="navigateToForm()">Add New IMOU</button>
 </div>
-
-<div class="search-container">
-  <mat-icon>search</mat-icon>
-
-  <input type="text" [(ngModel)]="searchTerm" (input)="applyFilter()" placeholder="Search..." />
-</div>
-
 <ng-container>
+  <mat-toolbar color="primary" class="header-toolbar">
+  <span class="header-title">International Memorandum Of Understanding List</span>
+</mat-toolbar>
   <mtx-grid
     [data]="filteredData"
     [columns]="columns3"
@@ -39,8 +20,7 @@
     [rowHover]="rowHover"
     [rowStriped]="rowStriped"
     [showToolbar]="showToolbar"
-    [toolbarTitle]="'MOU List'"
-    [columnHideable]="columnHideable"
+    [toolbarTitle]="'International Memeorandum Of Understanding List'"
     [columnSortable]="columnSortable"
     [columnPinnable]="columnPinnable"
     [expandable]="expandable"

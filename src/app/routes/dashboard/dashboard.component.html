@@ -6,7 +6,7 @@
     <div class="col-sm-6 col-md-3">
       <mat-card [class]="['text-white', stat.color]">
         <mat-card-header>
-          <mat-card-subtitle class="text-white">{{stat.title}}</mat-card-subtitle>
+          <mat-card-subtitle class="text-white text-show">{{stat.title}}</mat-card-subtitle>
         </mat-card-header>
         <mat-card-content>
           <h2 class="m-y-8">{{stat.amount}}</h2>
@@ -15,7 +15,7 @@
             foreground="rgba(255,255,255,1)"
             background='rgba(0,0,0,.5)'>
           </mtx-progress>
-          <small class="text-muted">MOUs</small>
+          <small class="text-muted">IMOUs</small>
         </mat-card-content>
       </mat-card>
     </div>

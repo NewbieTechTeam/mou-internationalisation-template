@@ -1,9 +1,25 @@
-.search-container {
+.container {
   display: flex;
-  justify-content: flex-end;
-  margin: 16px 0;
+  align-items: center;
+  justify-content: space-between;
+  margin: 16px 0; /* Adjust as needed */
 }
 
-.search-field {
-  width: 300px;
+.search-container {
+  display: flex;
+  align-items: center;
+}
+
+.search-container input {
+  margin-right: 8px; /* Space between input and icon */
+}
+
+button {
+  padding: 10px 20px; /* Add padding to the button */
+}
+
+.header-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

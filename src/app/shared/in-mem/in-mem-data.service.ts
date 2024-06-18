@@ -89,8 +89,8 @@ export class InMemDataService implements InMemoryDbService {
       id: 1,
       username: 'ng-matero',
       password: 'ng-matero',
-      name: 'Test User',
-      email: 'mou@tut.com',
+      name: 'Revelation Bafana Manganyi',
+      email: 'manganyirb@tut.ac.za',
       avatar: './assets/images/tut.png',
     },
     {

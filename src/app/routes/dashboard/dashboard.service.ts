@@ -59,36 +59,44 @@ const MESSAGES = [
 export class DashboardService {
   stats = [
     {
-      title: 'Total MOUs',
-      amount: '1802',
+      title: 'Total Number of Signed',
+      amount: '0',
       progress: {
         value: 50,
       },
       color: 'bg-indigo-500',
     },
     {
-      title: 'Expiring Soon',
-      amount: '70',
+      title: 'Total Signed Per Continent ',
+      amount: '0',
       progress: {
         value: 70,
       },
-      color: 'bg-blue-500',
+      color: 'bg-indigo-500',
     },
     {
-      title: 'In Progress',
-      amount: '12',
+      title: 'Total Number of Active',
+      amount: '0',
       progress: {
         value: 80,
       },
-      color: 'bg-green-500',
+      color: 'bg-indigo-500',
     },
     {
-      title: 'Assigned',
-      amount: '9',
+      title: 'Total Number of Soon To Expire',
+      amount: '0',
       progress: {
         value: 40,
       },
-      color: 'bg-teal-500',
+      color: 'bg-indigo-500',
+    },
+    {
+      title: 'Total Number of Expired',
+      amount: '0',
+      progress: {
+        value: 0,
+      },
+      color: 'bg-indigo-500',
     },
   ];
 
