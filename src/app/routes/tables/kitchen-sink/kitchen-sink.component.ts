@@ -81,7 +81,7 @@ export class TablesKitchenSinkComponent implements OnInit {
     },
     {
       header: this.translate.stream('table_kitchen_sink.nameOfPartnerInstitution2'),
-      field: 'nameOfPartnerInstitution2',
+      field: 'nameOfPartnerInstitution',
       sortable: true,
       minWidth: 100,
       width: '100px',

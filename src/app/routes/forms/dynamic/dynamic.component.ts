@@ -48,13 +48,13 @@ export class FormsDynamicComponent {
       className: 'col-sm-3',
       type: 'select',
       options: [
-        { id: 1, name: 'Africa' },
-        { id: 2, name: 'Asia' },
-        { id: 3, name: 'Europe' },
-        { id: 4, name: 'North America' },
-        { id: 5, name: 'South America' },
-        { id: 6, name: 'Oceania' },
-        { id: 7, name: 'Antarctica' },
+        { id: 'Africa', name: 'Africa' },
+        { id: 'Asia', name: 'Asia' },
+        { id: 'Europe', name: 'Europe' },
+        { id: 'North America', name: 'North America' },
+        { id: 'South America', name: 'South America' },
+        { id: 'Oceania', name: 'Oceania' },
+        { id: 'Antarctica', name: 'Antarctica' },
         // Add more continents as needed
       ],
       sortable: true,
@@ -317,7 +317,7 @@ export class FormsDynamicComponent {
     },
     {
       header: 'Name of Partner Institution',
-      field: 'partnerInstitution',
+      field: 'nameOfPartnerInstitution',
       type: 'text',
       sortable: true,
       minWidth: 100,
@@ -345,8 +345,8 @@ export class FormsDynamicComponent {
       field: 'status',
       type: 'select',
       options: [
-        { id: 1, name: 'Active' },
-        { id: 2, name: 'Expired' },
+        { id: 'Active', name: 'Active' },
+        { id: 'Expired', name: 'Expired' },
         // Add more status options as needed
       ],
       sortable: true,
@@ -537,76 +537,6 @@ export class FormsDynamicComponent {
   // Advanced Layout
   form2 = new FormGroup({});
   model2 = {};
-  fields2: FormlyFieldConfig[] = [
-    {
-      fieldGroupClassName: 'row',
-      fieldGroup: [
-        {
-          className: 'col-sm-6',
-          type: 'input',
-          key: 'country',
-          templateOptions: {
-            label: 'Country',
-            required: true,
-          },
-        },
-        {
-          className: 'col-sm-6',
-          type: 'input',
-          key: 'nameOfPartnerInstitution2',
-          templateOptions: {
-            label: 'Name Of Partner Institution',
-            required: true,
-          },
-          expressionProperties: {
-            'templateOptions.disabled': '!model.country',
-          },
-        },
-      ],
-    },
-    {
-      fieldGroupClassName: 'row',
-      fieldGroup: [
-        {
-          className: 'col-sm-6',
-          type: 'file',
-          key: 'category',
-        },
-        {
-          className: 'col-sm-3',
-          type: 'textarea',
-          key: 'purposeOfTheMoU',
-          templateOptions: {
-            label: 'Purpose Of The IMOU',
-          },
-        },
-        {
-          className: 'col-sm-3',
-          type: 'textarea',
-          key: 'highlights',
-          templateOptions: {
-            type: 'text',
-            label: 'Highlight',
-          },
-        },
-      ],
-    },
-    {
-      type: 'textarea',
-      key: 'otherInput',
-      templateOptions: {
-        label: 'Other Input',
-      },
-    },
-    {
-      type: 'checkbox',
-      key: 'otherToo',
-      templateOptions: {
-        label: 'Other Checkbox',
-      },
-      wrappers: ['div'],
-    },
-  ];
 
   constructor(private router: Router) {
     this.fields3 = this.createFieldsFromColumns(this.columns3);
