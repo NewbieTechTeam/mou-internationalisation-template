@@ -38,3 +38,11 @@
 <ng-template #expansionTpl let-row>
   {{ row.title }}
 </ng-template>
+
+<ng-template #viewButton let-row="row">
+  <a [href]="getSafeUrl(row.downloadURL)" target="_blank">
+    <button mat-raised-button color="accent">
+      View PDF
+    </button>
+  </a>
+</ng-template>

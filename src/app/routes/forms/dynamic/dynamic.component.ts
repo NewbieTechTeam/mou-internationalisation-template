@@ -63,7 +63,7 @@ export class FormsDynamicComponent {
     },
     {
       header: 'Country',
-      field: 'country',
+      field: 'countryOfPartnerInstitution',
       type: 'select',
       className: 'col-sm-3',
       options: [
@@ -557,7 +557,7 @@ export class FormsDynamicComponent {
         type = 'select';
         templateOptions.options = column.options;
         templateOptions.labelProp = 'name';
-        templateOptions.valueProp = 'id';
+        templateOptions.valueProp = 'name';
         break;
       case 'date':
         type = 'input';
@@ -693,7 +693,7 @@ export class FormsDynamicComponent {
             // Add more default options as needed
           ];
           templateOptions.labelProp = 'name';
-          templateOptions.valueProp = 'id';
+          templateOptions.valueProp = 'name';
           break;
         case 'date':
           type = 'input';
