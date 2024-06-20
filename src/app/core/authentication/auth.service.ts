@@ -8,7 +8,7 @@ import { User } from './interface';
   providedIn: 'root',
 })
 export class AuthService {
-  private user$ = new BehaviorSubject<User>({});
+  private user$ = new BehaviorSubject<any>({});
 
   constructor(private loginService: LoginService) {}
 
@@ -26,7 +26,40 @@ export class AuthService {
     );
   }
 
+  init3(): Observable<void> {
+    return this.loginService.me().pipe(
+      tap({
+        next: user => {
+          console.log('User fetched from loginService:', user);
+          if (user) {
+            this.user$.next(user);
+            console.log('User data set:', user);
+          } else {
+            this.user$.next({});
+            console.log('No user data found, setting empty object');
+          }
+        },
+        error: err => {
+          console.error('Error occurred while fetching user:', err);
+        },
+        complete: () => {
+          console.log('Login service me() observable completed');
+        },
+      }),
+      map(() => {
+        console.log('Mapping the result to undefined');
+        return undefined;
+      }), // Map the emission to void
+      catchError(err => {
+        console.error('Caught an error:', err);
+        return of(undefined);
+      }) // Handle errors and emit void
+    );
+  }
+
   change(): Observable<void> {
+    console.log('here init');
+
     return this.init();
   }
 
@@ -38,10 +71,12 @@ export class AuthService {
   login(username: string, password: string): Observable<boolean> {
     return this.loginService.login(username, password).pipe(
       tap(user => {
+        console.log({ user });
+
         if (user) {
-          //this.user$.next(user);
+          this.user$.next(user);
         } else {
-          //this.user$.next({}); // Emit empty user object if login fails
+          this.user$.next({}); // Emit empty user object if login fails
         }
       }),
       map(user => !!user), // Map to boolean indicating login success or failure

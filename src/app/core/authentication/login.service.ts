@@ -24,7 +24,7 @@ export class LoginService {
     return from(signOut(this.auth));
   }
 
-  me3(): Observable<User | null> {
+  me(): Observable<User | null> {
     return new Observable<User | null>(observer => {
       onAuthStateChanged(this.auth, user => {
         if (user) {
@@ -57,7 +57,7 @@ export class LoginService {
     );
   }
 
-  me() {
+  me3() {
     return this.http.get<Menu[]>('/me');
   }
 
@@ -74,7 +74,7 @@ export class LoginService {
     }
   }
 
-  menu(): Observable<Menu[]> {
+  menu2(): Observable<Menu[]> {
     // Assuming you have a method to fetch the menu based on the current user
     return this.me().pipe(
       switchMap(user => {
@@ -86,5 +86,9 @@ export class LoginService {
         }
       })
     );
+  }
+
+  menu() {
+    return this.http.get<{ menu: Menu[] }>('/me/menu').pipe(map(res => res.menu));
   }
 }

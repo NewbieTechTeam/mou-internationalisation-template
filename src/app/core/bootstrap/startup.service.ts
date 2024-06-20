@@ -22,9 +22,13 @@ export class StartupService {
       this.authService
         .change()
         .pipe(
-          tap(user => this.setPermissions('user')),
+          tap(user => this.setPermissions(user)),
           switchMap(() => this.authService.menu()),
-          tap(menu => this.setMenu(menu))
+          tap(menu => {
+            console.log({ menu });
+
+            this.setMenu(menu);
+          })
         )
         .subscribe({
           next: () => resolve(),
@@ -46,6 +50,6 @@ export class StartupService {
     this.rolesService.addRoles({ ADMIN: permissions });
 
     // Tips: Alternatively you can add permissions with role at the same time.
-    // this.rolesService.addRolesWithPermissions({ ADMIN: permissions });
+    //this.rolesService.addRolesWithPermissions({ ADMIN: permissions });
   }
 }
