@@ -3,12 +3,21 @@
     <input type="text" [(ngModel)]="searchTerm" (input)="applyFilter()" placeholder="Search..." />
     <mat-icon>search</mat-icon>
   </div>
-  <button mat-button mat-raised-button color="primary" (click)="navigateToForm()">Add New IMOU</button>
+  <button mat-button mat-raised-button color="primary" (click)="navigateToForm()">
+    Add New IMOU
+  </button>
 </div>
+
+<div class="analytics">
+  <h3>Analytics</h3>
+  <p>Number of Assigned MOUs: {{ numberOfAssignedMOU() }}</p>
+  <p>Expiring Soon: {{ expiringSoon()}}</p>
+</div>
+
 <ng-container>
   <mat-toolbar color="primary" class="header-toolbar">
-  <span class="header-title">International Memorandum Of Understanding List</span>
-</mat-toolbar>
+    <span class="header-title">International Memorandum Of Understanding List</span>
+  </mat-toolbar>
   <mtx-grid
     [data]="filteredData"
     [columns]="columns3"
@@ -41,8 +50,6 @@
 
 <ng-template #viewButton let-row="row">
   <a [href]="getSafeUrl(row.downloadURL)" target="_blank">
-    <button mat-raised-button color="accent">
-      View PDF
-    </button>
+    <button mat-raised-button color="accent">View PDF</button>
   </a>
 </ng-template>

@@ -35,6 +35,8 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
+import { DataSharerService } from '@shared';
+
 @Component({
   selector: 'app-table-kitchen-sink',
   templateUrl: './kitchen-sink.component.html',
@@ -62,13 +64,14 @@ export class TablesKitchenSinkComponent implements OnInit, AfterViewInit {
   private readonly dialog = inject(MtxDialog);
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly sanitizer = inject(DomSanitizer);
+  private readonly dataShare = inject(DataSharerService);
 
   //firebase stuff
   dataSource: MatTableDataSource<any> = new MatTableDataSource();
   firestore: Firestore = inject(Firestore);
 
   items$: Observable<any[]> = new Observable<any[]>();
-  itemCollection = collection(this.firestore, 'mous');
+  itemCollection = collection(this.firestore, 'cleanedsampledatav3');
 
   columns3: MtxGridColumn[] = [];
 
@@ -77,6 +80,7 @@ export class TablesKitchenSinkComponent implements OnInit, AfterViewInit {
   constructor(private router: Router) {
     collectionData(this.itemCollection).subscribe((items: any[]) => {
       this.list = items;
+      this.exportData(this.list);
       this.filteredData = items;
       this.isLoading = false; // Set loading to false once data is loaded
       this.cdr.detectChanges(); // Trigger change detection
@@ -261,15 +265,15 @@ export class TablesKitchenSinkComponent implements OnInit, AfterViewInit {
         minWidth: 100,
         width: '100px',
       },
-      {
-        header: this.translate.stream('table_kitchen_sink.mouPdf'),
-        field: 'downloadURL',
-        // cellTemplate: this.viewButton,
-        sortable: false,
-        minWidth: 100,
-        width: '100px',
-        maxWidth: 100,
-      },
+      // {
+      //   header: this.translate.stream('table_kitchen_sink.mouPdf'),
+      //   field: 'downloadURL',
+      //   // cellTemplate: this.viewButton,
+      //   sortable: false,
+      //   minWidth: 100,
+      //   width: '100px',
+      //   maxWidth: 100,
+      // },
       {
         header: this.translate.stream('table_kitchen_sink.tUTSigantory'),
         field: 'tutSignatory',
@@ -343,5 +347,37 @@ export class TablesKitchenSinkComponent implements OnInit, AfterViewInit {
 
   getSafeUrl(pdfLink: string): SafeResourceUrl {
     return this.sanitizer.bypassSecurityTrustResourceUrl(pdfLink);
+  }
+
+  groupByContinent(): { [key: string]: any[] } {
+    return this.list.reduce(
+      (acc, item) => {
+        const continent = item.continent || 'Unknown';
+        if (!acc[continent]) {
+          acc[continent] = [];
+        }
+        acc[continent].push(item);
+        return acc;
+      },
+      {} as { [key: string]: any[] }
+    );
+  }
+
+  // Expiring Soon (within the next month)
+  expiringSoon(): any[] {
+    const oneMonthFromNow = new Date();
+    oneMonthFromNow.setMonth(oneMonthFromNow.getMonth() + 1);
+    return this.list.filter(item => {
+      const expiryDate = new Date(item.expiryDate);
+      return expiryDate <= oneMonthFromNow;
+    });
+  }
+
+  numberOfAssignedMOU(): number {
+    return this.list.filter(item => item.assigned).length;
+  }
+
+  exportData(data: any) {
+    this.dataShare.setData(data);
   }
 }
