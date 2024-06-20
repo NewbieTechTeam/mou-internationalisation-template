@@ -1,3 +1,4 @@
+import { guest } from './../authentication/user';
 import { Injectable, inject } from '@angular/core';
 import { AuthService, User } from '@core/authentication';
 import { NgxPermissionsService, NgxRolesService } from 'ngx-permissions';
@@ -44,10 +45,14 @@ export class StartupService {
 
   private setPermissions(user: any) {
     // In a real app, you should get permissions and roles from the user information.
-    const permissions = ['canAdd', 'canDelete', 'canEdit', 'canRead'];
+    const permissions = ['canAdd', 'canDelete'];
+
+    console.log('canAdd', 'canDelete');
+    console.log({ user });
+
     this.permissonsService.loadPermissions(permissions);
     this.rolesService.flushRoles();
-    this.rolesService.addRoles({ ADMIN: permissions });
+    this.rolesService.addRoles({ GUEST: permissions });
 
     // Tips: Alternatively you can add permissions with role at the same time.
     //this.rolesService.addRolesWithPermissions({ ADMIN: permissions });
