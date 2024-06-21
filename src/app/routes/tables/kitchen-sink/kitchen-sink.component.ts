@@ -71,7 +71,7 @@ export class TablesKitchenSinkComponent implements OnInit, AfterViewInit {
   firestore: Firestore = inject(Firestore);
 
   items$: Observable<any[]> = new Observable<any[]>();
-  itemCollection = collection(this.firestore, 'cleanedsampledata5');
+  itemCollection = collection(this.firestore, 'mous');
 
   columns3: MtxGridColumn[] = [];
 
