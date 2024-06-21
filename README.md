@@ -169,3 +169,15 @@ MIT
 ## Node Env
 
 nvm use 18.19.1 
+
+
+- Group By Continent
+- Expiring Soon
+- Assigned MOU
+
+
+Excel Sheet
+upload xls to firebase (priority)
+
+-  Notification about Expiring MOU
+

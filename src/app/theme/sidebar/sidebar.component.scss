@@ -11,8 +11,8 @@
   height: var(--mat-toolbar-standard-height);
   padding: 0 0.5rem;
   overflow: hidden;
+   background-color: #3f51b5;
   border-bottom: 1px solid var(--divider-color);
-
   @include breakpoints.bp-lt(small) {
     & {
       height: var(--mat-toolbar-mobile-height);

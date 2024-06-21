@@ -98,6 +98,7 @@ import { PaginatorI18nService } from '@shared/services/paginator-i18n.service';
       provide: MAT_DATE_LOCALE,
       useFactory: () => navigator.language, // <= This will be overrided by runtime setting
     },
+    {provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: {appearance: 'outline'}},
     {
       provide: MAT_DATE_FORMATS,
       useValue: {

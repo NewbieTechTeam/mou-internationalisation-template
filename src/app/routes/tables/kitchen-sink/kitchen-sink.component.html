@@ -1,57 +1,49 @@
-<page-header class="bg-green-600"></page-header>
-
-<div class="data-grid-options">
-  <mat-checkbox [(ngModel)]="rowSelectable">Row Selectable</mat-checkbox>
-  <mat-checkbox [(ngModel)]="hideRowSelectionCheckbox">Hide checkbox</mat-checkbox>
-  <mat-radio-group [(ngModel)]="multiSelectable">
-    <mat-radio-button [value]="false">Single Selectable</mat-radio-button>
-    <mat-radio-button [value]="true">Multiple Selectable</mat-radio-button>
-  </mat-radio-group>
-  <mat-checkbox [(ngModel)]="showToolbar">Show Toolbar</mat-checkbox>
-  <mat-checkbox [(ngModel)]="columnHideable">Column Hiding</mat-checkbox>
-  <mat-checkbox [(ngModel)]="columnSortable">Column Sorting</mat-checkbox>
-  <mat-checkbox [(ngModel)]="columnPinnable">Column Pinning</mat-checkbox>
-  <mat-checkbox [(ngModel)]="rowHover">Hover</mat-checkbox>
-  <mat-checkbox [(ngModel)]="rowStriped">Striped</mat-checkbox>
-  <mat-checkbox [(ngModel)]="expandable" (change)="enableRowExpandable()">Row Expandable
-  </mat-checkbox>
-  <mat-checkbox [(ngModel)]="showPaginator">Show Paginator</mat-checkbox>
-  <mat-checkbox [(ngModel)]="isLoading">Loading Status</mat-checkbox>
-  <mat-checkbox [(ngModel)]="columnResizable">Column Resizable</mat-checkbox>
-</div>
-<div class="m-y-8">
-  <button mat-button (click)="updateCell()">Update cell</button>
-  <button mat-button (click)="updateList()">Update list</button>
-
-  <a mat-button class="text-blue-600"
-     href="https://ng-matero.github.io/extensions/components/data-grid"
-     target="_blank">View more examples</a>
+<div class="container">
+  <div class="search-container">
+    <input type="text" [(ngModel)]="searchTerm" (input)="applyFilter()" placeholder="Search..." />
+    <mat-icon>search</mat-icon>
+  </div>
+  <button mat-button mat-raised-button color="primary" (click)="navigateToForm()">
+    Add New IMOU
+  </button>
 </div>
 
-<mtx-grid [data]="list"
-          [columns]="columns"
-          [loading]="isLoading"
-          [columnResizable]="columnResizable"
-          [multiSelectable]="multiSelectable"
-          [rowSelectable]="rowSelectable"
-          [hideRowSelectionCheckbox]="hideRowSelectionCheckbox"
-          [rowHover]="rowHover"
-          [rowStriped]="rowStriped"
-          [showToolbar]="showToolbar"
-          [toolbarTitle]="'Data Grid Toolbar'"
-          [columnHideable]="columnHideable"
-          [columnSortable]="columnSortable"
-          [columnPinnable]="columnPinnable"
-          [expandable]="expandable"
-          [expansionTemplate]="expansionTpl"
-          [pageOnFront]="showPaginator"
-          [showPaginator]="showPaginator"
-          [pageSizeOptions]="[5,10,50,100]"
-          [pageIndex]="0"
-          [pageSize]="5"
-          (sortChange)="changeSort($event)"
-          (selectionChange)="changeSelect($event)">
-</mtx-grid>
+<ng-container>
+  <mat-toolbar color="primary" class="header-toolbar">
+    <span class="header-title">International Memorandum Of Understanding List</span>
+  </mat-toolbar>
+  <mtx-grid
+    [data]="filteredData"
+    [columns]="columns3"
+    [loading]="isLoading"
+    [columnResizable]="columnResizable"
+    [multiSelectable]="multiSelectable"
+    [rowSelectable]="rowSelectable"
+    [hideRowSelectionCheckbox]="hideRowSelectionCheckbox"
+    [rowHover]="rowHover"
+    [rowStriped]="rowStriped"
+    [showToolbar]="showToolbar"
+    [toolbarTitle]="'International Memeorandum Of Understanding List'"
+    [columnSortable]="columnSortable"
+    [columnPinnable]="columnPinnable"
+    [expandable]="expandable"
+    [expansionTemplate]="expansionTpl"
+    [pageOnFront]="showPaginator"
+    [showPaginator]="showPaginator"
+    [pageSizeOptions]="[5, 10, 50, 100]"
+    [pageIndex]="0"
+    [pageSize]="5"
+    (sortChange)="changeSort($event)"
+    (selectionChange)="changeSelect($event)"
+  >
+  </mtx-grid>
+</ng-container>
 <ng-template #expansionTpl let-row>
-  {{row.name}}
+  {{ row.title }}
+</ng-template>
+
+<ng-template #viewButton let-row="row">
+  <a [href]="getSafeUrl(row.downloadURL)" target="_blank">
+    <button mat-raised-button color="accent">View PDF</button>
+  </a>
 </ng-template>
