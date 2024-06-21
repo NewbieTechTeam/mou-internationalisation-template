@@ -1,3 +1,7 @@
+import { FirebasePermissionsService } from '@shared/services/firebase-permissions.service';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
 import { JsonPipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
@@ -11,10 +15,21 @@ import { PageHeaderComponent } from '@shared';
   templateUrl: './test.component.html',
   styleUrl: './test.component.scss',
   standalone: true,
-  imports: [JsonPipe, MtxAlertModule, NgxPermissionsModule, PageHeaderComponent, FormsModule],
+  imports: [
+    JsonPipe,
+    MtxAlertModule,
+    NgxPermissionsModule,
+    PageHeaderComponent,
+    FormsModule,
+    MatFormFieldModule,
+    MatCardModule,
+    MatCheckboxModule,
+  ],
 })
 export class PermissionsTestComponent {
   private readonly permissionsSrv = inject(NgxPermissionsService);
+  private readonly firebasePermissionsService = inject(FirebasePermissionsService);
+  users: any[] = [];
 
   comparedPermission: string[] = ['guest'];
   newUserEmail: string = '';
@@ -62,4 +77,10 @@ export class PermissionsTestComponent {
   }
 
   createUser() {}
+
+  loadUsers(): void {
+    this.firebasePermissionsService.getAllUsers().subscribe((users: any) => {
+      this.users = users;
+    });
+  }
 }

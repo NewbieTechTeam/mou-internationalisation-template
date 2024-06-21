@@ -1,38 +1,48 @@
 <page-header></page-header>
 
+<!-- Alert for permissions check delay -->
 <mtx-alert type="danger">The permissions check will delay 2s.</mtx-alert>
 
-<p>
-  <button (click)="addPermission()">Add Permission [ admin ]</button>
-  <button (click)="removePermission()">Remove Permission [ admin ]</button>
-</p>
+<!-- Permission management buttons -->
+<div class="permission-buttons">
+  <button (click)="addPermission()">Add Permission [admin]</button>
+  <button (click)="removePermission()">Remove Permission [admin]</button>
+</div>
 
+<!-- Permission templates based on ngxPermissionsOnly -->
 <ng-template permissions [ngxPermissionsOnly]="['admin']">
-  <p class="bg-green-500 text-white">
+  <p class="permission-template bg-green-500 text-white">
     I should see it only admin
   </p>
 </ng-template>
 
 <ng-template [ngxPermissionsOnly]="['admin']" [ngxPermissionsExcept]="'hhhhh'">
-  <p class="bg-green-500 text-white">
-    Usage on both only and except I should see it only admin
+  <p class="permission-template bg-green-500 text-white">
+    Usage on both only and except: I should see it only admin
   </p>
 </ng-template>
 
 <ng-template permissions [ngxPermissionsOnly]="['guest']">
-  <p class="bg-purple-500 text-white">I will see it only guest</p>
+  <p class="permission-template bg-purple-500 text-white">
+    I will see it only guest
+  </p>
 </ng-template>
 
 <ng-template permissions [ngxPermissionsExcept]="['adminnnnn']"
              (permissionsAuthorized)="authorized()"
              (permissionsUnauthorized)="unAuthorized()">
-  <p class="bg-orange-500 text-white">I will see it except adminnnnn</p>
+  <p class="permission-template bg-orange-500 text-white">
+    I will see it except adminnnnn
+  </p>
 </ng-template>
 
 <ng-template permissions [ngxPermissionsExcept]="['admin']">
-  <p class="bg-indigo-500 text-white">I should see it except admin</p>
+  <p class="permission-template bg-indigo-500 text-white">
+    I should see it except admin
+  </p>
 </ng-template>
 
+<!-- Conditional templates with ngxPermissionsOnly and ngxPermissionsExcept -->
 <div *ngxPermissionsOnly="['admin']; else a; then b">
   Testing template
 </div>
@@ -42,59 +52,38 @@
 </div>
 
 <ng-template #a>
-  <p class="bg-gray-900 text-white">else block</p>
+  <p class="permission-template bg-gray-900 text-white">else block</p>
 </ng-template>
 <ng-template #b>
-  <p class="bg-gray-300">then block</p>
+  <p class="permission-template bg-gray-300">then block</p>
 </ng-template>
 
+<!-- Display current permissions -->
 <p>
-  Compared permission: <code>{{comparedPermission | json}}</code>
+  Compared permission: <code>{{ comparedPermission | json }}</code>
 </p>
 
-<div>
+<!-- Permission change buttons -->
+<div class="permission-change-buttons">
   <button (click)="changeToAdmin()">Change To Admin Permission</button>
-
   <button (click)="changeToAnotherPermission()">Change To Awesome Permission</button>
-
   <button (click)="changeToGuest()">Change To Guest Permission</button>
 </div>
 
+<!-- Additional permission-specific content -->
 <div>
   <button *ngxPermissionsOnly="comparedPermission">
     This should be visible to admin or superadmin
   </button>
-
   <button *ngxPermissionsOnly="[]">WTF</button>
 </div>
 
+<!-- Display current permissions -->
 <p>
-  Your current permissions: <code>{{getPermissions() | json}}</code>
+  Your current permissions: <code>{{ getPermissions() | json }}</code>
 </p>
 
-
-
-<!-- Add permission buttons -->
-<p>
-  <button (click)="addPermission()">Add Permission [ admin ]</button>
-  <button (click)="removePermission()">Remove Permission [ admin ]</button>
-</p>
-
-<!-- Permission templates -->
-<ng-template permissions [ngxPermissionsOnly]="['admin']">
-  <p class="bg-green-500 text-white">
-    I should see it only admin
-  </p>
-</ng-template>
-
-<!-- Other permission templates as per your requirements -->
-
-<p>Your current permissions: <code>{{ getPermissions() | json }}</code></p>
-
-
-
-
-<!-- Add user form -->
+<!-- Form to create a new user -->
 <form (submit)="createUser()">
   <label>Email:</label>
   <input type="email" [(ngModel)]="newUserEmail" required>
@@ -104,3 +93,62 @@
 
   <button type="submit">Create User</button>
 </form>
+
+<!-- <div class="d-flex w-full h-full">
+  <mat-card class="m-auto" style="max-width: 380px;">
+    <mat-card-header class="m-b-24">
+      <mat-card-title>{{'login_title' }}!</mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+      <form class="form-field-full">
+        <mat-form-field appearance="outline">
+          <mat-label>{{'username' }}: ng-matero</mat-label>
+          <input matInput placeholder="ng-matero"  required>
+           @if (username.invalid) {
+            <mat-error>
+              @if (username.errors?.required) {
+                <span>{{'please_enter' }}
+                  <strong>ng-matero</strong>
+                </span>
+              }
+              @if (username.errors?.remote) {
+                <span>{{ username.errors?.remote }}</span>
+              }
+            </mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>{{'password' }}: ng-matero</mat-label>
+          <input matInput placeholder="ng-matero" type="password"
+             required>
+           @if (password.invalid) {
+            <mat-error>
+              @if (password.errors?.required) {
+                <span>{{'please_enter' }}
+                  <strong>ng-matero</strong>
+                </span>
+              }
+              @if (password.errors?.remote) {
+                <span>{{ password.errors?.remote }}</span>
+              }
+            </mat-error>
+          }
+        </mat-form-field>
+
+        <mat-checkbox >{{'remember_me' }}
+        </mat-checkbox>
+
+        <button class="w-full m-y-16" mat-raised-button color="primary"
+
+        >{{'login' }}</button>
+
+        <div>{{'have_no_account' }}?
+          <a routerLink="/auth/register">{{'create_one_account' }}</a>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>
+ -->
