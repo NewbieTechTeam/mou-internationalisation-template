@@ -71,3 +71,36 @@
 <p>
   Your current permissions: <code>{{getPermissions() | json}}</code>
 </p>
+
+
+
+<!-- Add permission buttons -->
+<p>
+  <button (click)="addPermission()">Add Permission [ admin ]</button>
+  <button (click)="removePermission()">Remove Permission [ admin ]</button>
+</p>
+
+<!-- Permission templates -->
+<ng-template permissions [ngxPermissionsOnly]="['admin']">
+  <p class="bg-green-500 text-white">
+    I should see it only admin
+  </p>
+</ng-template>
+
+<!-- Other permission templates as per your requirements -->
+
+<p>Your current permissions: <code>{{ getPermissions() | json }}</code></p>
+
+
+
+
+<!-- Add user form -->
+<form (submit)="createUser()">
+  <label>Email:</label>
+  <input type="email" [(ngModel)]="newUserEmail" required>
+
+  <label>Password:</label>
+  <input type="password" [(ngModel)]="newUserPassword" required>
+
+  <button type="submit">Create User</button>
+</form>

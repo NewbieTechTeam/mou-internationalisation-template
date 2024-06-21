@@ -1,3 +1,4 @@
+import { FormsModule } from '@angular/forms';
 import { JsonPipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { MtxAlertModule } from '@ng-matero/extensions/alert';
@@ -10,12 +11,14 @@ import { PageHeaderComponent } from '@shared';
   templateUrl: './test.component.html',
   styleUrl: './test.component.scss',
   standalone: true,
-  imports: [JsonPipe, MtxAlertModule, NgxPermissionsModule, PageHeaderComponent],
+  imports: [JsonPipe, MtxAlertModule, NgxPermissionsModule, PageHeaderComponent, FormsModule],
 })
 export class PermissionsTestComponent {
   private readonly permissionsSrv = inject(NgxPermissionsService);
 
   comparedPermission: string[] = ['guest'];
+  newUserEmail: string = '';
+  newUserPassword: string = '';
 
   getPermissions() {
     return Object.keys(this.permissionsSrv.getPermissions());
@@ -57,4 +60,6 @@ export class PermissionsTestComponent {
     this.comparedPermission = ['guest'];
     console.log(this.comparedPermission);
   }
+
+  createUser() {}
 }

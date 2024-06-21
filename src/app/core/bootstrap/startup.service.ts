@@ -25,7 +25,11 @@ export class StartupService {
       this.authService
         .change()
         .pipe(
-          tap(user => this.setPermissions(user)),
+          tap(user => {
+            console.log('User in StartupService:', user);
+
+            this.setPermissions(user);
+          }),
           switchMap(() => this.authService.menu()),
           tap(menu => {
             console.log({ menu });
@@ -47,14 +51,20 @@ export class StartupService {
 
   private setPermissions(user: any) {
     // In a real app, you should get permissions and roles from the user information.
-    const permissions = ['canAdd', 'canDelete'];
-
-    console.log('canAdd', 'canDelete');
+    const permissions = ['canAdd', 'canDelete', 'canEdit', 'canRead'];
+    console.log('Permissions:', permissions);
     console.log({ user });
-
-    this.permissonsService.loadPermissions(permissions);
-    this.rolesService.flushRoles();
-    this.rolesService.addRoles({ GUEST: permissions });
+    console.log({ user });
+    const adminEmail = 'kolawolegolulana@gmail.com';
+    if (user.email === adminEmail) {
+      this.permissonsService.loadPermissions(permissions);
+      this.rolesService.flushRoles();
+      this.rolesService.addRolesWithPermissions({ ADMIN: permissions });
+    } else {
+      const guestPermissions = ['canAdd', 'canDelete', 'canEdit', 'canRead'];
+      this.permissonsService.loadPermissions(permissions);
+      this.rolesService.addRoles({ GUEST: permissions });
+    }
 
     // Tips: Alternatively you can add permissions with role at the same time.
     //this.rolesService.addRolesWithPermissions({ ADMIN: permissions });

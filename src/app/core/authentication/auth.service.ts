@@ -12,13 +12,14 @@ export class AuthService {
 
   constructor(private loginService: LoginService) {}
 
-  init(): Observable<void> {
+  init2(): Observable<void> {
     return this.loginService.me().pipe(
       tap(user => {
         if (user) {
           this.user$.next(user);
+          console.log('User set:', user);
         } else {
-          this.user$.next({});
+          this.user$.next(null);
         }
       }),
       map(() => undefined), // Map the emission to void
@@ -26,41 +27,10 @@ export class AuthService {
     );
   }
 
-  init3(): Observable<void> {
-    return this.loginService.me().pipe(
-      tap({
-        next: user => {
-          console.log('User fetched from loginService:', user);
-          if (user) {
-            this.user$.next(user);
-            console.log('User data set:', user);
-          } else {
-            this.user$.next({});
-            console.log('No user data found, setting empty object');
-          }
-        },
-        error: err => {
-          console.error('Error occurred while fetching user:', err);
-        },
-        complete: () => {
-          console.log('Login service me() observable completed');
-        },
-      }),
-      map(() => {
-        console.log('Mapping the result to undefined');
-        return undefined;
-      }), // Map the emission to void
-      catchError(err => {
-        console.error('Caught an error:', err);
-        return of(undefined);
-      }) // Handle errors and emit void
-    );
-  }
-
-  change(): Observable<void> {
+  change2(): Observable<void> {
     console.log('here init');
 
-    return this.init();
+    return this.init2();
   }
 
   check(): boolean {
@@ -68,18 +38,39 @@ export class AuthService {
     return !!this.user$.getValue().id;
   }
 
+  init(): Observable<User | null> {
+    return this.loginService.me().pipe(
+      tap(user => {
+        if (user) {
+          this.user$.next(user);
+          console.log('User set:', user);
+        } else {
+          this.user$.next(null);
+        }
+      }),
+      map(user => user), // Return the user
+      catchError(() => {
+        this.user$.next(null);
+        return of(null);
+      })
+    );
+  }
+
+  change(): Observable<User | null> {
+    console.log('Calling change method');
+    return this.init();
+  }
+
   login(username: string, password: string): Observable<boolean> {
     return this.loginService.login(username, password).pipe(
       tap(user => {
-        console.log({ user });
-
         if (user) {
           this.user$.next(user);
         } else {
-          this.user$.next({}); // Emit empty user object if login fails
+          this.user$.next(null);
         }
       }),
-      map(user => !!user), // Map to boolean indicating login success or failure
+      map(user => !!user),
       catchError(() => of(false))
     );
   }

@@ -54,4 +54,11 @@ export class FirebasePermissionsService {
     const docRef = doc(this.firestore, 'permissions', uid);
     return from(setDoc(docRef, permissions));
   }
+
+  createUserWithEmailAndPassword(
+    email: string,
+    password: string
+  ): Promise<firebase.auth.UserCredential> {
+    return this.auth.createUserWithEmailAndPassword(email, password);
+  }
 }
