@@ -88,7 +88,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
       this.fullData = data;
       this.numberOfAssignedMOU = data.length;
       console.log(this.stats);
-      console.log('percont', this.calculateSignedPerContinent());
+      console.log('expired', this.calculateExpiredMoUs());
 
       console.log('percont', this.calculateSignedPerContinent());
 
@@ -97,7 +97,31 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
           title: 'Total Number of Signed',
           amount: `${this.numberOfAssignedMOU}`,
           progress: {
-            value: 50,
+            value: `${(this.numberOfAssignedMOU / this.numberOfAssignedMOU) * 100}`,
+          },
+          color: 'bg-indigo-500',
+        },
+        {
+          title: 'Total Number of Active',
+          amount: `${this.calculateActiveMoUs()}`,
+          progress: {
+            value: `${(this.calculateActiveMoUs() / this.numberOfAssignedMOU) * 100}`,
+          },
+          color: 'bg-indigo-500',
+        },
+        {
+          title: 'Total Number of Soon To Expire',
+          amount: `${this.calculateSoonToExpireMoUs()}`,
+          progress: {
+            value: `${(this.calculateSoonToExpireMoUs() / this.numberOfAssignedMOU) * 100}`,
+          },
+          color: 'bg-indigo-500',
+        },
+        {
+          title: 'Total Number of Expired',
+          amount: `${this.calculateExpiredMoUs()}`,
+          progress: {
+            value: `${(this.calculateExpiredMoUs() / this.numberOfAssignedMOU) * 100}`,
           },
           color: 'bg-indigo-500',
         },
@@ -147,5 +171,36 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
       {} as { [key: string]: number }
     );
     return Object.values(continentCounts).reduce((a: number, b: number) => a + b, 0);
+  }
+
+  calculateActiveMoUs(): number {
+    return this.fullData.filter((mou: any) => mou.status && mou.status.toLowerCase() === 'active')
+      .length;
+  }
+
+  calculateSoonToExpireMoUs(): number {
+    const today = new Date();
+    const nextWeek = new Date(today);
+    nextWeek.setDate(today.getDate() + 7);
+
+    return this.fullData.filter((mou: any) => {
+      if (mou.expiryDate) {
+        const expiryDate = new Date(mou.expiryDate);
+        return expiryDate > today && expiryDate <= nextWeek;
+      }
+      return false;
+    }).length;
+  }
+
+  calculateExpiredMoUs(): number {
+    const today = new Date();
+
+    return this.fullData.filter((mou: any) => {
+      if (mou.expiryDate) {
+        const expiryDate = new Date(mou.expiryDate);
+        return expiryDate < today;
+      }
+      return false;
+    }).length;
   }
 }
