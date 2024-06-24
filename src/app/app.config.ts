@@ -54,12 +54,12 @@ export const appConfig: ApplicationConfig = {
           deps: [HttpClient],
         },
       }),
-      FormlyConfigModule.forRoot(),
+      FormlyConfigModule.forRoot()
       // 👇 ❌ This is only used for demo purpose, remove it in the realworld application
-      InMemoryWebApiModule.forRoot(InMemDataService, {
+      /*   InMemoryWebApiModule.forRoot(InMemDataService, {
         dataEncapsulation: false,
         passThruUnknownUrl: true,
-      })
+      }) */
     ),
     { provide: BASE_URL, useValue: environment.baseUrl },
     httpInterceptorProviders,

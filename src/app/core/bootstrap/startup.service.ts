@@ -52,11 +52,12 @@ export class StartupService {
   private setPermissions(user: any) {
     // In a real app, you should get permissions and roles from the user information.
     const permissions = ['canAdd', 'canDelete', 'canEdit', 'canRead'];
+    console.log('========user==========', user.user.email);
+    console.log('========user==========', user);
+
     console.log('Permissions:', permissions);
-    console.log({ user });
-    console.log({ user });
     const adminEmail = 'kolawolegolulana@gmail.com';
-    if (user.email === adminEmail) {
+    if (user.user.email == adminEmail) {
       this.permissonsService.loadPermissions(permissions);
       this.rolesService.flushRoles();
       this.rolesService.addRolesWithPermissions({ ADMIN: permissions });

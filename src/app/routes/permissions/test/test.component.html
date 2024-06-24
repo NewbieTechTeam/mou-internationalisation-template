@@ -11,9 +11,7 @@
 
 <!-- Permission templates based on ngxPermissionsOnly -->
 <ng-template permissions [ngxPermissionsOnly]="['admin']">
-  <p class="permission-template bg-green-500 text-white">
-    I should see it only admin
-  </p>
+  <p class="permission-template bg-green-500 text-white">I should see it only admin</p>
 </ng-template>
 
 <ng-template [ngxPermissionsOnly]="['admin']" [ngxPermissionsExcept]="'hhhhh'">
@@ -23,33 +21,36 @@
 </ng-template>
 
 <ng-template permissions [ngxPermissionsOnly]="['guest']">
-  <p class="permission-template bg-purple-500 text-white">
-    I will see it only guest
-  </p>
+  <p class="permission-template bg-purple-500 text-white">I will see it only guest</p>
 </ng-template>
 
-<ng-template permissions [ngxPermissionsExcept]="['adminnnnn']"
-             (permissionsAuthorized)="authorized()"
-             (permissionsUnauthorized)="unAuthorized()">
-  <p class="permission-template bg-orange-500 text-white">
-    I will see it except adminnnnn
-  </p>
+<ng-template
+  permissions
+  [ngxPermissionsExcept]="['adminnnnn']"
+  (permissionsAuthorized)="authorized()"
+  (permissionsUnauthorized)="unAuthorized()"
+>
+  <p class="permission-template bg-orange-500 text-white">I will see it except adminnnnn</p>
 </ng-template>
 
 <ng-template permissions [ngxPermissionsExcept]="['admin']">
-  <p class="permission-template bg-indigo-500 text-white">
-    I should see it except admin
-  </p>
+  <p class="permission-template bg-indigo-500 text-white">I should see it except admin</p>
 </ng-template>
 
 <!-- Conditional templates with ngxPermissionsOnly and ngxPermissionsExcept -->
-<div *ngxPermissionsOnly="['admin']; else a; then b">
+<div *ngxPermissionsOnly="['admin']; else a; then: b">
   Testing template
+
+  @for (user of users; track user) {
+    <li>
+      <p>
+        {{ user.email }}
+      </p>
+    </li>
+  }
 </div>
 
-<div *ngxPermissionsExcept="['admin']; else a; then b">
-  Testing template
-</div>
+<div *ngxPermissionsExcept="['admin']; else a; then: b">Testing template</div>
 
 <ng-template #a>
   <p class="permission-template bg-gray-900 text-white">else block</p>
@@ -76,6 +77,15 @@
     This should be visible to admin or superadmin
   </button>
   <button *ngxPermissionsOnly="[]">WTF</button>
+  <ng-template *ngxPermissionsOnly="[]">
+    @for (user of users; track user) {
+      <li>
+        <p>
+          {{ user.email }}
+        </p>
+      </li>
+    }
+  </ng-template>
 </div>
 
 <!-- Display current permissions -->
@@ -84,13 +94,15 @@
 </p>
 
 <!-- Form to create a new user -->
-<form (submit)="createUser()">
-  <label>Email:</label>
-  <input type="email" [(ngModel)]="newUserEmail" required>
-
-  <label>Password:</label>
-  <input type="password" [(ngModel)]="newUserPassword" required>
-
+<form (ngSubmit)="createUser()">
+  <div>
+    <label for="email">Email:</label>
+    <input id="email" type="email" [(ngModel)]="newUserEmail" name="email" required />
+  </div>
+  <div>
+    <label for="password">Password:</label>
+    <input id="password" type="password" [(ngModel)]="newUserPassword" name="password" required />
+  </div>
   <button type="submit">Create User</button>
 </form>
 

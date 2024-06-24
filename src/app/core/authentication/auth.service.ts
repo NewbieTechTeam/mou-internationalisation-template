@@ -17,7 +17,6 @@ export class AuthService {
       tap(user => {
         if (user) {
           this.user$.next(user);
-          console.log('User set:', user);
         } else {
           this.user$.next(null);
         }
@@ -43,7 +42,6 @@ export class AuthService {
       tap(user => {
         if (user) {
           this.user$.next(user);
-          console.log('User set:', user);
         } else {
           this.user$.next(null);
         }
