@@ -179,5 +179,6 @@ nvm use 18.19.1
 Excel Sheet
 upload xls to firebase (priority)
 
--  Notification about Expiring MOU
-
+- Notification about Expiring MOU
+- Action , edit, delete, view and download (for owner),and view for guest
+- google analytics
