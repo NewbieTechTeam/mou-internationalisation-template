@@ -65,17 +65,19 @@ export class TablesKitchenSinkComponent implements OnInit, AfterViewInit {
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly sanitizer = inject(DomSanitizer);
   private readonly dataShare = inject(DataSharerService);
+  pdfLink: SafeResourceUrl | null = null;
 
   //firebase stuff
   dataSource: MatTableDataSource<any> = new MatTableDataSource();
   firestore: Firestore = inject(Firestore);
 
   items$: Observable<any[]> = new Observable<any[]>();
-  itemCollection = collection(this.firestore, 'mous');
+  itemCollection = collection(this.firestore, 'cleanedsampledata5');
 
   columns3: MtxGridColumn[] = [];
 
   @ViewChild('viewButton', { static: true }) viewButton!: TemplateRef<any>;
+  @ViewChild('downloadButton', { static: true }) downloadButton!: TemplateRef<any>;
 
   constructor(private router: Router) {
     collectionData(this.itemCollection).subscribe((items: any[]) => {
@@ -108,10 +110,12 @@ export class TablesKitchenSinkComponent implements OnInit, AfterViewInit {
   //Search params
   searchTerm: string = '';
   filteredData: any[] = [];
-
+  gridData: any[] = [];
   ngOnInit() {
+    this.gridData = this.dataSource.data;
     this.list = this.dataSource.data;
     this.isLoading = false;
+    console.log('deets');
   }
 
   ngAfterViewInit() {
@@ -265,15 +269,16 @@ export class TablesKitchenSinkComponent implements OnInit, AfterViewInit {
         minWidth: 100,
         width: '100px',
       },
-      // {
-      //   header: this.translate.stream('table_kitchen_sink.mouPdf'),
-      //   field: 'downloadURL',
-      //   // cellTemplate: this.viewButton,
-      //   sortable: false,
-      //   minWidth: 100,
-      //   width: '100px',
-      //   maxWidth: 100,
-      // },
+      {
+        header: this.translate.stream('table_kitchen_sink.downloadUrl'),
+        field: 'downloadURL',
+        cellTemplate: this.viewButton,
+        sortable: false,
+        minWidth: 100,
+        width: '100px',
+        maxWidth: 100,
+      },
+
       {
         header: this.translate.stream('table_kitchen_sink.tUTSigantory'),
         field: 'tutSignatory',
@@ -281,14 +286,59 @@ export class TablesKitchenSinkComponent implements OnInit, AfterViewInit {
         minWidth: 100,
         width: '100px',
       },
+      {
+        header: this.translate.stream('table_kitchen_sink.operation'),
+        field: 'operation',
+        minWidth: 140,
+        width: '140px',
+        pinned: 'right',
+        type: 'button',
+        buttons: [
+          {
+            type: 'icon',
+            icon: 'edit',
+            tooltip: this.translate.stream('table_kitchen_sink.edit'),
+            click: record => this.edit(record),
+          },
+          {
+            type: 'icon',
+            color: 'warn',
+            icon: 'delete',
+            tooltip: this.translate.stream('table_kitchen_sink.delete'),
+            pop: {
+              title: this.translate.stream('table_kitchen_sink.confirm_delete'),
+              closeText: this.translate.stream('table_kitchen_sink.close'),
+              okText: this.translate.stream('table_kitchen_sink.ok'),
+            },
+            click: record => this.deleteItem(record),
+          },
+        ],
+      },
     ];
 
     // Trigger change detection to update the view with the new columns
+
     this.cdr.detectChanges();
   }
 
-  viewFile(pdfLink: string) {
-    window.open(pdfLink, '_blank');
+  viewFile(link: any) {
+    console.log(link.downloadURL);
+    this.pdfLink = this.sanitizer.bypassSecurityTrustResourceUrl(link.downloadURL);
+  }
+
+  groupByContinent2(): { name: string; count: number }[] {
+    const continentMap: { [key: string]: number } = {};
+
+    this.list.forEach((item: any) => {
+      const continent = item.continent;
+      if (continentMap[continent]) {
+        continentMap[continent]++;
+      } else {
+        continentMap[continent] = 1;
+      }
+    });
+
+    return Object.keys(continentMap).map(key => ({ name: key, count: continentMap[key] }));
   }
 
   applyFilter() {
@@ -311,6 +361,34 @@ export class TablesKitchenSinkComponent implements OnInit, AfterViewInit {
 
   delete(value: any) {
     this.dialog.alert(`You have deleted ${value.position}!`);
+  }
+
+  deleteItem(item: any) {
+    // Example method to delete an item
+    if (this.canDelete()) {
+      // Perform deletion logic here (e.g., call service to delete from backend)
+      const index = this.filteredData.indexOf(item);
+      if (index !== -1) {
+        this.filteredData.splice(index, 1); // Remove from full data
+        this.updateGridData(); // Update displayed data
+        // Call service method to delete from backend
+      }
+    } else {
+      // Handle lack of permission (e.g., show error message)
+      console.error('Permission denied to delete item.');
+    }
+
+    this.cdr.detectChanges();
+  }
+
+  updateGridData() {
+    // Example method to update grid data (could filter or modify fullData as needed)
+    this.gridData = this.filteredData;
+  }
+  canDelete(): boolean {
+    // Example method to check permissions (replace with your actual permission logic)
+    // Return true if user has permission to delete, false otherwise
+    return true; // Replace with actual permission check logic
   }
 
   changeSelect(e: any) {

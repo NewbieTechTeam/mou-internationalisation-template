@@ -9,12 +9,12 @@
 </div>
 
 <ng-container>
-  <mat-toolbar color="primary" class="header-toolbar">
+  <mat-toolbar color="primary" class="chart-container">
     <span class="header-title">International Memorandum Of Understanding List</span>
   </mat-toolbar>
   <mtx-grid
     [data]="filteredData"
-    [columns]="columns3"
+    [columns] ="columns3"
     [loading]="isLoading"
     [columnResizable]="columnResizable"
     [multiSelectable]="multiSelectable"
@@ -40,10 +40,18 @@
 </ng-container>
 <ng-template #expansionTpl let-row>
   {{ row.title }}
+  <button mat-button (click)="viewFile(row.downloadUrl)">View PDF</button>
+  <button mat-button>Download PDF</button>
 </ng-template>
 
-<ng-template #viewButton let-row="row">
-  <a [href]="getSafeUrl(row.downloadURL)" target="_blank">
-    <button mat-raised-button color="accent">View PDF</button>
-  </a>
+<ng-template #viewButton let-row="rowData">
+  <button mat-button color="primary" (click)="viewFile(row)">View</button>
 </ng-template>
+
+<ng-template #downloadButton let-row="rowData">
+  <a mat-button color="primary" [href]="row.downloadURL" target="_blank" download>Download</a>
+</ng-template>
+
+<div *ngIf="pdfLink">
+  <iframe [src]="pdfLink" width="100%" height="600px"></iframe>
+</div>
