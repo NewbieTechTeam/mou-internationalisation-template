@@ -182,3 +182,4 @@ upload xls to firebase (priority)
 - Notification about Expiring MOU
 - Action , edit, delete, view and download (for owner),and view for guest
 - google analytics
+- Make capital

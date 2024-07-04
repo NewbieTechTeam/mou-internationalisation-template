@@ -28,6 +28,9 @@ import {
   collectionData,
   collection,
   addDoc,
+  doc,
+  setDoc,
+  deleteDoc,
   DocumentReference,
 } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
@@ -72,7 +75,7 @@ export class TablesKitchenSinkComponent implements OnInit, AfterViewInit {
   firestore: Firestore = inject(Firestore);
 
   items$: Observable<any[]> = new Observable<any[]>();
-  itemCollection = collection(this.firestore, 'cleanedsampledata5');
+  itemCollection = collection(this.firestore, 'cleanedsampledata4');
 
   columns3: MtxGridColumn[] = [];
 
@@ -310,7 +313,7 @@ export class TablesKitchenSinkComponent implements OnInit, AfterViewInit {
               closeText: this.translate.stream('table_kitchen_sink.close'),
               okText: this.translate.stream('table_kitchen_sink.ok'),
             },
-            click: record => this.deleteItem(record),
+            click: record => this.deleteItem('cleanedsampledata4', record.documentRef),
           },
         ],
       },
@@ -350,7 +353,7 @@ export class TablesKitchenSinkComponent implements OnInit, AfterViewInit {
     console.log(this.filteredData);
   }
 
-  edit(value: any) {
+  editv2(value: any) {
     const dialogRef = this.dialog.originalOpen(TablesKitchenSinkEditComponent, {
       width: '600px',
       data: { record: value },
@@ -359,11 +362,45 @@ export class TablesKitchenSinkComponent implements OnInit, AfterViewInit {
     dialogRef.afterClosed().subscribe(() => console.log('The dialog was closed'));
   }
 
+  edit(record: any) {
+    const dialogRef = this.dialog.originalOpen(TablesKitchenSinkEditComponent, {
+      width: '600px',
+      data: { record: { ...record } }, // Pass a copy of the record to prevent direct mutation
+    });
+
+    dialogRef.afterClosed().subscribe(updatedRecord => {
+      if (updatedRecord) {
+        // Handle updates to the record here (e.g., update in Firestore)
+        this.updateRecordInFirestore(updatedRecord);
+      }
+    });
+  }
+
+  private async updateRecordInFirestore(updatedRecord: any) {
+    try {
+      const documentRef = doc(this.firestore, 'cleanedsampledata4', updatedRecord.id); // Assuming 'id' is the document ID field
+      await setDoc(documentRef, updatedRecord, { merge: true }); // Update the document in Firestore
+      console.log('Document successfully updated!');
+      // Optionally update the local data (this.list) to reflect changes immediately
+    } catch (error) {
+      console.error('Error updating document: ', error);
+    }
+  }
+
   delete(value: any) {
     this.dialog.alert(`You have deleted ${value.position}!`);
   }
 
-  deleteItem(item: any) {
+  async deleteItem(collection: string, itemId: string): Promise<void> {
+    try {
+      const documentRef = doc(this.firestore, collection, itemId);
+      await deleteDoc(documentRef);
+      console.log(itemId, 'Document successfully deleted! ');
+    } catch (error) {
+      console.error('Error deleting document: ', error);
+    }
+  }
+  deleteItemv2(item: any) {
     // Example method to delete an item
     if (this.canDelete()) {
       // Perform deletion logic here (e.g., call service to delete from backend)
