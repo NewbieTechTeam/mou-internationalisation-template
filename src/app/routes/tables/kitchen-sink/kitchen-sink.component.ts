@@ -75,7 +75,7 @@ export class TablesKitchenSinkComponent implements OnInit, AfterViewInit {
   firestore: Firestore = inject(Firestore);
 
   items$: Observable<any[]> = new Observable<any[]>();
-  itemCollection = collection(this.firestore, 'cleanedsampledata4');
+  itemCollection = collection(this.firestore, 'mous');
 
   columns3: MtxGridColumn[] = [];
 
@@ -313,7 +313,7 @@ export class TablesKitchenSinkComponent implements OnInit, AfterViewInit {
               closeText: this.translate.stream('table_kitchen_sink.close'),
               okText: this.translate.stream('table_kitchen_sink.ok'),
             },
-            click: record => this.deleteItem('cleanedsampledata4', record.documentRef),
+            click: record => this.deleteItem('mous', record.documentRef),
           },
         ],
       },
@@ -378,7 +378,7 @@ export class TablesKitchenSinkComponent implements OnInit, AfterViewInit {
 
   private async updateRecordInFirestore(updatedRecord: any) {
     try {
-      const documentRef = doc(this.firestore, 'cleanedsampledata4', updatedRecord.id); // Assuming 'id' is the document ID field
+      const documentRef = doc(this.firestore, 'mous', updatedRecord.id); // Assuming 'id' is the document ID field
       await setDoc(documentRef, updatedRecord, { merge: true }); // Update the document in Firestore
       console.log('Document successfully updated!');
       // Optionally update the local data (this.list) to reflect changes immediately

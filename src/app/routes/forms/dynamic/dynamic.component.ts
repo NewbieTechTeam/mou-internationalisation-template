@@ -633,11 +633,8 @@ export class FormsDynamicComponent {
 
                 // Save the model with downloadURL to Firestore collection 'forms'
                 try {
-                  const docRef = await addDoc(
-                    collection(this.firestore, 'cleanedsampledata4'),
-                    this.model
-                  );
-                  await updateDoc(doc(this.firestore, 'cleanedsampledata4', docRef.id), {
+                  const docRef = await addDoc(collection(this.firestore, 'mous'), this.model);
+                  await updateDoc(doc(this.firestore, 'mous', docRef.id), {
                     documentRef: docRef.id,
                   });
                   console.log('Document written with ID: ', docRef.id);

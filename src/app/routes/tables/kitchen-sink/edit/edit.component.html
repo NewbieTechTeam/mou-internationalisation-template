@@ -1,6 +1,6 @@
 <h1 mat-dialog-title>Edit Record</h1>
 <div mat-dialog-content>
-  <form #editForm="ngForm" (ngSubmit)="submitForm()">
+  <form #editForm="ngForm" [formGroup]="form"  (ngSubmit)="submitForm()">
     <mat-form-field>
       <input matInput placeholder="Continent" name="continent" [(ngModel)]="formData.continent" required>
     </mat-form-field>
@@ -17,3 +17,5 @@
   <button mat-button (click)="dialogRef.close()">Close</button>
   <button mat-button color="primary" [disabled]="!editForm.valid" (click)="submitForm()">Save</button>
 </div>
+
+
