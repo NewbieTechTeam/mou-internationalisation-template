@@ -1,8 +1,14 @@
-<h1 mat-dialog-title>Hi</h1>
+<h1 mat-dialog-title>Edit Record</h1>
 <div mat-dialog-content>
-  {{data|json}}
+  <form #editForm="ngForm" [formGroup]="form"  (ngSubmit)="submitForm()">
+      <formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>
+
+    <!-- Add other fields as needed -->
+  </form>
 </div>
 <div mat-dialog-actions>
   <button mat-button (click)="dialogRef.close()">Close</button>
-  <button mat-button cdkFocusInitial>Ok</button>
+  <button mat-button color="primary" [disabled]="!editForm.valid" (click)="submitForm()">Save</button>
 </div>
+
+

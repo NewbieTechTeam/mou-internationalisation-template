@@ -16,6 +16,8 @@ import {
   collectionData,
   collection,
   addDoc,
+  updateDoc,
+  doc,
   DocumentReference,
 } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
@@ -632,6 +634,9 @@ export class FormsDynamicComponent {
                 // Save the model with downloadURL to Firestore collection 'forms'
                 try {
                   const docRef = await addDoc(collection(this.firestore, 'mous'), this.model);
+                  await updateDoc(doc(this.firestore, 'mous', docRef.id), {
+                    documentRef: docRef.id,
+                  });
                   console.log('Document written with ID: ', docRef.id);
                   this.toast.success('IMOU ADDED');
                   this.resetFormAndNavigate();

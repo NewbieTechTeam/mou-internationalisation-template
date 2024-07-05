@@ -122,7 +122,7 @@
     "category": "Category",
     "partnerSignitory": "Partner Signitory",
     "purposeOfTheMoU": "Purpose Of The IMOU",
-    "mouPdf": "IMOU PDF",
+    "downloadUrl": "IMOU PDF",
     "responsiblePartnerDepartment": "Responsible Partner Department",
     "responsiblePartnerOfficiaEmail": "Responsible Partner Official Email",
     "tutSigantory": "TUT Signatory",
@@ -132,6 +132,7 @@
     "responsiblePatnerOfficial": "Responsible Partner Official",
     "responsibleTUTDepartment": "Responsible TUT Department",
     "responsibleTUTFaculty": "Responsible TUT Faculty",
+      "id": "Reference",
     "responsibleTUTOfficiaEmail": "Responsible TUT Official Email",
     "responsibleTUTOfficiaTell": "Responsible TUT Official Telephone",
     "responsibleTUTOfficial": "Responsible TUT Official",
@@ -141,7 +142,7 @@
     "countryOfPartnerInstitution": "Country Of Partner Institution",
     "durationOfMoU": "Duration Of IMOU",
     "nameOfPartnerInstitution2": "Name Of Partner Institution",
-    "highlights" :"Highlights"
+    "highlights" :"Progress"
   },
   "profile": "Profile",
   "edit_profile": "Edit profile",

@@ -70,6 +70,8 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
   charts = this.dashboardSrv.getCharts();
   chart1: any;
   chart2: any;
+  chart3: any;
+
   fullData: any;
   stats = this.dashboardSrv.getStats();
 
@@ -86,11 +88,13 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
       console.log({ data });
       console.log('length', data.length);
       this.fullData = data;
+      this.initChart3();
+
       this.numberOfAssignedMOU = data.length;
       console.log(this.stats);
       console.log('expired', this.calculateExpiredMoUs());
 
-      console.log('percont', this.calculateSignedPerContinent());
+      console.log('percont', this.groupByContinent());
 
       this.stats2 = [
         {
@@ -125,21 +129,18 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
           },
           color: 'bg-indigo-500',
         },
+        {
+          title: 'Total Number of Expired',
+          amount: `${this.calculateExpiredMoUs()}`,
+          progress: {
+            value: `${(this.calculateExpiredMoUs() / this.numberOfAssignedMOU) * 100}`,
+          },
+          color: 'bg-indigo-500',
+        },
       ];
 
-      this.calculateStats();
+      //this.calculateStats();
     });
-  }
-
-  calculateStats() {
-    const today = new Date();
-
-    // this.expiringSoonCount = this.exportedData.filter(mou => {
-    //   //const expiryDate = new Date(mou.expiryDate);
-    //   //const timeDiff = expiryDate.getTime() - today.getTime();
-    //  // const daysDiff = timeDiff / (1000 * 3600 * 24);
-    //  // return daysDiff <= 30; // Expiring within the next 30 days
-    // }).length;
   }
 
   ngAfterViewInit() {
@@ -150,12 +151,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
     this.notifySubscription.unsubscribe();
   }
 
-  initChart() {
-    this.chart1 = new ApexCharts(document.querySelector('#chart1'), this.charts[0]);
-    this.chart1?.render();
-    this.chart2 = new ApexCharts(document.querySelector('#chart2'), this.charts[1]);
-    this.chart2?.render();
-  }
+  initChart() {}
 
   navigateToForm() {
     this.router.navigate(['/forms/dynamic']);
@@ -176,6 +172,125 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
   calculateActiveMoUs(): number {
     return this.fullData.filter((mou: any) => mou.status && mou.status.toLowerCase() === 'active')
       .length;
+  }
+
+  groupByContinent(): { name: string; count: number }[] {
+    // List of all possible continents
+    const allContinents = [
+      'Africa',
+      'Asia',
+      'Europe',
+      'North America',
+      'South America',
+      'Australia',
+      'Antarctica',
+    ];
+
+    // Initialize continent counts to zero
+    const continentMap: { [key: string]: number } = {};
+    allContinents.forEach(continent => {
+      continentMap[continent] = 0;
+    });
+
+    // Count occurrences of each continent in the data
+    this.fullData.forEach((item: any) => {
+      const continent = item.continent;
+      if (continent in continentMap) {
+        continentMap[continent]++;
+      }
+    });
+
+    // Convert the continent map to an array of { name, count } objects
+    return Object.keys(continentMap).map(key => ({ name: key, count: continentMap[key] }));
+  }
+
+  initChart3() {
+    const groupedData = this.groupByContinent();
+    const chartOptions: any = {
+      series: [
+        {
+          name: 'MoUs',
+          data: groupedData.map(item => item.count),
+        },
+      ],
+      chart: {
+        type: 'bar',
+        height: 350,
+        toolbar: {
+          show: true,
+        },
+      },
+      plotOptions: {
+        bar: {
+          horizontal: false,
+          columnWidth: '55%',
+          endingShape: 'rounded',
+        },
+      },
+      dataLabels: {
+        enabled: false,
+      },
+      stroke: {
+        show: true,
+        width: 2,
+        colors: ['transparent'],
+      },
+      xaxis: {
+        categories: groupedData.map(item => item.name),
+      },
+      yaxis: {
+        title: {
+          text: 'Number of MoUs',
+        },
+      },
+      fill: {
+        opacity: 1,
+      },
+      tooltip: {
+        y: {
+          formatter(val: number) {
+            return `${val} MoUs`;
+          },
+        },
+      },
+      title: {
+        text: 'iMoUs by Continent',
+        align: 'left',
+        style: {
+          fontSize: '16px',
+          fontWeight: 'bold',
+          color: '#263238',
+        },
+      },
+      colors: ['#1E88E5', '#D32F2F', '#43A047', '#FBC02D', '#FB8C00', '#8E24AA', '#00ACC1'],
+    };
+    this.chart3 = new ApexCharts(document.querySelector('#chart3'), chartOptions);
+    //this.chart3.render();
+  }
+
+  initChart3v2() {
+    const groupedData = this.groupByContinent();
+    const chartOptions: any = {
+      series: [
+        {
+          name: 'iMOUs',
+          data: groupedData.map(item => item.count),
+        },
+      ],
+      chart: {
+        type: 'bar',
+        height: 350,
+      },
+      xaxis: {
+        categories: groupedData.map(item => item.name),
+      },
+      title: {
+        text: 'iMOUs by Continent',
+      },
+      colors: ['#42a5f5'], // Set bar color here
+    };
+    this.chart3 = new ApexCharts(document.querySelector('#chart3'), chartOptions);
+    this.chart3.render();
   }
 
   calculateSoonToExpireMoUs(): number {

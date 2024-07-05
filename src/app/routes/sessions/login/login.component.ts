@@ -39,8 +39,8 @@ export class LoginComponent {
   isSubmitting = false;
 
   loginForm = this.fb.nonNullable.group({
-    username: ['ng-matero', [Validators.required]],
-    password: ['ng-matero', [Validators.required]],
+    username: ['', [Validators.required]],
+    password: ['', [Validators.required]],
     rememberMe: [false],
   });
 
@@ -56,11 +56,13 @@ export class LoginComponent {
     return this.loginForm.get('rememberMe')!;
   }
 
-  login() {
+  login2() {
     this.isSubmitting = true;
 
     this.auth
-      .login(this.username.value, this.password.value, this.rememberMe.value)
+      //TODO: add back for tokenservice
+      //.login(this.username.value, this.password.value, this.rememberMe.value)
+      .login(this.username.value, this.password.value)
       .pipe(filter(authenticated => authenticated))
       .subscribe({
         next: () => {
@@ -74,6 +76,38 @@ export class LoginComponent {
               form.get(key === 'email' ? 'username' : key)?.setErrors({
                 remote: errors[key][0],
               });
+            });
+          }
+          this.isSubmitting = false;
+        },
+      });
+  }
+
+  login() {
+    this.isSubmitting = true;
+
+    this.auth
+      .login(this.loginForm.value.username, this.loginForm.value.password)
+      .pipe(filter(authenticated => authenticated))
+      .subscribe({
+        next: () => {
+          this.router.navigateByUrl('/');
+        },
+        error: (errorRes: HttpErrorResponse) => {
+          if (errorRes.status === 422) {
+            const errors = errorRes.error.errors;
+            Object.keys(errors).forEach(key => {
+              const formControl = this.loginForm.get(key === 'email' ? 'username' : key);
+              if (formControl) {
+                formControl.setErrors({
+                  remote: errors[key][0],
+                });
+              }
+            });
+          } else {
+            // Handle other error statuses
+            this.loginForm.setErrors({
+              serverError: errorRes.message,
             });
           }
           this.isSubmitting = false;

@@ -28,7 +28,7 @@ export class TokenInterceptor implements HttpInterceptor {
       return next
         .handle(
           request.clone({
-            headers: request.headers.append('Authorization', this.tokenService.getBearerToken()),
+            headers: request.headers.append('Authorization', 'this.tokenService.getBearerToken()'),
             withCredentials: true,
           })
         )
