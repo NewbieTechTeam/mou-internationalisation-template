@@ -71,3 +71,33 @@
 <p>
   Your current permissions: <code>{{getPermissions() | json}}</code>
 </p>
+
+<div>
+  <h2>Create User</h2>
+  <form (ngSubmit)="createUser(email.value, password.value)">
+    <label>Email:</label>
+    <input type="email" #email required>
+
+    <label>Password:</label>
+    <input type="password" #password required>
+
+    <button>Create User</button>
+  </form>
+</div>
+
+<div>
+  <h2>Create User</h2>
+  <button (click)="createUser(emailInput.value, passwordInput.value)">Create User</button>
+  <br>
+  <label>Email:</label>
+  <input type="email" #emailInput required>
+  <br>
+  <label>Password:</label>
+  <input type="password" #passwordInput required>
+</div>
+<div>
+  <h2>List of Users</h2>
+  <ul>
+    <li *ngFor="let user of users$ | async">{{ user.email }}</li>
+  </ul>
+</div>

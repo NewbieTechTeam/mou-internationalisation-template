@@ -119,7 +119,51 @@ export class FirebasePermissionsService {
     }
   }
 
-  createUser2(email: string, password: string): Observable<void> {
+  createUser2(
+    email: string,
+    password: string,
+    originalEmail: string,
+    originalPassword: string
+  ): Observable<void> {
+    // Save the current user before creating a new one
+    this.originalUser = this.auth.currentUser;
+
+    return from(createUserWithEmailAndPassword(this.auth, email, password)).pipe(
+      switchMap(userCredential => {
+        const user = userCredential.user;
+
+        if (user) {
+          const userRef = doc(this.firestore, `users/${user.uid}`);
+          return from(setDoc(userRef, { email: user.email, uid: user.uid })).pipe(
+            switchMap(() => this.setDefaultPermissions(user.uid)),
+            switchMap(() => this.reauthenticateOriginalUser(originalEmail, originalPassword))
+          );
+        } else {
+          throw new Error('User creation failed');
+        }
+      }),
+      catchError((error: any) => {
+        // If there's an error, reauthenticate the original user
+        return this.reauthenticateOriginalUser(originalEmail, originalPassword).pipe(
+          switchMap(() => {
+            throw error;
+          })
+        );
+      })
+    );
+  }
+
+  private reauthenticateOriginalUser2(email: string, password: string): Observable<void> {
+    if (this.originalUser) {
+      return from(signInWithEmailAndPassword(this.auth, email, password)).pipe(
+        switchMap(() => of(undefined))
+      );
+    } else {
+      return of(undefined);
+    }
+  }
+
+  createUser3(email: string, password: string): Observable<void> {
     return from(createUserWithEmailAndPassword(this.auth, email, password)).pipe(
       switchMap(userCredential => {
         const user = userCredential.user;
