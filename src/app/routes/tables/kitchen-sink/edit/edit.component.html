@@ -1,15 +1,8 @@
 <h1 mat-dialog-title>Edit Record</h1>
 <div mat-dialog-content>
   <form #editForm="ngForm" [formGroup]="form"  (ngSubmit)="submitForm()">
-    <mat-form-field>
-      <input matInput placeholder="Continent" name="continent" [(ngModel)]="formData.continent" required>
-    </mat-form-field>
-    <mat-form-field>
-      <input matInput placeholder="Country" name="countryOfPartnerInstitution" [(ngModel)]="formData.countryOfPartnerInstitution" required>
-    </mat-form-field>
-    <mat-form-field>
-      <input matInput placeholder="Partner Institution" name="nameOfPartnerInstitution" [(ngModel)]="formData.nameOfPartnerInstitution" required>
-    </mat-form-field>
+      <formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>
+
     <!-- Add other fields as needed -->
   </form>
 </div>

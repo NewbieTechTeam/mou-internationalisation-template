@@ -200,7 +200,12 @@ export class TablesKitchenSinkComponent implements OnInit, AfterViewInit {
         minWidth: 100,
         width: '100px',
       },
-
+      {
+        header: this.translate.stream('table_kitchen_sink.id'),
+        field: 'documentRef',
+        sortable: false,
+        width: '0px', //
+      },
       {
         header: this.translate.stream('table_kitchen_sink.responsibleTUTDepartment'),
         field: 'responsibleTutDepartment',

@@ -265,7 +265,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
       colors: ['#1E88E5', '#D32F2F', '#43A047', '#FBC02D', '#FB8C00', '#8E24AA', '#00ACC1'],
     };
     this.chart3 = new ApexCharts(document.querySelector('#chart3'), chartOptions);
-    this.chart3.render();
+    //this.chart3.render();
   }
 
   initChart3v2() {
