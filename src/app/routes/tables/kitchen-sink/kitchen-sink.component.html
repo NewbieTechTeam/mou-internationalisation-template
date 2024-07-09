@@ -3,18 +3,25 @@
     <input type="text" [(ngModel)]="searchTerm" (input)="applyFilter()" placeholder="Search..." />
     <mat-icon>search</mat-icon>
   </div>
-  <button mat-button mat-raised-button color="primary" (click)="navigateToForm()">
+
+  <button
+    *ngxPermissionsOnly="['canAdd']"
+    mat-button
+    mat-raised-button
+    color="primary"
+    (click)="navigateToForm()"
+  >
     Add New IMOU
   </button>
 </div>
 
 <ng-container>
-  <mat-toolbar color="primary" class="chart-container">
+  <mat-toolbar color="success" class="chart-container">
     <span class="header-title">International Memorandum Of Understanding List</span>
   </mat-toolbar>
   <mtx-grid
     [data]="filteredData"
-    [columns] ="columns3"
+    [columns]="columns3"
     [loading]="isLoading"
     [columnResizable]="columnResizable"
     [multiSelectable]="multiSelectable"

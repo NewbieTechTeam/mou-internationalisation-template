@@ -65,18 +65,45 @@ export class StartupService {
 
     this.firebasePermissionService.getUserPermissions3(user.id).subscribe(permissions => {
       console.log({ permissions });
-      const adminEmail = 'kolawolegolulana@gmail.com';
-      if (user.email == adminEmail) {
+      console.log('user.id');
+
+      console.log(user.id);
+
+      const adminEmail1 = 'kolawolegolulana@gmail.com';
+      const adminEmail2 = 'manganyirb@tut.ac.za';
+
+      if (user.email == adminEmail1 || user.email == adminEmail2) {
+        console.log('ADMDIDNDMD');
+
         const defaultPermissions = ['canAdd', 'canDelete', 'canEdit', 'canRead'];
 
         this.permissonsService.loadPermissions(defaultPermissions);
         this.rolesService.flushRoles();
-        this.rolesService.addRolesWithPermissions({ ADMIN: defaultPermissions });
+        //this.rolesService.addRolesWithPermissions({ ADMIN: defaultPermissions });
       } else {
+        if (permissions.length === 4) {
+          this.permissonsService.loadPermissions(permissions);
+          this.rolesService.flushRoles();
+
+          this.rolesService.addRoles({ ADMIN: permissions });
+          // this.rolesService.addRolesWithPermissions({ ADMIN: permissions });
+        } else if (permissions.length === 3) {
+          this.permissonsService.loadPermissions(permissions);
+          this.rolesService.flushRoles();
+
+          this.rolesService.addRoles({ MANAGER: permissions });
+          // this.rolesService.addRolesWithPermissions({ MANAGER: permissions });
+        } else if (permissions.length === 1) {
+          this.permissonsService.loadPermissions(permissions);
+          this.rolesService.flushRoles();
+
+          this.rolesService.addRoles({ GUEST: permissions });
+          // this.rolesService.addRolesWithPermissions({ GUEST: permissions });
+        }
         //const guestPermissions = ['canAdd', 'canDelete', 'canEdit', 'canRead'];
-        this.permissonsService.loadPermissions(permissions);
-        this.rolesService.addRoles({ ADMIN: permissions });
       }
+      // Tips: Alternatively you can add permissions with role at the same time.
+      // this.rolesService.addRolesWithPermissions({ ADMIN: permissions });
     });
     //this.rolesService.addRoles({ ADMIN: permissions });
 

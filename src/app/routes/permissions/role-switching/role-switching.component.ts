@@ -36,6 +36,8 @@ export class PermissionsRoleSwitchingComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.currentRole = Object.keys(this.rolesSrv.getRoles())[0];
     this.currentPermissions = Object.keys(this.permissionsSrv.getPermissions());
+    console.log('this.currentRole');
+    console.log(this.currentRole);
 
     this.rolesSrv.roles$.pipe(takeUntil(this._destroy$)).subscribe(roles => {
       console.log(roles);
@@ -53,6 +55,9 @@ export class PermissionsRoleSwitchingComponent implements OnInit, OnDestroy {
   onPermissionChange() {
     this.currentPermissions = this.permissionsOfRole[this.currentRole];
     this.rolesSrv.flushRolesAndPermissions();
+    console.log(this.currentRole);
+    console.log('this.currentRole');
+
     this.rolesSrv.addRoleWithPermissions(this.currentRole, this.currentPermissions);
   }
 }

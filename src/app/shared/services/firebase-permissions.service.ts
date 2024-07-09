@@ -248,6 +248,8 @@ export class FirebasePermissionsService {
 
   adjustUserPermissions(uid: string, role: string): Observable<void> {
     const permissions: any = this.permissionsConfig[role] || [];
+    console.log('ssssss****');
+    console.log({ uid });
     console.log({ permissions });
 
     return this.setUserPermissions(uid, permissions);

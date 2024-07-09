@@ -99,11 +99,10 @@ export class PermissionsTestComponent implements OnInit {
   }
 
   adjustUserPermissions(user: any, role: string) {
-    console.log({ user });
-    console.log({ role });
-
     this.firebasePermissionsSrv.adjustUserPermissions(user.uid, role).subscribe(() => {
       this.users$ = this.firebasePermissionsSrv.getAllUsers();
+      //TOD0: review
+      //this.rolesSrv.flushRolesAndPermissions();
     });
   }
 

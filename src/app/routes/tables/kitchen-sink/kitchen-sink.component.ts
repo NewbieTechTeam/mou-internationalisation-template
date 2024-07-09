@@ -39,7 +39,9 @@ import { Router } from '@angular/router';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 import { DataSharerService } from '@shared';
-
+import { NgxPermissionsService, NgxRolesService, NgxPermissionsModule } from 'ngx-permissions';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 @Component({
   selector: 'app-table-kitchen-sink',
   templateUrl: './kitchen-sink.component.html',
@@ -59,6 +61,7 @@ import { DataSharerService } from '@shared';
     MatIconModule,
     CommonModule,
     MatToolbarModule,
+    NgxPermissionsModule,
   ],
 })
 export class TablesKitchenSinkComponent implements OnInit, AfterViewInit {
@@ -68,6 +71,8 @@ export class TablesKitchenSinkComponent implements OnInit, AfterViewInit {
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly sanitizer = inject(DomSanitizer);
   private readonly dataShare = inject(DataSharerService);
+  private readonly permissionsSrv = inject(NgxPermissionsService);
+
   pdfLink: SafeResourceUrl | null = null;
 
   //firebase stuff
@@ -114,11 +119,18 @@ export class TablesKitchenSinkComponent implements OnInit, AfterViewInit {
   searchTerm: string = '';
   filteredData: any[] = [];
   gridData: any[] = [];
+  canAddNewImou: boolean = false; // To store permission check result
+  private readonly _destroy$ = new Subject<void>();
+
   ngOnInit() {
     this.gridData = this.dataSource.data;
     this.list = this.dataSource.data;
     this.isLoading = false;
-    console.log('deets');
+
+    this.permissionsSrv.permissions$.pipe(takeUntil(this._destroy$)).subscribe(permissions => {
+      console.log(permissions);
+    });
+    console.log('IOPI', Object.keys(this.permissionsSrv.getPermissions()));
   }
 
   ngAfterViewInit() {
