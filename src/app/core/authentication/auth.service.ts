@@ -34,6 +34,7 @@ export class AuthService {
       tap(user => {
         if (user) {
           // this.initv2()
+
           this.user$.next(user);
         } else {
           this.user$.next(null);
@@ -62,6 +63,8 @@ export class AuthService {
     return this.loginService.me().pipe(
       tap(user => {
         if (user) {
+          console.log({ user });
+
           this.user$.next(user);
         } else {
           this.user$.next(null);

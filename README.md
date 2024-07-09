@@ -179,7 +179,8 @@ nvm use 18.19.1
 Excel Sheet
 upload xls to firebase (priority)
 
-- Notification about Expiring MOU
+- Notification about Expiring MOU, must sent end
 - Action , edit, delete, view and download (for owner),and view for guest
-- google analytics
 - Make capital
+- Bar chart, add user, add guest , remove edit from and delete
+- Look out for white spsces bug , e/g 'Europe ' ahould be same as 'Europe'

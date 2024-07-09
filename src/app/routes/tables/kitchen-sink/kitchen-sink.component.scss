@@ -5,6 +5,10 @@
   margin: 16px 0; /* Adjust as needed */
 }
 
+.header-title{
+  text-transform: uppercase;
+}
+
 .search-container {
   display: flex;
   align-items: center;
@@ -30,4 +34,12 @@ button {
   padding: 20px;
   margin: 0 auto;
   background-color: #fff; /* Adjust background color as needed */
+}
+
+.uppercase-header {
+  text-transform: uppercase;
+}
+
+.capitalized-cell {
+  text-transform: capitalize;
 }

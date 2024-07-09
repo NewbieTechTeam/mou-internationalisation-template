@@ -1,8 +1,8 @@
 import { guest } from './../authentication/user';
 import { Injectable, inject } from '@angular/core';
 import { AuthService, User } from '@core/authentication';
-//import { FirebasePermissionsService } from '@shared/services/firebase-permissions.service';
 import { FirebasePermissionsService } from '../../shared/services/firebase-permissions.service';
+import { Router } from '@angular/router';
 
 import { NgxPermissionsService, NgxRolesService } from 'ngx-permissions';
 import { switchMap, tap } from 'rxjs';
@@ -17,6 +17,7 @@ export class StartupService {
   private readonly permissonsService = inject(NgxPermissionsService);
   private readonly rolesService = inject(NgxRolesService);
   private readonly firebasePermissionService = inject(FirebasePermissionsService);
+  private readonly router = inject(Router);
 
   /**
    * Load the application only after getting the menu or other essential information
@@ -28,7 +29,12 @@ export class StartupService {
         .change()
         .pipe(
           tap(user => {
-            console.log('User in StartupService:', user);
+            if (!user) {
+              console.error('User is null, redirecting to login');
+              this.router.navigate(['/auth/login']);
+              resolve();
+              return;
+            }
             this.setPermissions(user);
           }),
           switchMap(() => this.authService.menu()),
@@ -86,7 +92,7 @@ export class StartupService {
           this.rolesService.flushRoles();
 
           this.rolesService.addRoles({ ADMIN: permissions });
-          // this.rolesService.addRolesWithPermissions({ ADMIN: permissions });
+          this.rolesService.addRolesWithPermissions({ ADMIN: permissions });
         } else if (permissions.length === 3) {
           this.permissonsService.loadPermissions(permissions);
           this.rolesService.flushRoles();

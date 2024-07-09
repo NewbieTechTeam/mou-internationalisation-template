@@ -85,59 +85,57 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.dataShare.data$.subscribe((data: any) => {
       //this.exportedData = data;
-      console.log({ data });
-      this.fullData = data;
-      this.initChart3();
+      if (data && data.length) {
+        // Ensure data is not null or undefined and has a length property
 
-      this.numberOfAssignedMOU = data.length;
-      console.log(this.stats);
-      console.log('expired', this.calculateExpiredMoUs());
+        console.log({ data });
+        this.fullData = data;
+        console.log('fullData');
+        console.log(this.fullData);
 
-      console.log('percont', this.groupByContinent());
+        this.initChart3();
 
-      this.stats2 = [
-        {
-          title: 'Total Number of Signed',
-          amount: `${this.numberOfAssignedMOU}`,
-          progress: {
-            value: `${(this.numberOfAssignedMOU / this.numberOfAssignedMOU) * 100}`,
-          },
-          color: 'bg-indigo-500',
-        },
-        {
-          title: 'Total Number of Active',
-          amount: `${this.calculateActiveMoUs()}`,
-          progress: {
-            value: `${(this.calculateActiveMoUs() / this.numberOfAssignedMOU) * 100}`,
-          },
-          color: 'bg-indigo-500',
-        },
-        {
-          title: 'Total Number of Soon To Expire',
-          amount: `${this.calculateSoonToExpireMoUs()}`,
-          progress: {
-            value: `${(this.calculateSoonToExpireMoUs() / this.numberOfAssignedMOU) * 100}`,
-          },
-          color: 'bg-indigo-500',
-        },
-        {
-          title: 'Total Number of Expired',
-          amount: `${this.calculateExpiredMoUs()}`,
-          progress: {
-            value: `${(this.calculateExpiredMoUs() / this.numberOfAssignedMOU) * 100}`,
-          },
-          color: 'bg-indigo-500',
-        },
-        {
-          title: 'Total Number of Expired',
-          amount: `${this.calculateExpiredMoUs()}`,
-          progress: {
-            value: `${(this.calculateExpiredMoUs() / this.numberOfAssignedMOU) * 100}`,
-          },
-          color: 'bg-indigo-500',
-        },
-      ];
+        this.numberOfAssignedMOU = data.length;
+        console.log(this.stats);
+        console.log('expired', this.calculateExpiredMoUs());
 
+        console.log('percont', this.groupByContinent());
+
+        this.stats2 = [
+          {
+            title: 'TOTAL NUMBER OF SIGNED',
+            amount: `${this.numberOfAssignedMOU}`,
+            progress: {
+              value: `${(this.numberOfAssignedMOU / this.numberOfAssignedMOU) * 100}`,
+            },
+            color: 'bg-indigo-500',
+          },
+          {
+            title: 'TOTAL NUMBER OF ACTIVE',
+            amount: `${this.calculateActiveMoUs()}`,
+            progress: {
+              value: `${(this.calculateActiveMoUs() / this.numberOfAssignedMOU) * 100}`,
+            },
+            color: 'bg-indigo-500',
+          },
+          {
+            title: 'TOTAL NUMBER OF SOON TO EXPIRE',
+            amount: `${this.calculateSoonToExpireMoUs()}`,
+            progress: {
+              value: `${(this.calculateSoonToExpireMoUs() / this.numberOfAssignedMOU) * 100}`,
+            },
+            color: 'bg-indigo-500',
+          },
+          {
+            title: 'TOTAL NUMBER OF EXPIRED',
+            amount: `${this.calculateExpiredMoUs()}`,
+            progress: {
+              value: `${(this.calculateExpiredMoUs() / this.numberOfAssignedMOU) * 100}`,
+            },
+            color: 'bg-indigo-500',
+          },
+        ];
+      }
       //this.calculateStats();
     });
   }
@@ -253,22 +251,25 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
         },
       },
       title: {
-        text: 'iMoUs by Continent',
+        text: 'IMOUs BY CONTINENT',
         align: 'left',
         style: {
           fontSize: '16px',
           fontWeight: 'bold',
-          color: '#263238',
+          color: '#3f51b5',
         },
       },
       colors: ['#1E88E5', '#D32F2F', '#43A047', '#FBC02D', '#FB8C00', '#8E24AA', '#00ACC1'],
     };
-    this.chart3 = new ApexCharts(document.querySelector('#chart3'), chartOptions);
-    //this.chart3.render();
+    //this.chart3 = new ApexCharts(document.querySelector('#chart3'), chartOptions);
+    //his.chart3.render();
+    this.initChart3v2();
   }
 
   initChart3v2() {
     const groupedData = this.groupByContinent();
+    console.log({ groupedData });
+
     const chartOptions: any = {
       series: [
         {
@@ -283,10 +284,8 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
       xaxis: {
         categories: groupedData.map(item => item.name),
       },
-      title: {
-        text: 'iMOUs by Continent',
-      },
-      colors: ['#42a5f5'], // Set bar color here
+
+      colors: ['#3f51b5'], // Set bar color here
     };
     this.chart3 = new ApexCharts(document.querySelector('#chart3'), chartOptions);
     this.chart3.render();

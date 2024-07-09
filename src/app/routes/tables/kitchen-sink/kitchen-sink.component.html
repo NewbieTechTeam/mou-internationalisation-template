@@ -45,6 +45,9 @@
   >
   </mtx-grid>
 </ng-container>
+<ng-template #capitalizedCell let-row>
+  <span class="capitalized-cell">{{ row.rowData[row.column.field] | titlecase }}</span>
+</ng-template>
 <ng-template #expansionTpl let-row>
   {{ row.title }}
   <button mat-button (click)="viewFile(row.downloadUrl)">View PDF</button>

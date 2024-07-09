@@ -1,111 +1,29 @@
-<page-header></page-header>
 
-<!-- <mtx-alert type="danger">The permissions check will delay 2s.</mtx-alert>
+<div class="container">
+  <div class="create-user-section">
+    <h2>Create User</h2>
+    <div class="input-group">
+      <label>Email:</label>
+      <input type="email" #emailInput required>
+    </div>
+    <div class="input-group">
+      <label>Password:</label>
+      <input type="password" #passwordInput required>
+    </div>
+    <button class="btn-create-user" (click)="createUser(emailInput.value, passwordInput.value)">Create User</button>
+  </div>
 
-<p>
-  <button (click)="addPermission()">Add Permission [ admin ]</button>
-  <button (click)="removePermission()">Remove Permission [ admin ]</button>
-</p>
-
-<ng-template permissions [ngxPermissionsOnly]="['admin']">
-  <p class="bg-green-500 text-white">
-    I should see it only admin
-  </p>
-</ng-template>
-
-<ng-template [ngxPermissionsOnly]="['admin']" [ngxPermissionsExcept]="'hhhhh'">
-  <p class="bg-green-500 text-white">
-    Usage on both only and except I should see it only admin
-  </p>
-</ng-template>
-
-<ng-template permissions [ngxPermissionsOnly]="['guest']">
-  <p class="bg-purple-500 text-white">I will see it only guest</p>
-</ng-template>
-
-<ng-template permissions [ngxPermissionsExcept]="['adminnnnn']"
-             (permissionsAuthorized)="authorized()"
-             (permissionsUnauthorized)="unAuthorized()">
-  <p class="bg-orange-500 text-white">I will see it except adminnnnn</p>
-</ng-template>
-
-<ng-template permissions [ngxPermissionsExcept]="['admin']">
-  <p class="bg-indigo-500 text-white">I should see it except admin</p>
-</ng-template>
-
-<div *ngxPermissionsOnly="['admin']; else a; then b">
-  Testing template
+  <div class="list-users-section">
+    <h2>List of Users</h2>
+    <ul class="user-list">
+      <li *ngFor="let user of users$ | async">
+        <span>{{ user.email }}</span>
+        <div class="btn-group">
+          <button class="btn-set-admin" (click)="adjustUserPermissions(user, 'ADMIN')">Set Admin</button>
+          <button class="btn-set-manager" (click)="adjustUserPermissions(user, 'MANAGER')">Set Manager</button>
+          <button class="btn-set-guest" (click)="adjustUserPermissions(user, 'GUEST')">Set Guest</button>
+        </div>
+      </li>
+    </ul>
+  </div>
 </div>
-
-<div *ngxPermissionsExcept="['admin']; else a; then b">
-  Testing template
-</div>
-
-<ng-template #a>
-  <p class="bg-gray-900 text-white">else block</p>
-</ng-template>
-<ng-template #b>
-  <p class="bg-gray-300">then block</p>
-</ng-template>
-
-<p>
-  Compared permission: <code>{{comparedPermission | json}}</code>
-</p>
-
-<div>
-  <button (click)="changeToAdmin()">Change To Admin Permission</button>
-
-  <button (click)="changeToAnotherPermission()">Change To Awesome Permission</button>
-
-  <button (click)="changeToGuest()">Change To Guest Permission</button>
-</div>
-
-<div>
-  <button *ngxPermissionsOnly="comparedPermission">
-    This should be visible to admin or superadmin
-  </button>
-
-  <button *ngxPermissionsOnly="[]">WTF</button>
-</div>
-
-<p>
-  Your current permissions: <code>{{getPermissions() | json}}</code>
-</p>
-
-<div>
-  <h2>Create User</h2>
-  <form (ngSubmit)="createUser(email.value, password.value)">
-    <label>Email:</label>
-    <input type="email" #email required>
-
-    <label>Password:</label>
-    <input type="password" #password required>
-
-    <button>Create User</button>
-  </form>
-</div> -->
-
-<div>
-  <h2>Create User</h2>
-  <button (click)="createUser(emailInput.value, passwordInput.value)">Create User</button>
-  <br>
-  <label>Email:</label>
-  <input type="email" #emailInput required>
-  <br>
-  <label>Password:</label>
-  <input type="password" #passwordInput required>
-</div>
-
-
-<div>
-  <h2>List of Users</h2>
-  <ul>
-    <li *ngFor="let user of users$ | async">
-      {{ user.email }}
-      <button (click)="adjustUserPermissions(user, 'ADMIN')">Set Admin</button>
-      <button (click)="adjustUserPermissions(user, 'MANAGER')">Set Manager</button>
-      <button (click)="adjustUserPermissions(user, 'GUEST')">Set Guest</button>
-    </li>
-  </ul>
-</div>
-

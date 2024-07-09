@@ -93,11 +93,14 @@ export class LoginComponent {
       });
   }
 
-  login2() {
+  continueAsGuest2(): void {
+    // Add your continue as guest logic here
+  }
+  continueAsGuest() {
     this.isSubmitting = true;
 
     this.auth
-      .login(this.loginForm.value.username, this.loginForm.value.password)
+      .login('abc@def.com', '1tlcone')
       .pipe(filter(authenticated => authenticated))
       .subscribe({
         next: () => {

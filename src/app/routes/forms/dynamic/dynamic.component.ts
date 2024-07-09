@@ -630,6 +630,14 @@ export class FormsDynamicComponent {
                 // Add downloadURL to the model or any other logic you need before saving to Firestore
                 this.model.downloadURL = downloadURL;
                 this.model.file = '';
+                this.model.nameOfPartnerInstitution =
+                  this.model.nameOfPartnerInstitution.toLowerCase();
+                this.model.highlights = this.model.highlights.toLowerCase();
+                this.model.purposeOfTheMoU = this.model.purposeOfTheMoU.toLowerCase();
+                this.model.responsibleTutDepartment =
+                  this.model.responsibleTutDepartment.toLowerCase();
+                this.model.responsibleTutFaculty = this.model.responsibleTutFaculty.toLowerCase();
+                this.model.category = this.model.category.toLowerCase();
 
                 // Save the model with downloadURL to Firestore collection 'forms'
                 try {
