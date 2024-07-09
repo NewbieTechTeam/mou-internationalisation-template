@@ -77,7 +77,7 @@
     "permissions": "Permissions",
     "permissions.route-guard": "Route Guard",
     "permissions.role-switching": "Route Switching",
-    "permissions.test": "Add User"
+    "permissions.test": "Permission Test"
   },
   "validations": {
     "required": "This field is required",

@@ -17,13 +17,14 @@ export const routes: Routes = [
       },
     },
   },
+
   {
     path: 'test',
     component: PermissionsTestComponent,
     canActivate: [ngxPermissionsGuard],
     data: {
       permissions: {
-        only: 'ADMIN',
+        except: 'GUEST',
         redirectTo: '/dashboard',
       },
     },
