@@ -34,7 +34,7 @@
           "name": "test",
           "type": "link",
           "permissions": {
-            "only": "ADMIN"
+            "except": "GUEST"
           }
         }
       ]
