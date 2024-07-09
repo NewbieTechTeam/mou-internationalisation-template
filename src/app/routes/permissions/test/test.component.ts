@@ -97,4 +97,27 @@ export class PermissionsTestComponent implements OnInit {
       // Handle case where no authenticated user is found
     }
   }
+
+  adjustUserPermissions(user: any, role: string) {
+    console.log({ user });
+    console.log({ role });
+
+    this.firebasePermissionsSrv.adjustUserPermissions(user.uid, role).subscribe(() => {
+      this.users$ = this.firebasePermissionsSrv.getAllUsers();
+    });
+  }
+
+  adjustUserPermissions2(user: any, permission: string) {
+    console.log({ permission });
+
+    if (user.permissions.includes(permission)) {
+      user.permissions = user.permissions.filter((p: string) => p !== permission);
+    } else {
+      user.permissions.push(permission);
+    }
+
+    this.firebasePermissionsSrv.setUserPermissions(user.uid, user.permissions).subscribe(() => {
+      this.loadUsers();
+    });
+  }
 }

@@ -1,3 +1,4 @@
+import { FirebasePermissionsService } from '@shared/services/firebase-permissions.service';
 import { JsonPipe } from '@angular/common';
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -18,6 +19,7 @@ import { PageHeaderComponent } from '@shared';
 export class PermissionsRoleSwitchingComponent implements OnInit, OnDestroy {
   private readonly rolesSrv = inject(NgxRolesService);
   private readonly permissionsSrv = inject(NgxPermissionsService);
+  private readonly firebasePermissionsSrv = inject(FirebasePermissionsService);
 
   currentRole = '';
 

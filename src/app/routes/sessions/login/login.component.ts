@@ -56,7 +56,7 @@ export class LoginComponent {
     return this.loginForm.get('rememberMe')!;
   }
 
-  login2() {
+  login() {
     this.isSubmitting = true;
 
     this.auth
@@ -66,7 +66,17 @@ export class LoginComponent {
       .pipe(filter(authenticated => authenticated))
       .subscribe({
         next: () => {
+          console.log('logged in');
           this.router.navigateByUrl('/');
+
+          /*       this.router.navigateByUrl('/dashboard').then(success => {
+            if (!success) {
+              console.error('Navigation to /dashboard failed');
+            }
+          }).catch((err: any)=>{
+            console.log({err});
+
+          }); */
         },
         error: (errorRes: HttpErrorResponse) => {
           if (errorRes.status === 422) {
@@ -83,7 +93,7 @@ export class LoginComponent {
       });
   }
 
-  login() {
+  login2() {
     this.isSubmitting = true;
 
     this.auth

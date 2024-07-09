@@ -6,6 +6,7 @@ import {
   collection,
   addDoc,
   setDoc,
+  updateDoc,
   doc,
   getDoc,
   DocumentReference,
@@ -40,10 +41,35 @@ export class FirebasePermissionsService {
   permissionsCollection = collection(this.firestore, 'permissions');
   usersCollection = collection(this.firestore, 'users');
 
-  getUserPermissions(uid: string): Observable<any> {
+  permissionsConfig: Record<string, string[]> = {
+    ADMIN: ['canAdd', 'canDelete', 'canEdit', 'canRead'],
+    MANAGER: ['canAdd', 'canEdit', 'canRead'],
+    GUEST: ['canRead'],
+  };
+
+  getUserPermissions2(uid: string): Observable<any> {
     const docRef = doc(this.firestore, 'permissions', uid);
     return from(getDoc(docRef)).pipe(
       map((docSnap: DocumentSnapshot<DocumentData>) => (docSnap.exists() ? docSnap.data() : null))
+    );
+  }
+
+  getUserPermissions(uid: string): Observable<any> {
+    const docRef = doc(this.firestore, 'permissions', uid);
+    return from(getDoc(docRef)).pipe(
+      map((docSnap: DocumentSnapshot<DocumentData>) => {
+        if (docSnap.exists()) {
+          console.log('Document data:', docSnap.data());
+          return docSnap.data();
+        } else {
+          console.log('No such document!');
+          return null;
+        }
+      }),
+      catchError(error => {
+        console.error('Error fetching document:', error);
+        return of(null);
+      })
     );
   }
 
@@ -65,7 +91,7 @@ export class FirebasePermissionsService {
 
   setUserPermissions(uid: string, permissions: any): Observable<void> {
     const docRef = doc(this.firestore, 'permissions', uid);
-    return from(setDoc(docRef, permissions));
+    return from(updateDoc(docRef, { permissions }));
   }
 
   createUser(
@@ -213,10 +239,17 @@ export class FirebasePermissionsService {
   }
 
   // Get permissions for a user by UID
-  getUserPermissions2(uid: string): Observable<string[]> {
+  getUserPermissions3(uid: string): Observable<string[]> {
     const permissionsRef = doc(this.firestore, `permissions/${uid}`);
     return from(getDoc(permissionsRef)).pipe(
       map(doc => (doc.exists() ? doc.data().permissions : []))
     );
+  }
+
+  adjustUserPermissions(uid: string, role: string): Observable<void> {
+    const permissions: any = this.permissionsConfig[role] || [];
+    console.log({ permissions });
+
+    return this.setUserPermissions(uid, permissions);
   }
 }

@@ -16,33 +16,7 @@ export class StartupService {
   private readonly menuService = inject(MenuService);
   private readonly permissonsService = inject(NgxPermissionsService);
   private readonly rolesService = inject(NgxRolesService);
-
-  /**
-   * Load the application only after get the menu or other essential informations
-   * such as permissions and roles.
-   */
-  load2() {
-    return new Promise<void>((resolve, reject) => {
-      this.authService
-        .change()
-        .pipe(
-          tap(user => {
-            console.log('User in StartupService:', user);
-            this.setPermissions(user);
-          }),
-          switchMap(() => this.authService.menu()),
-          tap(menu => {
-            console.log({ menu });
-
-            this.setMenu(menu);
-          })
-        )
-        .subscribe({
-          next: () => resolve(),
-          error: () => resolve(),
-        });
-    });
-  }
+  private readonly firebasePermissionService = inject(FirebasePermissionsService);
 
   /**
    * Load the application only after getting the menu or other essential information
@@ -85,32 +59,28 @@ export class StartupService {
   private setPermissions(user: any) {
     // In a real app, you should get permissions and roles from the user information.
     const permissions = ['canAdd', 'canDelete', 'canEdit', 'canRead'];
-    this.permissonsService.loadPermissions(permissions);
-    this.rolesService.flushRoles();
-    this.rolesService.addRoles({ ADMIN: permissions });
+    console.log('POPOPOP');
+
+    console.log({ user });
+
+    this.firebasePermissionService.getUserPermissions3(user.id).subscribe(permissions => {
+      console.log({ permissions });
+      const adminEmail = 'kolawolegolulana@gmail.com';
+      if (user.email == adminEmail) {
+        const defaultPermissions = ['canAdd', 'canDelete', 'canEdit', 'canRead'];
+
+        this.permissonsService.loadPermissions(defaultPermissions);
+        this.rolesService.flushRoles();
+        this.rolesService.addRolesWithPermissions({ ADMIN: defaultPermissions });
+      } else {
+        //const guestPermissions = ['canAdd', 'canDelete', 'canEdit', 'canRead'];
+        this.permissonsService.loadPermissions(permissions);
+        this.rolesService.addRoles({ ADMIN: permissions });
+      }
+    });
+    //this.rolesService.addRoles({ ADMIN: permissions });
 
     // Tips: Alternatively you can add permissions with role at the same time.
     // this.rolesService.addRolesWithPermissions({ ADMIN: permissions });
-  }
-  private setPermissions2(user: any) {
-    // In a real app, you should get permissions and roles from the user information.
-    const permissions = ['canAdd', 'canDelete', 'canEdit', 'canRead'];
-    console.log('========user==========', user);
-    console.log('========user==========', user);
-
-    console.log('Permissions:', permissions);
-    const adminEmail = 'kolawolegolulana@gmail.com';
-    if (user.email == adminEmail) {
-      this.permissonsService.loadPermissions(permissions);
-      this.rolesService.flushRoles();
-      this.rolesService.addRolesWithPermissions({ ADMIN: permissions });
-    } else {
-      const guestPermissions = ['canAdd', 'canDelete', 'canEdit', 'canRead'];
-      this.permissonsService.loadPermissions(permissions);
-      this.rolesService.addRoles({ ADMIN: permissions });
-    }
-
-    // Tips: Alternatively you can add permissions with role at the same time.
-    this.rolesService.addRolesWithPermissions({ ADMIN: permissions });
   }
 }

@@ -2,7 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { Auth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from '@angular/fire/auth';
 import { User as FirebaseUser } from '@angular/fire/auth';
 import { from, Observable, of } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { map, tap, switchMap } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { Menu } from '@core';
 import { Token, User } from './interface';
@@ -47,24 +47,6 @@ export class LoginService {
     });
   }
 
-  me2(): Observable<Menu[]> {
-    // Assuming this is how you fetch the menu data from the server
-    return this.http.get<{ title: string; link: string }[]>('/me/menu').pipe(
-      map(res =>
-        res.map(item => ({
-          route: item.link, // Assuming 'link' corresponds to 'route' property in Menu
-          name: item.title, // Assuming 'title' corresponds to 'name' property in Menu
-          type: 'link', // Assuming a default type
-          icon: '', // Assuming a default icon
-        }))
-      )
-    );
-  }
-
-  me3() {
-    return this.http.get<Menu[]>('/me');
-  }
-
   private mapType(type: string): 'link' | 'sub' | 'extLink' | 'extTabLink' | 'default' {
     // Map the type string to one of the predefined types
     switch (type) {
@@ -78,21 +60,18 @@ export class LoginService {
     }
   }
 
-  menu2(): Observable<Menu[]> {
-    // TODO: Assuming you have a method to fetch the menu based on the current user
-    return this.me().pipe(
-      switchMap(user => {
-        if (user) {
-          // Replace with your actual menu fetching logic
-          return of([]);
-        } else {
-          return of([]);
-        }
+  menu2() {
+    return this.http.get<{ menu: Menu[] }>('/me/menu').pipe(map(res => res.menu));
+  }
+  menu(): Observable<Menu[]> {
+    return this.http.get<{ menu: Menu[] }>('/me/menu').pipe(
+      tap(res => {
+        console.log('HTTP Response:', res);
+      }),
+      map(res => res.menu),
+      tap(menu => {
+        console.log('Menu array:', menu);
       })
     );
-  }
-
-  menu() {
-    return this.http.get<{ menu: Menu[] }>('/me/menu').pipe(map(res => res.menu));
   }
 }

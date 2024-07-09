@@ -86,7 +86,6 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
     this.dataShare.data$.subscribe((data: any) => {
       //this.exportedData = data;
       console.log({ data });
-      console.log('length', data.length);
       this.fullData = data;
       this.initChart3();
 

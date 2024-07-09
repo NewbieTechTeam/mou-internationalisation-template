@@ -1,6 +1,6 @@
 <page-header></page-header>
 
-<mtx-alert type="danger">The permissions check will delay 2s.</mtx-alert>
+<!-- <mtx-alert type="danger">The permissions check will delay 2s.</mtx-alert>
 
 <p>
   <button (click)="addPermission()">Add Permission [ admin ]</button>
@@ -83,7 +83,7 @@
 
     <button>Create User</button>
   </form>
-</div>
+</div> -->
 
 <div>
   <h2>Create User</h2>
@@ -95,9 +95,17 @@
   <label>Password:</label>
   <input type="password" #passwordInput required>
 </div>
+
+
 <div>
   <h2>List of Users</h2>
   <ul>
-    <li *ngFor="let user of users$ | async">{{ user.email }}</li>
+    <li *ngFor="let user of users$ | async">
+      {{ user.email }}
+      <button (click)="adjustUserPermissions(user, 'ADMIN')">Set Admin</button>
+      <button (click)="adjustUserPermissions(user, 'MANAGER')">Set Manager</button>
+      <button (click)="adjustUserPermissions(user, 'GUEST')">Set Guest</button>
+    </li>
   </ul>
 </div>
+
