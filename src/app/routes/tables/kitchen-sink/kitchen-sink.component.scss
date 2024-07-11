@@ -5,8 +5,23 @@
   margin: 16px 0; /* Adjust as needed */
 }
 
-.header-title{
-  text-transform: uppercase;
+.header-title {
+  text-transform: uppercase !important;
+}
+
+.mtx-grid th {
+  text-transform: uppercase !important;
+}
+
+.mat-sort-header-content {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  text-transform: uppercase !important;
+}
+
+.mat-toolbar {
+  text-transform: uppercase !important;
 }
 
 .search-container {
@@ -28,7 +43,6 @@ button {
   justify-content: center;
 }
 
-
 .chart-container {
   max-width: 100%;
   padding: 20px;
@@ -36,10 +50,13 @@ button {
   background-color: #fff; /* Adjust background color as needed */
 }
 
-.uppercase-header {
-  text-transform: uppercase;
+:host ::ng-deep .mat-sort-header-content {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  text-transform: uppercase !important;
 }
 
-.capitalized-cell {
-  text-transform: capitalize;
+.uppercased-cell {
+  text-transform: uppercase;
 }
