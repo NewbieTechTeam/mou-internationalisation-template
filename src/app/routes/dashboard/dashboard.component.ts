@@ -12,6 +12,8 @@ import {
   OnDestroy,
   OnInit,
   inject,
+  SimpleChanges,
+  OnChanges,
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -28,6 +30,7 @@ import { SettingsService } from '@core';
 import { BreadcrumbComponent } from '@shared';
 import { DashboardService } from './dashboard.service';
 import { Router } from '@angular/router';
+import ApexCharts from 'apexcharts';
 
 @Component({
   selector: 'app-dashboard',
@@ -53,7 +56,7 @@ import { Router } from '@angular/router';
     RouterModule,
   ],
 })
-export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
+export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy, OnChanges {
   constructor(private router: Router) {}
 
   private readonly ngZone = inject(NgZone);
@@ -68,94 +71,136 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
   numberOfAssignedMOU = 0;
 
   charts = this.dashboardSrv.getCharts();
-  chart1: any;
-  chart2: any;
   chart3: any;
 
-  fullData: any;
-  stats = this.dashboardSrv.getStats();
+  fullData: any[] = [];
 
   stats2: any;
   notifySubscription!: Subscription;
-
+  dataReady = false;
   ngOnInit() {
     this.notifySubscription = this.settings.notify.subscribe(res => {
       console.log({ res });
     });
-
-    this.dataShare.data$.subscribe((data: any) => {
-      //this.exportedData = data;
-      if (data && data.length) {
-        // Ensure data is not null or undefined and has a length property
-
-        console.log({ data });
-        this.fullData = data;
-        console.log('fullData');
-        console.log(this.fullData);
-
-        this.initChart3();
-
-        this.numberOfAssignedMOU = data.length;
-        console.log(this.stats);
-        console.log('expired', this.calculateExpiredMoUs());
-
-        console.log('percont', this.groupByContinent());
-
-        this.stats2 = [
-          {
-            title: 'TOTAL NUMBER OF SIGNED',
-            amount: `${this.numberOfAssignedMOU}`,
-            progress: {
-              value: `${(this.numberOfAssignedMOU / this.numberOfAssignedMOU) * 100}`,
-            },
-            color: 'bg-indigo-500',
-          },
-          {
-            title: 'TOTAL NUMBER OF ACTIVE',
-            amount: `${this.calculateActiveMoUs()}`,
-            progress: {
-              value: `${(this.calculateActiveMoUs() / this.numberOfAssignedMOU) * 100}`,
-            },
-            color: 'bg-indigo-500',
-          },
-          {
-            title: 'TOTAL NUMBER OF SOON TO EXPIRE',
-            amount: `${this.calculateSoonToExpireMoUs()}`,
-            progress: {
-              value: `${(this.calculateSoonToExpireMoUs() / this.numberOfAssignedMOU) * 100}`,
-            },
-            color: 'bg-indigo-500',
-          },
-          {
-            title: 'TOTAL NUMBER OF EXPIRED',
-            amount: `${this.calculateExpiredMoUs()}`,
-            progress: {
-              value: `${(this.calculateExpiredMoUs() / this.numberOfAssignedMOU) * 100}`,
-            },
-            color: 'bg-indigo-500',
-          },
-        ];
-      }
-      //this.calculateStats();
-    });
   }
 
   ngAfterViewInit() {
-    this.ngZone.runOutsideAngular(() => this.initChart());
+    this.ngZone.runOutsideAngular(() => {
+      this.initChart();
+
+      this.dataShare.data$.subscribe((data: any) => {
+        if (data && data.length) {
+          this.fullData = data;
+          this.numberOfAssignedMOU = data.length;
+
+          this.stats2 = [
+            {
+              title: 'TOTAL NUMBER OF SIGNED',
+              amount: `${this.numberOfAssignedMOU}`,
+              progress: {
+                value: `${(this.numberOfAssignedMOU / this.numberOfAssignedMOU) * 100}`,
+              },
+              color: 'bg-indigo-500',
+            },
+            {
+              title: 'TOTAL NUMBER OF ACTIVE',
+              amount: `${this.calculateActiveMoUs()}`,
+              progress: {
+                value: `${(this.calculateActiveMoUs() / this.numberOfAssignedMOU) * 100}`,
+              },
+              color: 'bg-indigo-500',
+            },
+            {
+              title: 'TOTAL NUMBER OF SOON TO EXPIRE',
+              amount: `${this.calculateSoonToExpireMoUs()}`,
+              progress: {
+                value: `${(this.calculateSoonToExpireMoUs() / this.numberOfAssignedMOU) * 100}`,
+              },
+              color: 'bg-indigo-500',
+            },
+            {
+              title: 'TOTAL NUMBER OF EXPIRED',
+              amount: `${this.calculateExpiredMoUs()}`,
+              progress: {
+                value: `${(this.calculateExpiredMoUs() / this.numberOfAssignedMOU) * 100}`,
+              },
+              color: 'bg-indigo-500',
+            },
+          ];
+
+          if (this.fullData) {
+            this.updateChart3();
+            this.dataReady = true;
+          }
+        }
+      });
+    });
+  }
+  newInit() {
+    this.ngZone.runOutsideAngular(() => {
+      //this.initChart();
+
+      this.dataShare.data$.subscribe((data: any) => {
+        if (data && data.length) {
+          this.fullData = data;
+          this.numberOfAssignedMOU = data.length;
+
+          this.stats2 = [
+            {
+              title: 'TOTAL NUMBER OF SIGNED',
+              amount: `${this.numberOfAssignedMOU}`,
+              progress: {
+                value: `${(this.numberOfAssignedMOU / this.numberOfAssignedMOU) * 100}`,
+              },
+              color: 'bg-indigo-500',
+            },
+            {
+              title: 'TOTAL NUMBER OF ACTIVE',
+              amount: `${this.calculateActiveMoUs()}`,
+              progress: {
+                value: `${(this.calculateActiveMoUs() / this.numberOfAssignedMOU) * 100}`,
+              },
+              color: 'bg-indigo-500',
+            },
+            {
+              title: 'TOTAL NUMBER OF SOON TO EXPIRE',
+              amount: `${this.calculateSoonToExpireMoUs()}`,
+              progress: {
+                value: `${(this.calculateSoonToExpireMoUs() / this.numberOfAssignedMOU) * 100}`,
+              },
+              color: 'bg-indigo-500',
+            },
+            {
+              title: 'TOTAL NUMBER OF EXPIRED',
+              amount: `${this.calculateExpiredMoUs()}`,
+              progress: {
+                value: `${(this.calculateExpiredMoUs() / this.numberOfAssignedMOU) * 100}`,
+              },
+              color: 'bg-indigo-500',
+            },
+          ];
+
+          if (this.fullData) {
+            this.initChart3();
+          }
+        }
+      });
+    });
   }
 
   ngOnDestroy() {
     this.notifySubscription.unsubscribe();
   }
 
-  initChart() {}
+  initChart() {
+    // Your existing chart initialization code
+  }
 
   navigateToForm() {
     this.router.navigate(['/forms/dynamic']);
   }
 
   calculateSignedPerContinent(): number {
-    // Implement logic to calculate the number of signed MOUs per continent
     const continentCounts: { [key: string]: number } = this.fullData.reduce(
       (acc: any, mou: any) => {
         acc[mou.continent] = (acc[mou.continent] || 0) + 1;
@@ -172,7 +217,6 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   groupByContinent(): { name: string; count: number }[] {
-    // List of all possible continents
     const allContinents = [
       'Africa',
       'Asia',
@@ -182,14 +226,11 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
       'Australia',
       'Antarctica',
     ];
-
-    // Initialize continent counts to zero
     const continentMap: { [key: string]: number } = {};
     allContinents.forEach(continent => {
       continentMap[continent] = 0;
     });
 
-    // Count occurrences of each continent in the data
     this.fullData.forEach((item: any) => {
       const continent = item.continent;
       if (continent in continentMap) {
@@ -197,7 +238,6 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     });
 
-    // Convert the continent map to an array of { name, count } objects
     return Object.keys(continentMap).map(key => ({ name: key, count: continentMap[key] }));
   }
 
@@ -251,7 +291,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
         },
       },
       title: {
-        text: 'IMOUs BY CONTINENT',
+        text: 'iMOUs BY CONTINENT',
         align: 'left',
         style: {
           fontSize: '16px',
@@ -260,32 +300,6 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
         },
       },
       colors: ['#1E88E5', '#D32F2F', '#43A047', '#FBC02D', '#FB8C00', '#8E24AA', '#00ACC1'],
-    };
-    //this.chart3 = new ApexCharts(document.querySelector('#chart3'), chartOptions);
-    //his.chart3.render();
-    this.initChart3v2();
-  }
-
-  initChart3v2() {
-    const groupedData = this.groupByContinent();
-    console.log({ groupedData });
-
-    const chartOptions: any = {
-      series: [
-        {
-          name: 'iMOUs',
-          data: groupedData.map(item => item.count),
-        },
-      ],
-      chart: {
-        type: 'bar',
-        height: 350,
-      },
-      xaxis: {
-        categories: groupedData.map(item => item.name),
-      },
-
-      colors: ['#3f51b5'], // Set bar color here
     };
     this.chart3 = new ApexCharts(document.querySelector('#chart3'), chartOptions);
     this.chart3.render();
@@ -315,5 +329,80 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
       }
       return false;
     }).length;
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.fullData && changes.fullData.currentValue) {
+      this.initChart3();
+    }
+  }
+
+  updateChart3() {
+    const groupedData = this.groupByContinent();
+    const chartOptions: any = {
+      series: [
+        {
+          name: 'MoUs',
+          data: groupedData.map(item => item.count),
+        },
+      ],
+      chart: {
+        type: 'bar',
+        height: 350,
+        toolbar: {
+          show: true,
+        },
+      },
+      plotOptions: {
+        bar: {
+          horizontal: false,
+          columnWidth: '55%',
+          endingShape: 'rounded',
+        },
+      },
+      dataLabels: {
+        enabled: false,
+      },
+      stroke: {
+        show: true,
+        width: 2,
+        colors: ['transparent'],
+      },
+      xaxis: {
+        categories: groupedData.map(item => item.name),
+      },
+      yaxis: {
+        title: {
+          text: 'Number of MoUs',
+        },
+      },
+      fill: {
+        opacity: 1,
+      },
+      tooltip: {
+        y: {
+          formatter(val: number) {
+            return `${val} MoUs`;
+          },
+        },
+      },
+      title: {
+        text: 'iMOUs BY CONTINENT',
+        align: 'left',
+        style: {
+          fontSize: '16px',
+          fontWeight: 'bold',
+          color: '#3f51b5',
+        },
+      },
+      colors: ['#1E88E5', '#D32F2F', '#43A047', '#FBC02D', '#FB8C00', '#8E24AA', '#00ACC1'],
+    };
+
+    if (!this.chart3) {
+      this.chart3 = new ApexCharts(document.querySelector('#chart3'), chartOptions);
+      this.chart3.render();
+    } else {
+      this.chart3.updateOptions(chartOptions);
+    }
   }
 }

@@ -35,7 +35,8 @@ export class StartupService {
               resolve();
               return;
             }
-            this.setPermissions(user);
+
+            return this.setPermissions(user);
           }),
           switchMap(() => this.authService.menu()),
           tap(menu => {
@@ -69,7 +70,7 @@ export class StartupService {
 
     console.log({ user });
 
-    this.firebasePermissionService.getUserPermissions3(user.id).subscribe(permissions => {
+    return this.firebasePermissionService.getUserPermissions3(user.id).subscribe(permissions => {
       console.log({ permissions });
       console.log('user.id');
 

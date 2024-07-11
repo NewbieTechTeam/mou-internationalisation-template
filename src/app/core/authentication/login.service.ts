@@ -37,7 +37,7 @@ export class LoginService {
             id: user.uid,
             email: user.email || '',
             name: user.displayName || '',
-            avatar: 'https://ionicframework.com/docs/img/demos/avatar.svg',
+            avatar: '../../../assets/images/silhouette.png',
           };
           observer.next(mappedUser);
         } else {
