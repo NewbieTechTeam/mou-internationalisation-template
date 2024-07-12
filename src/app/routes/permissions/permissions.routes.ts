@@ -5,7 +5,16 @@ import { PermissionsRouteGuardComponent } from './route-guard/route-guard.compon
 import { PermissionsTestComponent } from './test/test.component';
 
 export const routes: Routes = [
-  { path: 'role-switching', component: PermissionsRoleSwitchingComponent },
+  /*   {
+    path: 'role-switching',
+    component: PermissionsRoleSwitchingComponent,
+    data: {
+      permissions: {
+        except: 'GUEST',
+        redirectTo: '/dashboard',
+      },
+    },
+  }, */
   {
     path: 'route-guard',
     component: PermissionsRouteGuardComponent,
@@ -17,13 +26,14 @@ export const routes: Routes = [
       },
     },
   },
+
   {
     path: 'test',
     component: PermissionsTestComponent,
     canActivate: [ngxPermissionsGuard],
     data: {
       permissions: {
-        only: 'ADMIN',
+        except: 'GUEST',
         redirectTo: '/dashboard',
       },
     },

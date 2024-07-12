@@ -51,6 +51,12 @@ export class TablesKitchenSinkEditComponent {
     if (this.form.valid) {
       this.formData = { ...this.formData, ...this.form.value };
       console.log(this.formData);
+      this.formData.nameOfPartnerInstitution = this.formData.nameOfPartnerInstitution.toLowerCase();
+      this.formData.highlights = this.formData.highlights.toLowerCase();
+      this.formData.purposeOfTheMoU = this.formData.purposeOfTheMoU.toLowerCase();
+      this.formData.responsibleTutDepartment = this.formData.responsibleTutDepartment.toLowerCase();
+      this.formData.responsibleTutFaculty = this.formData.responsibleTutFaculty.toLowerCase();
+      this.formData.category = this.formData.category.toLowerCase();
 
       try {
         const documentRef = doc(this.firestore, 'mous', this.formData.documentRef);

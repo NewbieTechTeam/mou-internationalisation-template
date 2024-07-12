@@ -56,7 +56,7 @@ export class LoginComponent {
     return this.loginForm.get('rememberMe')!;
   }
 
-  login2() {
+  login() {
     this.isSubmitting = true;
 
     this.auth
@@ -66,7 +66,17 @@ export class LoginComponent {
       .pipe(filter(authenticated => authenticated))
       .subscribe({
         next: () => {
+          console.log('logged in');
           this.router.navigateByUrl('/');
+
+          /*       this.router.navigateByUrl('/dashboard').then(success => {
+            if (!success) {
+              console.error('Navigation to /dashboard failed');
+            }
+          }).catch((err: any)=>{
+            console.log({err});
+
+          }); */
         },
         error: (errorRes: HttpErrorResponse) => {
           if (errorRes.status === 422) {
@@ -83,11 +93,14 @@ export class LoginComponent {
       });
   }
 
-  login() {
+  continueAsGuest2(): void {
+    // Add your continue as guest logic here
+  }
+  continueAsGuest() {
     this.isSubmitting = true;
 
     this.auth
-      .login(this.loginForm.value.username, this.loginForm.value.password)
+      .login('abc@def.com', '1tlcone')
       .pipe(filter(authenticated => authenticated))
       .subscribe({
         next: () => {

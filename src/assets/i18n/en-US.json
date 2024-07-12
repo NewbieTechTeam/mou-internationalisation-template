@@ -75,9 +75,9 @@
     "menu-level.level-1-1.level-2-1.level-3-1": "Level 3.1",
     "menu-level.level-1-1.level-2-1.level-3-1.level-4-1": "Level 4.1",
     "permissions": "Permissions",
-    "permissions.role-switching": "Role Switching",
     "permissions.route-guard": "Route Guard",
-    "permissions.test": "Permission Test"
+    "permissions.role-switching": "Route Switching",
+    "permissions.test": "Add User"
   },
   "validations": {
     "required": "This field is required",
@@ -132,7 +132,7 @@
     "responsiblePatnerOfficial": "Responsible Partner Official",
     "responsibleTUTDepartment": "Responsible TUT Department",
     "responsibleTUTFaculty": "Responsible TUT Faculty",
-      "id": "Reference",
+    "id": "Reference",
     "responsibleTUTOfficiaEmail": "Responsible TUT Official Email",
     "responsibleTUTOfficiaTell": "Responsible TUT Official Telephone",
     "responsibleTUTOfficial": "Responsible TUT Official",
@@ -142,7 +142,7 @@
     "countryOfPartnerInstitution": "Country Of Partner Institution",
     "durationOfMoU": "Duration Of IMOU",
     "nameOfPartnerInstitution2": "Name Of Partner Institution",
-    "highlights" :"Progress"
+    "highlights": "Progress"
   },
   "profile": "Profile",
   "edit_profile": "Edit profile",
@@ -151,6 +151,7 @@
   "login_title": "Welcome Back to IMOU dashboard",
   "have_no_account": "Don't have an account",
   "create_one_account": "Click here to create one",
+  "continue_as_guest": "Continue as guest",
   "please_enter": "Please enter",
   "username": "Username",
   "password": "Password",

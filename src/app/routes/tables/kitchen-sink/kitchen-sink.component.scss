@@ -5,6 +5,25 @@
   margin: 16px 0; /* Adjust as needed */
 }
 
+.header-title {
+  text-transform: uppercase !important;
+}
+
+.mtx-grid th {
+  text-transform: uppercase !important;
+}
+
+.mat-sort-header-content {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  text-transform: uppercase !important;
+}
+
+.mat-toolbar {
+  text-transform: uppercase !important;
+}
+
 .search-container {
   display: flex;
   align-items: center;
@@ -24,10 +43,20 @@ button {
   justify-content: center;
 }
 
-
 .chart-container {
   max-width: 100%;
   padding: 20px;
   margin: 0 auto;
   background-color: #fff; /* Adjust background color as needed */
+}
+
+:host ::ng-deep .mat-sort-header-content {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  text-transform: uppercase !important;
+}
+
+.uppercased-cell {
+  text-transform: uppercase;
 }

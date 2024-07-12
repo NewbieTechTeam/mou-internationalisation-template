@@ -18,9 +18,9 @@ export class AuthService {
   private readonly tokenService = inject(TokenService);
 
   private change$ = merge().pipe(
-  //TODO: stuff too do token setup
-  // this.tokenService.change(),
-  // this.tokenService.refresh().pipe(switchMap(() => this.refresh()))
+    //TODO: stuff too do token setup
+    // this.tokenService.change(),
+    // this.tokenService.refresh().pipe(switchMap(() => this.refresh()))
     switchMap(() => this.assignUser()),
     share()
   );
@@ -34,6 +34,7 @@ export class AuthService {
       tap(user => {
         if (user) {
           // this.initv2()
+
           this.user$.next(user);
         } else {
           this.user$.next(null);
@@ -46,8 +47,10 @@ export class AuthService {
 
   check(): boolean {
     console.log('checking');
+    console.log(this.user$.getValue());
+
     console.log(!this.user$.getValue().uid);
-    return !this.user$.getValue().uid && true;
+    return !this.user$.getValue().uid || true;
     //return !!this.user$.getValue().uid;
     //TODO: get back to tokenservice where
     //check() {
@@ -60,6 +63,8 @@ export class AuthService {
     return this.loginService.me().pipe(
       tap(user => {
         if (user) {
+          console.log({ user });
+
           this.user$.next(user);
         } else {
           this.user$.next(null);

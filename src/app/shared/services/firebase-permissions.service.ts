@@ -6,6 +6,7 @@ import {
   collection,
   addDoc,
   setDoc,
+  updateDoc,
   doc,
   getDoc,
   DocumentReference,
@@ -40,10 +41,35 @@ export class FirebasePermissionsService {
   permissionsCollection = collection(this.firestore, 'permissions');
   usersCollection = collection(this.firestore, 'users');
 
-  getUserPermissions(uid: string): Observable<any> {
+  permissionsConfig: Record<string, string[]> = {
+    ADMIN: ['canAdd', 'canDelete', 'canEdit', 'canRead'],
+    MANAGER: ['canAdd', 'canEdit', 'canRead'],
+    GUEST: ['canRead'],
+  };
+
+  getUserPermissions2(uid: string): Observable<any> {
     const docRef = doc(this.firestore, 'permissions', uid);
     return from(getDoc(docRef)).pipe(
       map((docSnap: DocumentSnapshot<DocumentData>) => (docSnap.exists() ? docSnap.data() : null))
+    );
+  }
+
+  getUserPermissions(uid: string): Observable<any> {
+    const docRef = doc(this.firestore, 'permissions', uid);
+    return from(getDoc(docRef)).pipe(
+      map((docSnap: DocumentSnapshot<DocumentData>) => {
+        if (docSnap.exists()) {
+          console.log('Document data:', docSnap.data());
+          return docSnap.data();
+        } else {
+          console.log('No such document!');
+          return null;
+        }
+      }),
+      catchError(error => {
+        console.error('Error fetching document:', error);
+        return of(null);
+      })
     );
   }
 
@@ -65,7 +91,7 @@ export class FirebasePermissionsService {
 
   setUserPermissions(uid: string, permissions: any): Observable<void> {
     const docRef = doc(this.firestore, 'permissions', uid);
-    return from(setDoc(docRef, permissions));
+    return from(updateDoc(docRef, { permissions }));
   }
 
   createUser(
@@ -119,7 +145,51 @@ export class FirebasePermissionsService {
     }
   }
 
-  createUser2(email: string, password: string): Observable<void> {
+  createUser2(
+    email: string,
+    password: string,
+    originalEmail: string,
+    originalPassword: string
+  ): Observable<void> {
+    // Save the current user before creating a new one
+    this.originalUser = this.auth.currentUser;
+
+    return from(createUserWithEmailAndPassword(this.auth, email, password)).pipe(
+      switchMap(userCredential => {
+        const user = userCredential.user;
+
+        if (user) {
+          const userRef = doc(this.firestore, `users/${user.uid}`);
+          return from(setDoc(userRef, { email: user.email, uid: user.uid })).pipe(
+            switchMap(() => this.setDefaultPermissions(user.uid)),
+            switchMap(() => this.reauthenticateOriginalUser(originalEmail, originalPassword))
+          );
+        } else {
+          throw new Error('User creation failed');
+        }
+      }),
+      catchError((error: any) => {
+        // If there's an error, reauthenticate the original user
+        return this.reauthenticateOriginalUser(originalEmail, originalPassword).pipe(
+          switchMap(() => {
+            throw error;
+          })
+        );
+      })
+    );
+  }
+
+  private reauthenticateOriginalUser2(email: string, password: string): Observable<void> {
+    if (this.originalUser) {
+      return from(signInWithEmailAndPassword(this.auth, email, password)).pipe(
+        switchMap(() => of(undefined))
+      );
+    } else {
+      return of(undefined);
+    }
+  }
+
+  createUser3(email: string, password: string): Observable<void> {
     return from(createUserWithEmailAndPassword(this.auth, email, password)).pipe(
       switchMap(userCredential => {
         const user = userCredential.user;
@@ -169,10 +239,19 @@ export class FirebasePermissionsService {
   }
 
   // Get permissions for a user by UID
-  getUserPermissions2(uid: string): Observable<string[]> {
+  getUserPermissions3(uid: string): Observable<string[]> {
     const permissionsRef = doc(this.firestore, `permissions/${uid}`);
     return from(getDoc(permissionsRef)).pipe(
       map(doc => (doc.exists() ? doc.data().permissions : []))
     );
+  }
+
+  adjustUserPermissions(uid: string, role: string): Observable<void> {
+    const permissions: any = this.permissionsConfig[role] || [];
+    console.log('ssssss****');
+    console.log({ uid });
+    console.log({ permissions });
+
+    return this.setUserPermissions(uid, permissions);
   }
 }

@@ -31,6 +31,10 @@ export class PermissionsRouteGuardComponent implements OnInit {
 
   ngOnInit() {
     this.currentRole = Object.keys(this.rolesSrv.getRoles())[0];
+    console.log('this.currentRole');
+
+    console.log(this.currentRole);
+
     this.currentPermissions = Object.keys(this.permissionsSrv.getPermissions());
   }
 
@@ -38,6 +42,9 @@ export class PermissionsRouteGuardComponent implements OnInit {
     this.currentPermissions = this.permissionsOfRole[this.currentRole];
     this.rolesSrv.flushRolesAndPermissions();
     this.rolesSrv.addRoleWithPermissions(this.currentRole, this.currentPermissions);
+    console.log('this.currentRole');
+
+    console.log(this.currentRole);
 
     this.router.navigateByUrl('/dashboard');
   }

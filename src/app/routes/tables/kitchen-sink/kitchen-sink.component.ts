@@ -1,8 +1,11 @@
+import { ConfirmComponent } from './confirm/confirm.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { RouterModule } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
+
 import {
   Component,
   OnInit,
@@ -39,7 +42,9 @@ import { Router } from '@angular/router';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 import { DataSharerService } from '@shared';
-
+import { NgxPermissionsService, NgxRolesService, NgxPermissionsModule } from 'ngx-permissions';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 @Component({
   selector: 'app-table-kitchen-sink',
   templateUrl: './kitchen-sink.component.html',
@@ -59,6 +64,7 @@ import { DataSharerService } from '@shared';
     MatIconModule,
     CommonModule,
     MatToolbarModule,
+    NgxPermissionsModule,
   ],
 })
 export class TablesKitchenSinkComponent implements OnInit, AfterViewInit {
@@ -68,7 +74,11 @@ export class TablesKitchenSinkComponent implements OnInit, AfterViewInit {
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly sanitizer = inject(DomSanitizer);
   private readonly dataShare = inject(DataSharerService);
+  private readonly permissionsSrv = inject(NgxPermissionsService);
+  private readonly toast = inject(ToastrService);
+
   pdfLink: SafeResourceUrl | null = null;
+  hasPermission = true;
 
   //firebase stuff
   dataSource: MatTableDataSource<any> = new MatTableDataSource();
@@ -81,6 +91,7 @@ export class TablesKitchenSinkComponent implements OnInit, AfterViewInit {
 
   @ViewChild('viewButton', { static: true }) viewButton!: TemplateRef<any>;
   @ViewChild('downloadButton', { static: true }) downloadButton!: TemplateRef<any>;
+  @ViewChild('capitalizedCell', { static: true }) capitalizedCell!: TemplateRef<any>;
 
   constructor(private router: Router) {
     collectionData(this.itemCollection).subscribe((items: any[]) => {
@@ -114,11 +125,69 @@ export class TablesKitchenSinkComponent implements OnInit, AfterViewInit {
   searchTerm: string = '';
   filteredData: any[] = [];
   gridData: any[] = [];
+  permissions: any;
+  canAddNewImou: boolean = false; // To store permission check result
+  private readonly _destroy$ = new Subject<void>();
+
   ngOnInit() {
     this.gridData = this.dataSource.data;
     this.list = this.dataSource.data;
     this.isLoading = false;
-    console.log('deets');
+
+    this.permissionsSrv.permissions$
+      .pipe(takeUntil(this._destroy$))
+      .subscribe((permissions: any) => {
+        console.log('current perm');
+
+        console.log({ permissions }, 'permission on edit original');
+
+        this.permissions = Object.keys(permissions);
+        console.log(this.permissions, ' THIS permission on edit');
+
+        this.cdr.detectChanges();
+        this.checkPermissions();
+      });
+  }
+
+  async checkPermissions() {
+    this.hasPermission = await this.permissions.includes('canDelete');
+    console.log('permission on edit');
+    console.log('permission on edit ', this.permissions);
+
+    console.log(this.hasPermission);
+
+    if (this.hasPermission) {
+      this.columns3.push({
+        header: this.translate.stream('table_kitchen_sink.operation'),
+        field: 'operation',
+        minWidth: 140,
+        width: '140px',
+        pinned: 'right',
+        type: 'button',
+        buttons: [
+          {
+            type: 'icon',
+            icon: 'edit',
+            tooltip: this.translate.stream('table_kitchen_sink.edit'),
+            click: record => this.edit(record),
+          },
+          {
+            type: 'icon',
+            color: 'warn',
+            icon: 'delete',
+            tooltip: this.translate.stream('table_kitchen_sink.delete'),
+            pop: {
+              title: this.translate.stream('table_kitchen_sink.confirm_delete'),
+              closeText: this.translate.stream('table_kitchen_sink.close'),
+              okText: this.translate.stream('table_kitchen_sink.ok'),
+            },
+            click: record => this.deleteItem('mous', record.documentRef),
+          },
+        ],
+      });
+    }
+
+    this.cdr.detectChanges(); // Trigger change detection to update the columns
   }
 
   ngAfterViewInit() {
@@ -143,14 +212,9 @@ export class TablesKitchenSinkComponent implements OnInit, AfterViewInit {
         sortable: true,
         minWidth: 100,
         width: '100px',
+        maxWidth: 100,
       },
-      {
-        header: this.translate.stream('table_kitchen_sink.category'),
-        field: 'category',
-        sortable: true,
-        minWidth: 100,
-        width: '100px',
-      },
+
       {
         header: this.translate.stream('table_kitchen_sink.purposeOfTheMoU'),
         field: 'purposeOfTheMoU',
@@ -167,7 +231,7 @@ export class TablesKitchenSinkComponent implements OnInit, AfterViewInit {
       },
       {
         header: this.translate.stream('table_kitchen_sink.highlights'),
-        field: 'highlights',
+        field: 'progress',
         sortable: true,
         minWidth: 100,
         width: '100px',
@@ -294,7 +358,7 @@ export class TablesKitchenSinkComponent implements OnInit, AfterViewInit {
         minWidth: 100,
         width: '100px',
       },
-      {
+      /* {
         header: this.translate.stream('table_kitchen_sink.operation'),
         field: 'operation',
         minWidth: 140,
@@ -321,11 +385,11 @@ export class TablesKitchenSinkComponent implements OnInit, AfterViewInit {
             click: record => this.deleteItem('mous', record.documentRef),
           },
         ],
-      },
+      }, */
     ];
 
     // Trigger change detection to update the view with the new columns
-
+    this.checkPermissions();
     this.cdr.detectChanges();
   }
 
@@ -396,7 +460,24 @@ export class TablesKitchenSinkComponent implements OnInit, AfterViewInit {
     this.dialog.alert(`You have deleted ${value.position}!`);
   }
 
-  async deleteItem(collection: string, itemId: string): Promise<void> {
+  async deleteItem(collection: string, itemId: string) {
+    const dialogRef = this.dialog.originalOpen(ConfirmComponent, {
+      width: '350px',
+    });
+
+    try {
+      const result = await dialogRef.afterClosed().toPromise();
+      if (result) {
+        const documentRef = doc(this.firestore, collection, itemId);
+        await deleteDoc(documentRef);
+        console.log(itemId, 'Document successfully deleted!');
+      }
+    } catch (error) {
+      console.error('Error deleting document: ', error);
+    }
+  }
+
+  async deleteItem2(collection: string, itemId: string): Promise<void> {
     try {
       const documentRef = doc(this.firestore, collection, itemId);
       await deleteDoc(documentRef);
@@ -456,8 +537,18 @@ export class TablesKitchenSinkComponent implements OnInit, AfterViewInit {
     this.list = this.list.splice(-1).concat(this.list);
   }
 
-  navigateToForm() {
+  navigateToForm2() {
     this.router.navigate(['/forms/dynamic']);
+  }
+
+  navigateToForm() {
+    if (this.permissions.includes('canAdd')) {
+      this.router.navigate(['/forms/dynamic']);
+    } else {
+      console.error('Permission denied to navigate to form.');
+      // Optionally show a notification or alert to the user
+      this.toast.error(`You only have viewing access`);
+    }
   }
 
   clearSearch() {

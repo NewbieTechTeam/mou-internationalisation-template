@@ -1,3 +1,4 @@
+import { FirebasePermissionsService } from '@shared/services/firebase-permissions.service';
 import { JsonPipe } from '@angular/common';
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -18,6 +19,7 @@ import { PageHeaderComponent } from '@shared';
 export class PermissionsRoleSwitchingComponent implements OnInit, OnDestroy {
   private readonly rolesSrv = inject(NgxRolesService);
   private readonly permissionsSrv = inject(NgxPermissionsService);
+  private readonly firebasePermissionsSrv = inject(FirebasePermissionsService);
 
   currentRole = '';
 
@@ -34,6 +36,8 @@ export class PermissionsRoleSwitchingComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.currentRole = Object.keys(this.rolesSrv.getRoles())[0];
     this.currentPermissions = Object.keys(this.permissionsSrv.getPermissions());
+    console.log('this.currentRole');
+    console.log(this.currentRole);
 
     this.rolesSrv.roles$.pipe(takeUntil(this._destroy$)).subscribe(roles => {
       console.log(roles);
@@ -51,6 +55,9 @@ export class PermissionsRoleSwitchingComponent implements OnInit, OnDestroy {
   onPermissionChange() {
     this.currentPermissions = this.permissionsOfRole[this.currentRole];
     this.rolesSrv.flushRolesAndPermissions();
+    console.log(this.currentRole);
+    console.log('this.currentRole');
+
     this.rolesSrv.addRoleWithPermissions(this.currentRole, this.currentPermissions);
   }
 }
