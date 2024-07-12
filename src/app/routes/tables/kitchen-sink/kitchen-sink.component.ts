@@ -4,6 +4,8 @@ import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { RouterModule } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
+
 import {
   Component,
   OnInit,
@@ -73,6 +75,7 @@ export class TablesKitchenSinkComponent implements OnInit, AfterViewInit {
   private readonly sanitizer = inject(DomSanitizer);
   private readonly dataShare = inject(DataSharerService);
   private readonly permissionsSrv = inject(NgxPermissionsService);
+  private readonly toast = inject(ToastrService);
 
   pdfLink: SafeResourceUrl | null = null;
   hasPermission = true;
@@ -540,8 +543,18 @@ export class TablesKitchenSinkComponent implements OnInit, AfterViewInit {
     this.list = this.list.splice(-1).concat(this.list);
   }
 
-  navigateToForm() {
+  navigateToForm2() {
     this.router.navigate(['/forms/dynamic']);
+  }
+
+  navigateToForm() {
+    if (this.permissions.includes('canAdd')) {
+      this.router.navigate(['/forms/dynamic']);
+    } else {
+      console.error('Permission denied to navigate to form.');
+      // Optionally show a notification or alert to the user
+      this.toast.error(`You only have viewing access`);
+    }
   }
 
   clearSearch() {

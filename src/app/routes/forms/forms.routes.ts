@@ -11,7 +11,6 @@ export const routes: Routes = [
   {
     path: 'dynamic',
     component: FormsDynamicComponent,
-    canActivate: [ngxPermissionsGuard],
     data: {
       permissions: {
         except: 'GUEST',

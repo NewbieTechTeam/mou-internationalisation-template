@@ -16,11 +16,7 @@
       "type": "sub",
       "icon": "lock",
       "children": [
-        {
-          "route": "role-switching",
-          "name": "role-switching",
-          "type": "link"
-        },
+
         {
           "route": "route-guard",
           "name": "route-guard",
