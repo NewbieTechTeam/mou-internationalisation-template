@@ -385,7 +385,6 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy, OnC
           text: 'Number of MoUs',
         },
 
-        min: 1, // Set the minimum value of y-axis to 1
         max: Math.max(...groupedData.map(item => item.count)) + 1, // Set max to the highest count + 1
         tickAmount: Math.max(...groupedData.map(item => item.count)) + 1, // Ensure there are enough ticks
         labels: {
