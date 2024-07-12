@@ -279,6 +279,14 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy, OnC
         title: {
           text: 'Number of MoUs',
         },
+        min: 1, // Set the minimum value of y-axis to 1
+        max: Math.max(...groupedData.map(item => item.count)) + 1, // Set max to the highest count + 1
+        tickAmount: Math.max(...groupedData.map(item => item.count)) + 1, // Ensure there are enough ticks
+        labels: {
+          formatter(val: any) {
+            return val.toFixed(0);
+          },
+        },
       },
       fill: {
         opacity: 1,
@@ -301,6 +309,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy, OnC
       },
       colors: ['#1E88E5', '#D32F2F', '#43A047', '#FBC02D', '#FB8C00', '#8E24AA', '#00ACC1'],
     };
+
     this.chart3 = new ApexCharts(document.querySelector('#chart3'), chartOptions);
     this.chart3.render();
   }
@@ -374,6 +383,15 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy, OnC
       yaxis: {
         title: {
           text: 'Number of MoUs',
+        },
+
+        min: 1, // Set the minimum value of y-axis to 1
+        max: Math.max(...groupedData.map(item => item.count)) + 1, // Set max to the highest count + 1
+        tickAmount: Math.max(...groupedData.map(item => item.count)) + 1, // Ensure there are enough ticks
+        labels: {
+          formatter(val: any) {
+            return val.toFixed(0);
+          },
         },
       },
       fill: {

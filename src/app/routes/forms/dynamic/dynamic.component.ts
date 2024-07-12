@@ -325,7 +325,7 @@ export class FormsDynamicComponent {
       minWidth: 100,
       width: '100px',
     },
-    {
+    /* {
       header: 'Category',
       field: 'category',
       type: 'text',
@@ -333,7 +333,7 @@ export class FormsDynamicComponent {
       sortable: true,
       minWidth: 100,
       width: '100px',
-    },
+    }, */
     {
       header: 'Purpose of the IMOU',
       field: 'purposeOfTheMoU',
@@ -356,7 +356,7 @@ export class FormsDynamicComponent {
       width: '100px',
     },
     {
-      header: 'Highlight',
+      header: 'Progress',
       field: 'highlights',
       type: 'textarea',
       sortable: true,
@@ -637,7 +637,7 @@ export class FormsDynamicComponent {
                 this.model.responsibleTutDepartment =
                   this.model.responsibleTutDepartment.toLowerCase();
                 this.model.responsibleTutFaculty = this.model.responsibleTutFaculty.toLowerCase();
-                this.model.category = this.model.category.toLowerCase();
+                //this.model.category = this.model.category.toLowerCase();
 
                 // Save the model with downloadURL to Firestore collection 'forms'
                 try {

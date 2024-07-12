@@ -214,13 +214,7 @@ export class TablesKitchenSinkComponent implements OnInit, AfterViewInit {
         width: '100px',
         maxWidth: 100,
       },
-      {
-        header: this.translate.stream('table_kitchen_sink.category'),
-        field: 'category',
-        sortable: true,
-        minWidth: 100,
-        width: '100px',
-      },
+
       {
         header: this.translate.stream('table_kitchen_sink.purposeOfTheMoU'),
         field: 'purposeOfTheMoU',
@@ -237,7 +231,7 @@ export class TablesKitchenSinkComponent implements OnInit, AfterViewInit {
       },
       {
         header: this.translate.stream('table_kitchen_sink.highlights'),
-        field: 'highlights',
+        field: 'progress',
         sortable: true,
         minWidth: 100,
         width: '100px',
