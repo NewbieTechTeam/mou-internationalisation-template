@@ -6,6 +6,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { RouterModule } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 
+import * as XLSX from 'xlsx';
+import { saveAs } from 'file-saver';
+import { AngularCsv } from 'angular-csv-ext';
 import {
   Component,
   OnInit,
@@ -98,6 +101,8 @@ export class TablesKitchenSinkComponent implements OnInit, AfterViewInit {
       this.list = items;
       this.exportData(this.list);
       this.filteredData = items;
+      console.log(this.filteredData);
+
       this.isLoading = false; // Set loading to false once data is loaded
       this.cdr.detectChanges(); // Trigger change detection
     }),
@@ -590,5 +595,55 @@ export class TablesKitchenSinkComponent implements OnInit, AfterViewInit {
 
   exportData(data: any) {
     this.dataShare.setData(data);
+  }
+
+  exportToExcel() {
+    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.filteredData);
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'IMOU List');
+
+    XLSX.writeFile(wb, 'IMOU_List.xlsx');
+  }
+
+  exportToCSV() {
+    const options = {
+      fieldSeparator: ',',
+      quoteStrings: '"',
+      decimalseparator: '.',
+      showLabels: true,
+      showTitle: true,
+      title: 'International Memorandum Of Understanding List',
+      useBom: true,
+      noDownload: false,
+      headers: [
+        'Responsible Partner Official',
+        'TUT Signatory',
+        'Download URL',
+        'Responsible Partner Official Email',
+        'Highlights',
+        'Document Ref',
+        'Responsible Partner Faculty',
+        'Expiry Date',
+        'Start Date',
+        'Responsible Partner Official Telephone',
+        'Responsible Partner Department',
+        'Category',
+        'Status',
+        'Purpose Of The MoU',
+        'Responsible TUT Faculty',
+        'Responsible TUT Department',
+        'Responsible TUT Official Telephone',
+        'Continent',
+        'Responsible TUT Official',
+        'Country Of Partner Institution',
+        'Partner Signatory',
+        'Responsible TUT Official Email',
+        'File',
+        'Name Of Partner Institution',
+        'Duration Of MoU',
+      ],
+    };
+
+    new AngularCsv(this.filteredData, 'IMOU_List', options);
   }
 }
