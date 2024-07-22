@@ -184,3 +184,4 @@ upload xls to firebase (priority)
 - Make capital
 - Bar chart, add user, add guest , remove edit from and delete
 - Look out for white spsces bug , e/g 'Europe ' ahould be same as 'Europe'
+- Remeber to change 2025-06-12 on JQ6wSLArXJkv9QFMEXCU expiry Date
