@@ -3,6 +3,8 @@ import { TablesRemoteDataComponent } from './../tables/remote-data/remote-data.c
 import { TablesKitchenSinkComponent } from './../tables/kitchen-sink/kitchen-sink.component';
 import { TableComponent } from './../material/table/table.component';
 import { DataSharerService } from '@shared';
+import { Analytics } from '@angular/fire/analytics';
+import { getAnalytics, logEvent } from 'firebase/analytics';
 
 import {
   AfterViewInit,
@@ -78,7 +80,11 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy, OnC
   stats2: any;
   notifySubscription!: Subscription;
   dataReady = false;
+
+  analytics = getAnalytics();
+
   ngOnInit() {
+    logEvent(this.analytics, 'dashboard_load');
     this.notifySubscription = this.settings.notify.subscribe(res => {
       console.log({ res });
     });
@@ -86,8 +92,6 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy, OnC
 
   ngAfterViewInit() {
     this.ngZone.runOutsideAngular(() => {
-      this.initChart();
-
       this.dataShare.data$.subscribe((data: any) => {
         if (data && data.length) {
           this.fullData = data;
@@ -131,6 +135,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy, OnC
           if (this.fullData) {
             this.updateChart3();
             this.dataReady = true;
+            logEvent(this.analytics, 'data_chart_updated');
           }
         }
       });
@@ -190,14 +195,12 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy, OnC
 
   ngOnDestroy() {
     this.notifySubscription.unsubscribe();
-  }
-
-  initChart() {
-    // Your existing chart initialization code
+    logEvent(this.analytics, 'dashboard_unload');
   }
 
   navigateToForm() {
     this.router.navigate(['/forms/dynamic']);
+    logEvent(this.analytics, 'navigate_to_form');
   }
 
   calculateSignedPerContinent(): number {
