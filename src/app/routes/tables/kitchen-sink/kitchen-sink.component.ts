@@ -9,6 +9,10 @@ import { ToastrService } from 'ngx-toastr';
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
 import { AngularCsv } from 'angular-csv-ext';
+
+import { Analytics } from '@angular/fire/analytics';
+import { getAnalytics, logEvent } from 'firebase/analytics';
+
 import {
   Component,
   OnInit,
@@ -91,6 +95,7 @@ export class TablesKitchenSinkComponent implements OnInit, AfterViewInit {
   itemCollection = collection(this.firestore, 'mous');
 
   columns3: MtxGridColumn[] = [];
+  analytics = getAnalytics();
 
   @ViewChild('viewButton', { static: true }) viewButton!: TemplateRef<any>;
   @ViewChild('downloadButton', { static: true }) downloadButton!: TemplateRef<any>;
@@ -102,6 +107,7 @@ export class TablesKitchenSinkComponent implements OnInit, AfterViewInit {
       this.exportData(this.list);
       this.filteredData = items;
       console.log(this.filteredData);
+      logEvent(this.analytics, 'data_sink_loaded', { item_count: items.length });
 
       this.isLoading = false; // Set loading to false once data is loaded
       this.cdr.detectChanges(); // Trigger change detection
@@ -174,7 +180,13 @@ export class TablesKitchenSinkComponent implements OnInit, AfterViewInit {
             type: 'icon',
             icon: 'edit',
             tooltip: this.translate.stream('table_kitchen_sink.edit'),
-            click: record => this.edit(record),
+            click: record => {
+              logEvent(this.analytics, 'edit_button_clicked', {
+                record_id: record.id,
+              });
+
+              this.edit(record);
+            },
           },
           {
             type: 'icon',
@@ -186,7 +198,11 @@ export class TablesKitchenSinkComponent implements OnInit, AfterViewInit {
               closeText: this.translate.stream('table_kitchen_sink.close'),
               okText: this.translate.stream('table_kitchen_sink.ok'),
             },
-            click: record => this.deleteItem('mous', record.documentRef),
+            click: record => {
+              this.deleteItem('mous', record.documentRef);
+              // Log event: Delete button clicked
+              logEvent(this.analytics, 'delete_button_clicked', { record_id: record.documentRef });
+            },
           },
         ],
       });
@@ -395,6 +411,8 @@ export class TablesKitchenSinkComponent implements OnInit, AfterViewInit {
 
     // Trigger change detection to update the view with the new columns
     this.checkPermissions();
+    logEvent(this.analytics, 'permissions_loaded', { permissions: this.permissions });
+
     this.cdr.detectChanges();
   }
 
@@ -446,6 +464,8 @@ export class TablesKitchenSinkComponent implements OnInit, AfterViewInit {
       if (updatedRecord) {
         // Handle updates to the record here (e.g., update in Firestore)
         this.updateRecordInFirestore(updatedRecord);
+
+        logEvent(this.analytics, 'record_updated', { record_id: updatedRecord.id });
       }
     });
   }
@@ -603,6 +623,9 @@ export class TablesKitchenSinkComponent implements OnInit, AfterViewInit {
     XLSX.utils.book_append_sheet(wb, ws, 'IMOU List');
 
     XLSX.writeFile(wb, 'IMOU_List.xlsx');
+    logEvent(this.analytics, 'export_to_excel', {
+      item_count: this.filteredData.length,
+    });
   }
 
   exportToCSV() {
@@ -645,5 +668,9 @@ export class TablesKitchenSinkComponent implements OnInit, AfterViewInit {
     };
 
     new AngularCsv(this.filteredData, 'IMOU_List', options);
+
+    logEvent(this.analytics, 'export_to_csv', {
+      item_count: this.filteredData.length,
+    });
   }
 }
