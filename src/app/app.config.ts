@@ -28,7 +28,12 @@ import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { getStorage, provideStorage } from '@angular/fire/storage';
 import { getVertexAI, provideVertexAI } from '@angular/fire/vertexai-preview';
 
-import { getAnalytics, provideAnalytics } from '@angular/fire/analytics';
+import {
+  getAnalytics,
+  provideAnalytics,
+  ScreenTrackingService,
+  UserTrackingService,
+} from '@angular/fire/analytics';
 
 // Required for AOT compilation
 export function TranslateHttpLoaderFactory(http: HttpClient) {
@@ -63,6 +68,8 @@ export const appConfig: ApplicationConfig = {
         passThruUnknownUrl: true,
       })
     ),
+    ScreenTrackingService,
+    UserTrackingService,
     { provide: BASE_URL, useValue: environment.baseUrl },
     httpInterceptorProviders,
     appInitializerProviders,
