@@ -87,7 +87,7 @@ export class LoginComponent {
     this.isSubmitting = true;
 
     this.auth
-      .login(this.loginForm.value.username, this.loginForm.value.password)
+      .login(this.username.value, this.password.value)
       .pipe(filter(authenticated => authenticated))
       .subscribe({
         next: () => {
