@@ -25,7 +25,6 @@ import {
   imports: [
     MatDialogModule,
     MatButtonModule,
-    JsonPipe,
     ReactiveFormsModule,
     FormsModule,
     FormlyModule,
