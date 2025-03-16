@@ -14,7 +14,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: |
-         rm -rf node_modules package-lock.json
          npm cache clean --force
          npm install --ignore-scripts
          npm rebuild
