@@ -25,16 +25,13 @@ import { TranslateService } from '@ngx-translate/core';
 import { PageHeaderComponent } from '@shared';
 import { TablesDataService } from '../data.service';
 import { TablesKitchenSinkEditComponent } from './edit/edit.component';
-import { getStorage, ref, uploadBytes, getDownloadURL } from '@angular/fire/storage';
 import {
   Firestore,
   collectionData,
   collection,
-  addDoc,
   doc,
   setDoc,
   deleteDoc,
-  DocumentReference,
 } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
@@ -42,9 +39,11 @@ import { Router } from '@angular/router';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 import { DataSharerService } from '@shared';
-import { NgxPermissionsService, NgxRolesService, NgxPermissionsModule } from 'ngx-permissions';
+import { NgxPermissionsService, NgxPermissionsModule } from 'ngx-permissions';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { environment } from '@env/environment';
+
 @Component({
   selector: 'app-table-kitchen-sink',
   templateUrl: './kitchen-sink.component.html',
@@ -85,7 +84,7 @@ export class TablesKitchenSinkComponent implements OnInit, AfterViewInit {
   firestore: Firestore = inject(Firestore);
 
   items$: Observable<any[]> = new Observable<any[]>();
-  itemCollection = collection(this.firestore, 'mous');
+  itemCollection = collection(this.firestore, environment.dataCollection);
 
   columns3: MtxGridColumn[] = [];
 
@@ -181,7 +180,7 @@ export class TablesKitchenSinkComponent implements OnInit, AfterViewInit {
               closeText: this.translate.stream('table_kitchen_sink.close'),
               okText: this.translate.stream('table_kitchen_sink.ok'),
             },
-            click: record => this.deleteItem('mous', record.documentRef),
+            click: record => this.deleteItem(environment.dataCollection, record.documentRef),
           },
         ],
       });
@@ -447,7 +446,9 @@ export class TablesKitchenSinkComponent implements OnInit, AfterViewInit {
 
   private async updateRecordInFirestore(updatedRecord: any) {
     try {
-      const documentRef = doc(this.firestore, 'mous', updatedRecord.id); // Assuming 'id' is the document ID field
+      //const documentRef = doc(this.firestore, 'mous', updatedRecord.id); // Assuming 'id' is the document ID field
+      const documentRef = doc(this.firestore, environment.dataCollection, updatedRecord.id); // Assuming 'id' is the document ID field
+
       await setDoc(documentRef, updatedRecord, { merge: true }); // Update the document in Firestore
       console.log('Document successfully updated!');
       // Optionally update the local data (this.list) to reflect changes immediately
