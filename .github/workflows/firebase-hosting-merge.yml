@@ -17,3 +17,4 @@ jobs:
           firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_INTERNATIONALISATION_MOU }}
           channelId: live
           projectId: internationalisation-mou
+          FIREBASE_CLI_EXPERIMENTS: webframeworks
