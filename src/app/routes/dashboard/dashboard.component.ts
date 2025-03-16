@@ -40,7 +40,6 @@ import ApexCharts from 'apexcharts';
   providers: [DashboardService],
   standalone: true,
   imports: [
-    RouterLink,
     MatButtonModule,
     MatCardModule,
     MatChipsModule,
