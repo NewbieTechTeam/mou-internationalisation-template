@@ -255,7 +255,7 @@
     symbol-observable "4.0.0"
     yargs "17.7.2"
 
-"@angular/common@^17.0.0", "@angular/common@^17.0.0 || ^18.0.0", "@angular/common@^17.0.0-rc.0", "@angular/common@^17.3.9", "@angular/common@>=16.0.0", "@angular/common@>=16.0.0-0", "@angular/common@>=17.1.0", "@angular/common@17.3.9":
+"@angular/common@^17.0.0", "@angular/common@^17.0.0 || ^18.0.0", "@angular/common@^17.0.0-rc.0", "@angular/common@^17.3.9", "@angular/common@>=16.0.0", "@angular/common@>=16.0.0-0", "@angular/common@>=17.1.0", "@angular/common@17.3.12", "@angular/common@17.3.9":
   version "17.3.9"
   resolved "https://registry.npmjs.org/@angular/common/-/common-17.3.9.tgz"
   integrity sha512-tH1VfbAvNVaz6ZYa+q0DiKtbmUql1jK/3q/af74B8nVjKLHcXVWwxvBayqvrmlUt7FGANGkETIcCWrB44k47Ug==
@@ -283,7 +283,7 @@
   dependencies:
     tslib "^2.3.0"
 
-"@angular/core@^17.0.0", "@angular/core@^17.0.0 || ^18.0.0", "@angular/core@^17.0.0-rc.0", "@angular/core@^17.3.9", "@angular/core@>=13 || >18", "@angular/core@>=16.0.0", "@angular/core@>=16.0.0-0", "@angular/core@>=17.1.0", "@angular/core@17.3.9":
+"@angular/core@^17.0.0", "@angular/core@^17.0.0 || ^18.0.0", "@angular/core@^17.0.0-rc.0", "@angular/core@^17.3.9", "@angular/core@>=13 || >18", "@angular/core@>=16.0.0", "@angular/core@>=16.0.0-0", "@angular/core@>=17.1.0", "@angular/core@17.3.12", "@angular/core@17.3.9":
   version "17.3.9"
   resolved "https://registry.npmjs.org/@angular/core/-/core-17.3.9.tgz"
   integrity sha512-x+h5BQ6islvYWGVLTz1CEgNq1/5IYngQ+Inq/tWayM6jN7RPOCydCCbCw+uOZS7MgFebkP0gYTVm14y1MRFKSQ==
@@ -312,10 +312,10 @@
     tslib "^2.3.0"
     winston "^3.0.0"
 
-"@angular/forms@^17.0.0 || ^18.0.0", "@angular/forms@^17.0.0-rc.0", "@angular/forms@^17.3.9", "@angular/forms@>=13.2.0":
-  version "17.3.9"
-  resolved "https://registry.npmjs.org/@angular/forms/-/forms-17.3.9.tgz"
-  integrity sha512-5b8OjK0kLghrdxkVWglgerHVp9D5WvXInXwo1KIyc2v/fGdTlyu/RFi0GLGvzq2y+7Z8TvtXWC82SB47vfx3TQ==
+"@angular/forms@^17.0.0 || ^18.0.0", "@angular/forms@^17.0.0-rc.0", "@angular/forms@^17.3.12", "@angular/forms@>=13.2.0":
+  version "17.3.12"
+  resolved "https://registry.npmjs.org/@angular/forms/-/forms-17.3.12.tgz"
+  integrity sha512-tV6r12Q3yEUlXwpVko4E+XscunTIpPkLbaiDn/MTL3Vxi2LZnsLgHyd/i38HaHN+e/H3B0a1ToSOhV5wf3ay4Q==
   dependencies:
     tslib "^2.3.0"
 
@@ -441,7 +441,7 @@
   dependencies:
     tslib "^2.3.0"
 
-"@angular/platform-browser@^17.0.0", "@angular/platform-browser@^17.0.0 || ^18.0.0", "@angular/platform-browser@^17.3.9", "@angular/platform-browser@>=16.0.0-0", "@angular/platform-browser@17.3.9":
+"@angular/platform-browser@^17.0.0", "@angular/platform-browser@^17.0.0 || ^18.0.0", "@angular/platform-browser@^17.3.9", "@angular/platform-browser@>=16.0.0-0", "@angular/platform-browser@17.3.12", "@angular/platform-browser@17.3.9":
   version "17.3.9"
   resolved "https://registry.npmjs.org/@angular/platform-browser/-/platform-browser-17.3.9.tgz"
   integrity sha512-vMwHO76rnkz7aV3KHKy23KUFAo/+b0+yHPa6AND5Lee8z5C1J/tA2PdetFAsghlQQsX61JeK4MFJV/f3dFm2dw==
@@ -2964,10 +2964,17 @@
   resolved "https://registry.npmjs.org/@ngtools/webpack/-/webpack-17.3.7.tgz"
   integrity sha512-kQNS68jsPQlaWAnKcVeFKNHp6K90uQANvq+9oXb/i+JnYWzuBsHzn2r8bVdMmvjd1HdBRiGtg767XRk3u+jgRw==
 
-"@ngx-formly/core@^6.3.4", "@ngx-formly/core@6.3.1":
-  version "6.3.4"
-  resolved "https://registry.npmjs.org/@ngx-formly/core/-/core-6.3.4.tgz"
-  integrity sha512-xpO0FB50gpQI4uDrz6nYNolMvMIOdgP19diflcvAAtDy15I4BS+tzLKOCkM9HmAwmKQ59z3FUyzaODFEu+cuEg==
+"@ngx-formly/bootstrap@^6.3.12":
+  version "6.3.12"
+  resolved "https://registry.npmjs.org/@ngx-formly/bootstrap/-/bootstrap-6.3.12.tgz"
+  integrity sha512-2HPqyC7DJjz5mwgNw+hkzXVmyaD4BfykWgUiF9peeNmhmYqF0z1JoGRotbdtzuwGeaGVkX86dPEt2pHJDeS3Pw==
+  dependencies:
+    tslib "^2.0.0"
+
+"@ngx-formly/core@^6.3.12", "@ngx-formly/core@6.3.1", "@ngx-formly/core@6.3.12":
+  version "6.3.12"
+  resolved "https://registry.npmjs.org/@ngx-formly/core/-/core-6.3.12.tgz"
+  integrity sha512-88MOfn9dM1B33t04jl8x0Glh0Ed0lUKMkhYajicRH7ZHTmwIdla1SQjiblp2C+EcCFvsY7XAU2/JUZQdl56aUw==
   dependencies:
     tslib "^2.0.0"
 
@@ -3243,6 +3250,11 @@
   version "1.0.0-next.25"
   resolved "https://registry.npmjs.org/@polka/url/-/url-1.0.0-next.25.tgz"
   integrity sha512-j7P6Rgr3mmtdkeDGTe0E/aYyWEWVtc5yFXtHCRHs28/jptDEWfaVOc5T7cblqy1XKPPfCxJc/8DwQ5YgLOZOVQ==
+
+"@popperjs/core@^2.11.8":
+  version "2.11.8"
+  resolved "https://registry.npmjs.org/@popperjs/core/-/core-2.11.8.tgz"
+  integrity sha512-P1st0aksCrn9sGZhp8GMYwBnQsbvAWsZAX44oXNNvLHGqAOcoVxmjZiohstwQ7SqKnbR47akdNi+uleWD8+g6A==
 
 "@protobufjs/aspromise@^1.1.1", "@protobufjs/aspromise@^1.1.2":
   version "1.1.2"
@@ -4652,6 +4664,11 @@ boolbase@^1.0.0:
   version "1.0.0"
   resolved "https://registry.npmjs.org/boolbase/-/boolbase-1.0.0.tgz"
   integrity sha512-JZOSA7Mo9sNGB8+UjSgzdLtokWAky1zbztM3WRLCbZ70/3cTANmQmOdR7y2g+J0e2WXywy1yS468tY+IruqEww==
+
+bootstrap@^5.0.0:
+  version "5.3.3"
+  resolved "https://registry.npmjs.org/bootstrap/-/bootstrap-5.3.3.tgz"
+  integrity sha512-8HLCdWgyoMguSO9o+aH+iuZ+aht+mzW0u3HIMzVu7Srrpv7EBBxTnrFlSCskwdY1+EOFQSm7uMJhNQHkdPcmjg==
 
 brace-expansion@^1.1.7:
   version "1.1.11"
