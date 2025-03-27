@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "public": "dist/ng-matero",
+    "public": "dist",
     "ignore": [
       "firebase.json",
       "**/.*",
