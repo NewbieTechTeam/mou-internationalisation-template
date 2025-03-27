@@ -12,6 +12,7 @@
     "test:ci": "ng test --browsers=ChromeHeadless --watch=false --code-coverage",
     "e2e": "ng e2e",
     "build": "ng build",
+    "build:firebase": "ng build --base-href=/",
     "build:prod": "ng build --base-href=/ng-matero/",
     "build:schematics": "npm run copy:schematics && cd schematics && npm run build && cd .. && npm run build:starter",
     "build:starter": "gulp --gulpfile gulpfile.js",
