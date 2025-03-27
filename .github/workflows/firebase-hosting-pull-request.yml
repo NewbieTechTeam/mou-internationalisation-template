@@ -22,7 +22,7 @@ jobs:
         run: npm install -g yarn@1.22.21  # make sure version is within accepted range
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: yarn install --ignore-platform
 
       - name: Build project
         run: yarn build
