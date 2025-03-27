@@ -1,10 +1,16 @@
 {
   "hosting": {
-    "public": "dist/ng-matero",
+    "public": "dist/ng-matero/browser",
     "ignore": [
       "firebase.json",
       "**/.*",
       "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
     ]
   }
 }
