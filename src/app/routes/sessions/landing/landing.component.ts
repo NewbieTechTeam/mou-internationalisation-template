@@ -11,7 +11,10 @@ import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatAccordion, MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterLink } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 
@@ -21,8 +24,8 @@ import { TranslateModule } from '@ngx-translate/core';
   styleUrl: './landing.component.scss',
   standalone: true,
   imports: [
-    RouterLink,
     FormsModule,
+    MatIconModule,
     ReactiveFormsModule,
     MatButtonModule,
     MatCardModule,
@@ -31,6 +34,8 @@ import { TranslateModule } from '@ngx-translate/core';
     MatInputModule,
     TranslateModule,
     MatExpansionModule,
+    MatToolbarModule,
+    MatGridListModule,
   ],
 })
 export class LandingComponent {
@@ -43,6 +48,12 @@ export class LandingComponent {
     { title: 'Quick and Efficient', desc: 'Process hundreds of statements within minutes.' },
     { title: 'Batch Processing', desc: 'Upload multiple files and process together.' },
     { title: 'Reduce Human Error', desc: 'No more manual entry mistakes or oversights.' },
+  ];
+
+  latest_features = [
+    { icon: 'star', title: 'Top Quality', desc: 'Premium features and elegant design.' },
+    { icon: 'flash_on', title: 'Fast & Responsive', desc: 'Lightning speed across all devices.' },
+    { icon: 'security', title: 'Secure', desc: 'Enterprise-level encryption for your data.' },
   ];
 
   pricing = [

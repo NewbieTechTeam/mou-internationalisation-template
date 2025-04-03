@@ -44,18 +44,7 @@ export function addLoaderToIndex(options: Schema): Rule {
       -webkit-background-clip: text;
       background-clip: text;
       -webkit-text-fill-color: transparent;
-      background-image:
-        repeating-linear-gradient(
-          to right,
-          #f44336,
-          #9c27b0,
-          #3f51b5,
-          #03a9f4,
-          #009688,
-          #8bc34a,
-          #ffeb3b,
-          #ff9800
-        );
+
       background-size: 750% auto;
       background-position: 0 100%;
       animation: gradient 20s infinite;
