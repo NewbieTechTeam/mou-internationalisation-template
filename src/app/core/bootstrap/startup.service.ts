@@ -31,7 +31,7 @@ export class StartupService {
           tap(user => {
             if (!user) {
               console.error('User is null, redirecting to login');
-              this.router.navigate(['/auth/login']);
+              this.router.navigate(['/auth/landing']);
               resolve();
               return;
             }

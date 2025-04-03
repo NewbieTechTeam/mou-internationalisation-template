@@ -1,0 +1,62 @@
+<div class="mat-typography">
+
+  <!-- Hero Section -->
+  <section class="text-center py-16 px-4">
+    <h1 class="text-3xl font-bold mb-4">Convert any PDF Bank Statements</h1>
+    <p class="text-lg text-gray-600 mb-2">Into CSV, EXCEL, QBO or JSON format</p>
+    <p class="text-gray-500 mb-8 max-w-xl mx-auto">
+      Discover how you can convert PDF bank statements into structured and actionable data automatically.
+    </p>
+
+    <mat-card class="w-full max-w-md mx-auto py-10 px-6 border-dashed border-2 border-gray-300">
+      <p class="text-gray-500 mb-4">Drop PDF files here</p>
+      <button mat-raised-button color="primary">Browse</button>
+    </mat-card>
+  </section>
+
+  <!-- Features -->
+  <section class="bg-gray-50 py-16 px-4">
+    <h2 class="text-center text-2xl font-semibold mb-10">Save hours of manual data entry</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+      @for (feature of features; track feature.title) {
+        <mat-card>
+          <mat-card-content>
+            <h3 class="font-semibold text-lg mb-2">{{ feature.title }}</h3>
+            <p class="text-sm text-gray-600">{{ feature.desc }}</p>
+          </mat-card-content>
+        </mat-card>
+      }
+    </div>
+  </section>
+
+  <!-- Pricing -->
+  <section class="text-center py-16 px-4">
+    <h2 class="text-2xl font-semibold mb-10">Reasonable and affordable pricing</h2>
+    <div class="flex flex-col md:flex-row gap-6 justify-center">
+      @for (plan of pricing; track plan.name) {
+        <mat-card class="w-full max-w-xs mx-auto">
+          <mat-card-content>
+            <h3 class="text-xl font-bold mb-2">{{ plan.name }}</h3>
+            <p class="text-3xl font-extrabold">{{ plan.price }}</p>
+            <p class="text-sm text-gray-600 mb-4">{{ plan.details }}</p>
+            <button mat-flat-button color="primary">Get started</button>
+          </mat-card-content>
+        </mat-card>
+      }
+    </div>
+  </section>
+
+  <!-- FAQ -->
+<!--   <section class="bg-gray-100 py-16 px-4">
+    <h2 class="text-2xl font-semibold text-center mb-10">Frequently Asked Questions</h2>
+    <mat-accordion class="max-w-3xl mx-auto">
+      <mat-expansion-panel *ngFor="let q of faqs">
+        <mat-expansion-panel-header>
+          <mat-panel-title>{{ q.question }}</mat-panel-title>
+        </mat-expansion-panel-header>
+        <p class="text-sm text-gray-600">{{ q.answer }}</p>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </section> -->
+
+</div>
