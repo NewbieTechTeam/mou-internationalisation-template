@@ -35,9 +35,12 @@
             ],
             "styles": [
               "src/styles.scss"
+
             ],
             "scripts": [
-              "node_modules/apexcharts/dist/apexcharts.min.js"
+              "node_modules/apexcharts/dist/apexcharts.min.js",
+              "src/assets/js/bootstrap.bundle.js",
+
             ]
           },
           "configurations": {
@@ -103,9 +106,11 @@
             "karmaConfig": "karma.conf.js",
             "styles": [
               "src/styles.scss"
+
             ],
             "scripts": [
-              "node_modules/apexcharts/dist/apexcharts.min.js"
+              "node_modules/apexcharts/dist/apexcharts.min.js",
+              "src/assets/js/bootstrap.bundle.js"
             ],
             "assets": [
               "src/favicon.ico",
