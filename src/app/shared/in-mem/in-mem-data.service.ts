@@ -89,9 +89,9 @@ export class InMemDataService implements InMemoryDbService {
       id: 1,
       username: 'ng-matero',
       password: 'ng-matero',
-      name: 'Revelation Bafana Manganyi',
-      email: 'manganyirb@tut.ac.za',
-      avatar: './assets/images/tut.png',
+      name: 'Zongbin',
+      email: 'nzb329@163.com',
+      avatar: 'images/avatar.jpg',
     },
     {
       id: 2,
@@ -99,7 +99,7 @@ export class InMemDataService implements InMemoryDbService {
       password: 'password',
       name: 'recca0120',
       email: 'recca0120@gmail.com',
-      avatar: './assets/images/heros/10.jpg',
+      avatar: 'images/heros/10.jpg',
       refresh_token: true,
     },
   ];
@@ -116,14 +116,8 @@ export class InMemDataService implements InMemoryDbService {
   get(reqInfo: RequestInfo) {
     const { headers, url } = reqInfo;
 
-    if (is(reqInfo, 'sanctum/csrf-cookie')) {
-      const response = { headers, url, status: STATUS.NO_CONTENT, body: {} };
-
-      return reqInfo.utils.createResponse$(() => response);
-    }
-
-    if (is(reqInfo, 'me/menu')) {
-      return ajax('assets/data/menu.json?_t=' + Date.now()).pipe(
+    if (is(reqInfo, 'user/menu')) {
+      return ajax('data/menu.json?_t=' + Date.now()).pipe(
         map((response: any) => {
           return { headers, url, status: STATUS.OK, body: { menu: response.response.menu } };
         }),
@@ -131,7 +125,7 @@ export class InMemDataService implements InMemoryDbService {
       );
     }
 
-    if (is(reqInfo, 'me')) {
+    if (is(reqInfo, 'user')) {
       const user = jwt.getUser(reqInfo.req as HttpRequest<any>);
       const result = user
         ? { status: STATUS.OK, body: user }

@@ -1,71 +1,88 @@
-import { HttpClient, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
-import { ApplicationConfig, importProvidersFrom } from '@angular/core';
+import { HttpClient, provideHttpClient, withInterceptors } from '@angular/common/http';
+import {
+  ApplicationConfig,
+  importProvidersFrom,
+  inject,
+  provideAppInitializer,
+} from '@angular/core';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideRouter, withComponentInputBinding, withInMemoryScrolling } from '@angular/router';
 
-import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
+import { provideDateFnsAdapter } from '@angular/material-date-fns-adapter';
 import { MAT_CARD_CONFIG } from '@angular/material/card';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatPaginatorIntl } from '@angular/material/paginator';
-import { provideMomentDatetimeAdapter } from '@ng-matero/extensions-moment-adapter';
-import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { provideDateFnsDatetimeAdapter } from '@ng-matero/extensions-date-fns-adapter';
+import { provideTranslateService, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { InMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { NgxPermissionsModule } from 'ngx-permissions';
-import { NgProgressHttpModule } from 'ngx-progressbar/http';
-import { NgProgressRouterModule } from 'ngx-progressbar/router';
-import { ToastrModule } from 'ngx-toastr';
+import { provideToastr } from 'ngx-toastr';
 
-import { BASE_URL, appInitializerProviders, httpInterceptorProviders } from '@core';
+import {
+  apiInterceptor,
+  BASE_URL,
+  baseUrlInterceptor,
+  errorInterceptor,
+  loggingInterceptor,
+  noopInterceptor,
+  settingsInterceptor,
+  SettingsService,
+  StartupService,
+  tokenInterceptor,
+  TranslateLangService,
+} from '@core';
 import { environment } from '@env/environment';
 import { PaginatorI18nService } from '@shared';
 import { InMemDataService } from '@shared/in-mem/in-mem-data.service';
 import { routes } from './app.routes';
-import { FormlyConfigModule } from './formly-config.module';
-import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
-import { getAuth, provideAuth } from '@angular/fire/auth';
-import { getFirestore, provideFirestore } from '@angular/fire/firestore';
-import { getStorage, provideStorage } from '@angular/fire/storage';
-import { getVertexAI, provideVertexAI } from '@angular/fire/vertexai-preview';
-
-import { getAnalytics, provideAnalytics } from '@angular/fire/analytics';
+//import { FormlyConfigModule } from './formly-config';
 
 // Required for AOT compilation
-export function TranslateHttpLoaderFactory(http: HttpClient) {
-  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+function TranslateHttpLoaderFactory(http: HttpClient) {
+  return new TranslateHttpLoader(http, 'i18n/', '.json');
 }
+
+// Http interceptor providers in outside-in order
+const interceptors = [
+  noopInterceptor,
+  baseUrlInterceptor,
+  settingsInterceptor,
+  tokenInterceptor,
+  apiInterceptor,
+  errorInterceptor,
+  loggingInterceptor,
+];
 
 export const appConfig: ApplicationConfig = {
   providers: [
+    { provide: BASE_URL, useValue: environment.baseUrl },
+    provideAppInitializer(() => inject(TranslateLangService).load()),
+    provideAppInitializer(() => inject(StartupService).load()),
     provideAnimationsAsync(),
-    provideHttpClient(withInterceptorsFromDi()),
+    provideHttpClient(withInterceptors(interceptors)),
     provideRouter(
       routes,
       withInMemoryScrolling({ scrollPositionRestoration: 'enabled', anchorScrolling: 'enabled' }),
       withComponentInputBinding()
     ),
+    provideToastr(),
+    provideTranslateService({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: TranslateHttpLoaderFactory,
+        deps: [HttpClient],
+      },
+    }),
     importProvidersFrom(
-      NgProgressHttpModule,
-      NgProgressRouterModule,
       NgxPermissionsModule.forRoot(),
-      ToastrModule.forRoot(),
-      TranslateModule.forRoot({
-        loader: {
-          provide: TranslateLoader,
-          useFactory: TranslateHttpLoaderFactory,
-          deps: [HttpClient],
-        },
-      }),
-      FormlyConfigModule.forRoot(),
+      //FormlyConfigModule.forRoot(),
       // 👇 ❌ This is only used for demo purpose, remove it in the realworld application
       InMemoryWebApiModule.forRoot(InMemDataService, {
         dataEncapsulation: false,
         passThruUnknownUrl: true,
       })
     ),
-    { provide: BASE_URL, useValue: environment.baseUrl },
-    httpInterceptorProviders,
-    appInitializerProviders,
     {
       provide: MatPaginatorIntl,
       useFactory: (paginatorI18nSrv: PaginatorI18nService) => paginatorI18nSrv.getPaginatorIntl(),
@@ -73,7 +90,7 @@ export const appConfig: ApplicationConfig = {
     },
     {
       provide: MAT_DATE_LOCALE,
-      useFactory: () => navigator.language, // <= This will be overrided by runtime setting
+      useFactory: () => inject(SettingsService).getLocale(),
     },
     {
       provide: MAT_CARD_CONFIG,
@@ -81,51 +98,36 @@ export const appConfig: ApplicationConfig = {
         appearance: 'outlined',
       },
     },
-    provideMomentDateAdapter({
+    provideDateFnsAdapter({
       parse: {
-        dateInput: 'YYYY-MM-DD',
+        dateInput: 'yyyy-MM-dd',
       },
       display: {
-        dateInput: 'YYYY-MM-DD',
-        monthYearLabel: 'YYYY MMM',
+        dateInput: 'yyyy-MM-dd',
+        monthYearLabel: 'yyyy MMM',
         dateA11yLabel: 'LL',
-        monthYearA11yLabel: 'YYYY MMM',
+        monthYearA11yLabel: 'yyyy MMM',
       },
     }),
-    provideMomentDatetimeAdapter({
+    provideDateFnsDatetimeAdapter({
       parse: {
-        dateInput: 'YYYY-MM-DD',
-        yearInput: 'YYYY',
+        dateInput: 'yyyy-MM-dd',
+        yearInput: 'yyyy',
         monthInput: 'MMMM',
-        datetimeInput: 'YYYY-MM-DD HH:mm',
+        datetimeInput: 'yyyy-MM-dd HH:mm',
         timeInput: 'HH:mm',
       },
       display: {
-        dateInput: 'YYYY-MM-DD',
-        yearInput: 'YYYY',
+        dateInput: 'yyyy-MM-dd',
+        yearInput: 'yyyy',
         monthInput: 'MMMM',
-        datetimeInput: 'YYYY-MM-DD HH:mm',
+        datetimeInput: 'yyyy-MM-dd HH:mm',
         timeInput: 'HH:mm',
-        monthYearLabel: 'YYYY MMMM',
+        monthYearLabel: 'yyyy MMMM',
         dateA11yLabel: 'LL',
-        monthYearA11yLabel: 'MMMM YYYY',
-        popupHeaderDateLabel: 'MMM DD, ddd',
+        monthYearA11yLabel: 'MMMM yyyy',
+        popupHeaderDateLabel: 'MMM dd, E',
       },
     }),
-    provideFirebaseApp(() =>
-      initializeApp({
-        projectId: 'internationalisation-mou',
-        appId: '1:413796382094:web:7d7092a4562d5d7f2320df',
-        storageBucket: 'internationalisation-mou.appspot.com',
-        apiKey: 'AIzaSyDjU-3ak4Gsv6ZQe81_cSOA3p4N0WFaTHg',
-        authDomain: 'internationalisation-mou.firebaseapp.com',
-        messagingSenderId: '413796382094',
-        measurementId: 'G-JETK7J7M5S',
-      })
-    ),
-    provideAuth(() => getAuth()),
-    provideFirestore(() => getFirestore()),
-    provideStorage(() => getStorage()),
-    provideAnalytics(() => getAnalytics()),
   ],
 };

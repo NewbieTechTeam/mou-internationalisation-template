@@ -1,9 +1,9 @@
+import { HttpClient, provideHttpClient, withInterceptors } from '@angular/common/http';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
 import { SettingsService } from '@core/bootstrap/settings.service';
-import { SettingsInterceptor } from './settings-interceptor';
+import { provideTranslateService } from '@ngx-translate/core';
+import { settingsInterceptor } from './settings-interceptor';
 
 describe('SettingsInterceptor', () => {
   let httpMock: HttpTestingController;
@@ -12,8 +12,12 @@ describe('SettingsInterceptor', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      providers: [{ provide: HTTP_INTERCEPTORS, useClass: SettingsInterceptor, multi: true }],
+      imports: [],
+      providers: [
+        provideHttpClient(withInterceptors([settingsInterceptor])),
+        provideHttpClientTesting(),
+        provideTranslateService(),
+      ],
     });
 
     httpMock = TestBed.inject(HttpTestingController);
@@ -24,8 +28,8 @@ describe('SettingsInterceptor', () => {
   it('should set accept language', () => {
     settings.setLanguage('zh-TW');
 
-    http.get('/me').subscribe();
-    const testRequest = httpMock.expectOne('/me');
+    http.get('/user').subscribe();
+    const testRequest = httpMock.expectOne('/user');
     testRequest.flush({ me: true });
 
     expect(testRequest.request.headers.get('Accept-Language')).toEqual('zh-TW');

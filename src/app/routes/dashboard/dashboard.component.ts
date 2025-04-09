@@ -49,9 +49,7 @@ import ApexCharts from 'apexcharts';
     MatTabsModule,
     MtxProgressModule,
     BreadcrumbComponent,
-    TableComponent,
     TablesKitchenSinkComponent,
-    TablesRemoteDataComponent,
     RouterModule,
   ],
 })
@@ -200,12 +198,12 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy, OnC
   }
 
   calculateSignedPerContinent(): number {
-    const continentCounts: { [key: string]: number } = this.fullData.reduce(
+    const continentCounts: Record<string, number> = this.fullData.reduce(
       (acc: any, mou: any) => {
         acc[mou.continent] = (acc[mou.continent] || 0) + 1;
         return acc;
       },
-      {} as { [key: string]: number }
+      {} as Record<string, number>
     );
     return Object.values(continentCounts).reduce((a: number, b: number) => a + b, 0);
   }
@@ -225,7 +223,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy, OnC
       'Australia',
       'Antarctica',
     ];
-    const continentMap: { [key: string]: number } = {};
+    const continentMap: Record<string, number> = {};
     allContinents.forEach(continent => {
       continentMap[continent] = 0;
     });

@@ -1,5 +1,12 @@
 import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
-import { Component, HostBinding, OnDestroy, ViewEncapsulation, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  OnDestroy,
+  ViewEncapsulation,
+  inject,
+} from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
@@ -21,8 +28,11 @@ export interface TopmenuState {
   selector: 'app-topmenu',
   templateUrl: './topmenu.component.html',
   styleUrl: './topmenu.component.scss',
+  host: {
+    class: 'matero-topmenu',
+  },
   encapsulation: ViewEncapsulation.None,
-  standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     AsyncPipe,
     NgTemplateOutlet,
@@ -38,10 +48,9 @@ export interface TopmenuState {
   ],
 })
 export class TopmenuComponent implements OnDestroy {
-  @HostBinding('class') class = 'matero-topmenu';
-
   private readonly menu = inject(MenuService);
   private readonly router = inject(Router);
+  private readonly cdr = inject(ChangeDetectorRef);
 
   menu$ = this.menu.getAll();
 
@@ -56,9 +65,6 @@ export class TopmenuComponent implements OnDestroy {
   constructor() {
     this.menuSubscription = this.menu$.subscribe(res => {
       this.menuList = res;
-      console.log('menu lsir');
-      console.log(this.menuList);
-
       this.menuList.forEach(item => {
         this.menuStates.push({
           active: this.router.url.split('/').includes(item.route),
@@ -66,6 +72,12 @@ export class TopmenuComponent implements OnDestroy {
         });
       });
     });
+
+    this.routerSubscription = this.router.events
+      .pipe(filter(event => event instanceof NavigationEnd))
+      .subscribe(e => {
+        this.menuStates.forEach(item => (item.active = false));
+      });
   }
 
   ngOnDestroy() {
@@ -79,7 +91,10 @@ export class TopmenuComponent implements OnDestroy {
       .pipe(filter(event => event instanceof NavigationEnd))
       .subscribe(e => {
         this.menuStates.forEach(item => (item.active = false));
-        setTimeout(() => (this.menuStates[index].active = rla.isActive));
+        setTimeout(() => {
+          this.menuStates[index].active = rla.isActive;
+          this.cdr.markForCheck();
+        });
       });
   }
 }

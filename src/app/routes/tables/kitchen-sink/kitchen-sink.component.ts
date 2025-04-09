@@ -56,7 +56,6 @@ import { environment } from '@env/environment';
     MatCheckboxModule,
     MatRadioModule,
     MtxGridModule,
-    PageHeaderComponent,
     MatTableModule,
     RouterModule,
     MatFormFieldModule,
@@ -80,7 +79,7 @@ export class TablesKitchenSinkComponent implements OnInit, AfterViewInit {
   hasPermission = true;
 
   //firebase stuff
-  dataSource: MatTableDataSource<any> = new MatTableDataSource();
+  dataSource = new MatTableDataSource<any>();
   firestore: Firestore = inject(Firestore);
 
   items$: Observable<any[]> = new Observable<any[]>();
@@ -121,11 +120,11 @@ export class TablesKitchenSinkComponent implements OnInit, AfterViewInit {
   expandable = false;
   columnResizable = false;
   //Search params
-  searchTerm: string = '';
+  searchTerm = '';
   filteredData: any[] = [];
   gridData: any[] = [];
   permissions: any;
-  canAddNewImou: boolean = false; // To store permission check result
+  canAddNewImou = false; // To store permission check result
   private readonly _destroy$ = new Subject<void>();
 
   ngOnInit() {
@@ -398,7 +397,7 @@ export class TablesKitchenSinkComponent implements OnInit, AfterViewInit {
   }
 
   groupByContinent2(): { name: string; count: number }[] {
-    const continentMap: { [key: string]: number } = {};
+    const continentMap: Record<string, number> = {};
 
     this.list.forEach((item: any) => {
       const continent = item.continent;
@@ -561,7 +560,7 @@ export class TablesKitchenSinkComponent implements OnInit, AfterViewInit {
     return this.sanitizer.bypassSecurityTrustResourceUrl(pdfLink);
   }
 
-  groupByContinent(): { [key: string]: any[] } {
+  groupByContinent(): Record<string, any[]> {
     return this.list.reduce(
       (acc, item) => {
         const continent = item.continent || 'Unknown';
@@ -571,7 +570,7 @@ export class TablesKitchenSinkComponent implements OnInit, AfterViewInit {
         acc[continent].push(item);
         return acc;
       },
-      {} as { [key: string]: any[] }
+      {} as Record<string, any[]>
     );
   }
 

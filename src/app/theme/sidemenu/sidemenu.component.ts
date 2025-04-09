@@ -1,6 +1,12 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
-import { Component, Input, ViewEncapsulation, inject } from '@angular/core';
+import { AsyncPipe, NgTemplateOutlet, SlicePipe } from '@angular/common';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  ViewEncapsulation,
+  inject,
+} from '@angular/core';
 import { MatRippleModule } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink, RouterLinkActive } from '@angular/router';
@@ -17,9 +23,10 @@ import { NavAccordionDirective } from './nav-accordion.directive';
   templateUrl: './sidemenu.component.html',
   styleUrl: './sidemenu.component.scss',
   encapsulation: ViewEncapsulation.None,
-  standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     AsyncPipe,
+    SlicePipe,
     NgTemplateOutlet,
     RouterLink,
     RouterLinkActive,
@@ -47,7 +54,7 @@ export class SidemenuComponent {
   @Input() ripple = false;
 
   private readonly menu = inject(MenuService);
-  //TODO: seehow forebase auth can  plugin into this
+
   menu$ = this.menu.getAll();
 
   buildRoute = this.menu.buildRoute;

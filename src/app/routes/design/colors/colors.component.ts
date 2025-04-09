@@ -1,7 +1,8 @@
 import { KeyValue, KeyValuePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 
-import { BreadcrumbComponent, MAT_COLORS } from '@shared';
+//import { BreadcrumbComponent, MAT_COLORS } from '@shared';
+import { BreadcrumbComponent } from '@shared';
 
 @Component({
   selector: 'app-design-colors',
@@ -21,15 +22,7 @@ export class DesignColorsComponent implements OnInit {
     return a.key - b.key;
   }
 
-  ngOnInit() {
-    const colors: { [k: string]: any } = MAT_COLORS;
-    for (const key of Object.keys(colors)) {
-      this.colors.push({
-        key,
-        value: colors[key],
-      });
-    }
-  }
+  ngOnInit() {}
 
   trackByColor(index: number, color: { key: string; value: any }): string {
     return color.key;
