@@ -1,21 +1,20 @@
 @use '@angular/material' as mat;
-@use '../style/transitions';
 @use '../style/breakpoints';
 
 .matero-container-wrap,
 .matero-container {
+  --mat-sidenav-content-background-color: transparent;
+
   height: 100%;
 }
 
-.matero-content {
-  position: relative;
-  padding: var(--gutter);
-}
-
 .matero-sidenav {
+  --mat-sidenav-container-width: var(--sidenav-width);
+
   position: absolute;
   overflow-x: hidden;
-  transition: transitions.swift-ease-out(width); // Only set width property
+  border-width: 0 !important;
+  transition: width mat.$private-swift-ease-out-duration mat.$private-swift-ease-out-timing-function;
 }
 
 // Layout control
@@ -32,7 +31,7 @@
 
   .matero-sidebar-main {
     height: 100% !important;
-    background-color: red;
+    padding-top: 0.5rem;
   }
 }
 
@@ -46,39 +45,44 @@
     .menu-label,
     .menu-badge,
     .menu-caret,
-    .matero-user-panel-name,
-    .matero-user-panel-email,
-    .matero-user-panel-icons {
+    .matero-user-panel-info,
+    {
+    opacity: 0;
+  }
+
+  .menu-icon.submenu-icon {
+    opacity: 1;
+  }
+
+  .matero-user-panel-avatar {
+    transform: scale(.5);
+  }
+
+  &:hover {
+    width: var(--sidenav-width);
+
+    .menu-name,
+    .menu-label,
+    .menu-badge,
+    .menu-caret,
+    .matero-user-panel-info {
+      opacity: 1;
+    }
+
+    .menu-icon.submenu-icon {
       opacity: 0;
     }
 
     .matero-user-panel-avatar {
-      transform: scale(.5);
-    }
-
-    &:hover {
-      width: var(--sidenav-width);
-
-      .menu-name,
-      .menu-label,
-      .menu-badge,
-      .menu-caret,
-      .matero-user-panel-name,
-      .matero-user-panel-email,
-      .matero-user-panel-icons {
-        opacity: 1;
-      }
-
-      .matero-user-panel-avatar {
-        transform: scale(1);
-      }
+      transform: scale(1);
     }
   }
+}
 }
 
 // Layout control
 .matero-sidenav-collapsed {
-  .matero-content-wrap {
+  .matero-content {
     margin-left: var(--sidenav-collapsed-width) !important;
 
     [dir='rtl'] & {
@@ -87,7 +91,7 @@
     }
   }
 
-  &[dir='rtl'] .matero-content-wrap {
+  &[dir='rtl'] .matero-content {
     margin-right: var(--sidenav-collapsed-width) !important;
     margin-left: auto !important;
   }
@@ -114,9 +118,6 @@
   .matero-header {
     position: sticky;
     top: 0;
-    // Fix header's positioning problem on Firefox
-    // https://github.com/ng-matero/ng-matero/issues/522
-    display: block;
   }
 
   .matero-topmenu {
@@ -132,7 +133,7 @@
 
 // Fix the init content width
 .matero-content-width-fix {
-  .matero-content-wrap {
+  .matero-content {
     margin-left: var(--sidenav-width) !important;
 
     [dir='rtl'] & {
@@ -142,10 +143,13 @@
   }
 }
 
-// Colorful
-.matero-header-white {
-  .matero-toolbar,
-  .matero-topmenu {
-    background-color: white;
+.matero-page-content {
+  position: relative;
+  padding: var(--gutter);
+
+  .matero-header+&,
+  .matero-header-above &,
+  .matero-navbar-top & {
+    padding-top: 0;
   }
 }

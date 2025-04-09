@@ -1,11 +1,9 @@
+import { HttpClient, provideHttpClient, withInterceptors } from '@angular/common/http';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
-import { RouterTestingModule } from '@angular/router/testing';
 import { Router } from '@angular/router';
-import { ToastrModule, ToastrService } from 'ngx-toastr';
-import { ErrorInterceptor } from './error-interceptor';
+import { provideToastr, ToastrService } from 'ngx-toastr';
+import { errorInterceptor } from './error-interceptor';
 
 describe('ErrorInterceptor', () => {
   let httpMock: HttpTestingController;
@@ -17,9 +15,9 @@ describe('ErrorInterceptor', () => {
   function assertStatus(status: number, statusText: string) {
     spyOn(router, 'navigateByUrl');
 
-    http.get('/me').subscribe({ next: emptyFn, error: emptyFn, complete: emptyFn });
+    http.get('/user').subscribe({ next: emptyFn, error: emptyFn, complete: emptyFn });
 
-    httpMock.expectOne('/me').flush({}, { status, statusText });
+    httpMock.expectOne('/user').flush({}, { status, statusText });
 
     expect(router.navigateByUrl).toHaveBeenCalledWith(`/${status}`, {
       skipLocationChange: true,
@@ -28,8 +26,11 @@ describe('ErrorInterceptor', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, RouterTestingModule, ToastrModule.forRoot()],
-      providers: [{ provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }],
+      providers: [
+        provideHttpClient(withInterceptors([errorInterceptor])),
+        provideHttpClientTesting(),
+        provideToastr(),
+      ],
     });
 
     httpMock = TestBed.inject(HttpTestingController);
@@ -44,8 +45,8 @@ describe('ErrorInterceptor', () => {
     spyOn(router, 'navigateByUrl');
     spyOn(toast, 'error');
 
-    http.get('/me').subscribe({ next: emptyFn, error: emptyFn, complete: emptyFn });
-    httpMock.expectOne('/me').flush({}, { status: 401, statusText: 'Unauthorized' });
+    http.get('/user').subscribe({ next: emptyFn, error: emptyFn, complete: emptyFn });
+    httpMock.expectOne('/user').flush({}, { status: 401, statusText: 'Unauthorized' });
 
     expect(toast.error).toHaveBeenCalledWith('401 Unauthorized');
     expect(router.navigateByUrl).toHaveBeenCalledWith('/auth/login');
@@ -66,9 +67,9 @@ describe('ErrorInterceptor', () => {
   it('should handle others status code', () => {
     spyOn(toast, 'error');
 
-    http.get('/me').subscribe({ next: emptyFn, error: emptyFn, complete: emptyFn });
+    http.get('/user').subscribe({ next: emptyFn, error: emptyFn, complete: emptyFn });
 
-    httpMock.expectOne('/me').flush({}, { status: 504, statusText: 'Gateway Timeout' });
+    httpMock.expectOne('/user').flush({}, { status: 504, statusText: 'Gateway Timeout' });
 
     expect(toast.error).toHaveBeenCalledWith('504 Gateway Timeout');
   });

@@ -1,6 +1,5 @@
 import {
   Component,
-  HostBinding,
   Input,
   OnInit,
   ViewEncapsulation,
@@ -17,15 +16,15 @@ import { BreadcrumbComponent } from '../breadcrumb/breadcrumb.component';
   selector: 'page-header',
   templateUrl: './page-header.component.html',
   styleUrl: './page-header.component.scss',
+  host: {
+    class: 'matero-page-header',
+  },
   encapsulation: ViewEncapsulation.None,
-  standalone: true,
   imports: [BreadcrumbComponent, TranslateModule],
 })
 export class PageHeaderComponent implements OnInit {
   private readonly router = inject(Router);
   private readonly menu = inject(MenuService);
-
-  @HostBinding('class') class = 'matero-page-header';
 
   @Input() title = '';
   @Input() subtitle = '';
@@ -33,18 +32,9 @@ export class PageHeaderComponent implements OnInit {
   @Input({ transform: booleanAttribute }) hideBreadcrumb = false;
 
   ngOnInit() {
-    this.nav = Array.isArray(this.nav) ? this.nav : [];
-
-    if (this.nav.length === 0) {
-      this.genBreadcrumb();
-    }
-
-    this.title = this.title || this.nav[this.nav.length - 1];
-  }
-
-  genBreadcrumb() {
     const routes = this.router.url.slice(1).split('/');
-    this.nav = this.menu.getLevel(routes);
-    this.nav.unshift('home');
+    const menuLevel = this.menu.getLevel(routes);
+
+    this.title = this.title || menuLevel[menuLevel.length - 1];
   }
 }
