@@ -64,6 +64,7 @@ export class LoginService {
   menu2() {
     return this.http.get<{ menu: Menu[] }>('/me/menu').pipe(map(res => res.menu));
   }
+
   menu(): Observable<Menu[]> {
     return this.http.get<{ menu: Menu[] }>('/me/menu').pipe(
       tap(res => {
