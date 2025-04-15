@@ -126,6 +126,7 @@
   "logout": "logout",
   "login": "Login",
   "login_title": "Welcome Back",
+  "continue_as_guest":"Continue As Guest",
   "have_no_account": "Don't have an account",
   "create_one_account": "Click here to create one",
   "please_enter": "Please enter",
