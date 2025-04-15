@@ -2,7 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { Auth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from '@angular/fire/auth';
 import { User as FirebaseUser } from '@angular/fire/auth';
 import { from, Observable, of } from 'rxjs';
-import { map, tap, switchMap } from 'rxjs/operators';
+import { map, tap, switchMap, catchError } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { Menu } from '@core';
 import { Token, User } from './interface';
@@ -66,13 +66,14 @@ export class LoginService {
   }
 
   menu(): Observable<Menu[]> {
-    return this.http.get<{ menu: Menu[] }>('/me/menu').pipe(
-      tap(res => {
-        console.log('HTTP Response:', res);
-      }),
+    console.log('Start Building Menu');
+    return this.http.get<{ menu: Menu[] }>('/user/menu').pipe(
+      tap(res => console.log('HTTP Response:', res)),
       map(res => res.menu),
-      tap(menu => {
-        console.log('Menu array:', menu);
+      tap(menu => console.log('Menu array:', menu)),
+      catchError(err => {
+        console.error('Failed to fetch menu:', err);
+        return of([]); // return empty menu to avoid breaking subscribers
       })
     );
   }

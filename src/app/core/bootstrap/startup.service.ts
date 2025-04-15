@@ -78,8 +78,9 @@ export class StartupService {
 
       const adminEmail1 = 'kolawolegolulana@gmail.com';
       const adminEmail2 = 'manganyirb@tut.ac.za';
+      const adminEmail3 = 'abc@def.com';
 
-      if (user.email == adminEmail1 || user.email == adminEmail2) {
+      if (user.email == adminEmail1 || user.email == adminEmail2 || user.email == adminEmail3) {
         console.log('ADMDIDNDMD');
 
         const defaultPermissions = ['canAdd', 'canDelete', 'canEdit', 'canRead'];

@@ -131,7 +131,7 @@ export class AuthService {
 
   menu(): Observable<any[]> {
     console.log('this.check()');
-    console.log(this.check());
+    console.log('------------------', this.check());
     return this.check() ? this.loginService.menu() : of([]);
   }
 
