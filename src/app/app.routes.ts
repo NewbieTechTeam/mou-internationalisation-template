@@ -53,10 +53,6 @@ export const routes: Routes = [
         path: 'utilities',
         loadChildren: () => import('./routes/utilities/utilities.routes').then(m => m.routes),
       },
-      {
-        path: 'landing',
-        loadChildren: () => import('./routes/landing/landing.routes').then(m => m.routes),
-      },
     ],
   },
   {
@@ -66,6 +62,10 @@ export const routes: Routes = [
       { path: 'login', component: LoginComponent },
       { path: 'register', component: RegisterComponent },
     ],
+  },
+  {
+    path: 'landing',
+    loadChildren: () => import('./routes/landing/landing.routes').then(m => m.routes),
   },
   { path: '**', redirectTo: 'dashboard' },
 ];

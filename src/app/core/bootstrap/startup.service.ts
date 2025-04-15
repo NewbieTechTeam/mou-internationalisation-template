@@ -30,7 +30,7 @@ export class StartupService {
         .pipe(
           tap(user => {
             if (!user) {
-              console.error('User is null, redirecting to login');
+              //console.error('User is null, redirecting to login');
               this.router.navigate(['/landing/welcome']);
               // TODO : review this route
               //this.router.navigate(['/auth/login']);
@@ -50,8 +50,7 @@ export class StartupService {
               console.log('Load completed successfully');
               resolve();
             },
-            error: err => {
-              console.error('Error during load:', err);
+            error: () => {
               resolve(); // Ensure the application proceeds even if there is an error
             },
           })
