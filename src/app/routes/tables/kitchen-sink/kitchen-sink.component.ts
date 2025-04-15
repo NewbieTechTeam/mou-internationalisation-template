@@ -155,7 +155,6 @@ export class TablesKitchenSinkComponent implements OnInit, AfterViewInit {
     console.log(this.hasPermission);
 
     if (this.hasPermission) {
-      //TODO: add back for when auth is working again
       /*       this.columns3.push({
         header: this.translate.stream('table_kitchen_sink.operation'),
         field: 'operation',

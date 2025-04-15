@@ -73,8 +73,7 @@ export const appConfig: ApplicationConfig = {
     provideAppInitializer(() => inject(StartupService).load()),
     provideAnimationsAsync(),
     // TODO: add back
-    //provideHttpClient(withInterceptors(interceptors)),
-    provideHttpClient(),
+    provideHttpClient(withInterceptors(interceptors)),
     provideRouter(
       routes,
       withInMemoryScrolling({ scrollPositionRestoration: 'enabled', anchorScrolling: 'enabled' }),
