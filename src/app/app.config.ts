@@ -18,7 +18,8 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { InMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { provideToastr } from 'ngx-toastr';
-
+import { FormlyModule } from '@ngx-formly/core';
+import { FormlyMaterialModule } from '@ngx-formly/material';
 import {
   apiInterceptor,
   BASE_URL,
@@ -36,6 +37,17 @@ import { environment } from '@env/environment';
 import { PaginatorI18nService } from '@shared';
 import { InMemDataService } from '@shared/in-mem/in-mem-data.service';
 import { routes } from './app.routes';
+import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
+import { getAuth, provideAuth } from '@angular/fire/auth';
+import {
+  getAnalytics,
+  provideAnalytics,
+  ScreenTrackingService,
+  UserTrackingService,
+} from '@angular/fire/analytics';
+import { getFirestore, provideFirestore } from '@angular/fire/firestore';
+import { getDatabase, provideDatabase } from '@angular/fire/database';
+import { ReactiveFormsModule } from '@angular/forms';
 //import { FormlyConfigModule } from './formly-config';
 
 // Required for AOT compilation
@@ -76,7 +88,9 @@ export const appConfig: ApplicationConfig = {
     }),
     importProvidersFrom(
       NgxPermissionsModule.forRoot(),
-      //FormlyConfigModule.forRoot(),
+      ReactiveFormsModule,
+      FormlyModule.forRoot(),
+      FormlyMaterialModule,
       // 👇 ❌ This is only used for demo purpose, remove it in the realworld application
       InMemoryWebApiModule.forRoot(InMemDataService, {
         dataEncapsulation: false,
@@ -129,5 +143,22 @@ export const appConfig: ApplicationConfig = {
         popupHeaderDateLabel: 'MMM dd, E',
       },
     }),
+    provideFirebaseApp(() =>
+      initializeApp({
+        projectId: 'internationalisation-mou',
+        appId: '1:413796382094:web:7d7092a4562d5d7f2320df',
+        storageBucket: 'internationalisation-mou.appspot.com',
+        apiKey: 'AIzaSyDjU-3ak4Gsv6ZQe81_cSOA3p4N0WFaTHg',
+        authDomain: 'internationalisation-mou.firebaseapp.com',
+        messagingSenderId: '413796382094',
+        measurementId: 'G-JETK7J7M5S',
+      })
+    ),
+    provideAuth(() => getAuth()),
+    provideAnalytics(() => getAnalytics()),
+    ScreenTrackingService,
+    UserTrackingService,
+    provideFirestore(() => getFirestore()),
+    provideDatabase(() => getDatabase()),
   ],
 };
