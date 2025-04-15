@@ -48,6 +48,7 @@ import {
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { getDatabase, provideDatabase } from '@angular/fire/database';
 import { ReactiveFormsModule } from '@angular/forms';
+import { getStorage, provideStorage } from '@angular/fire/storage';
 //import { FormlyConfigModule } from './formly-config';
 
 // Required for AOT compilation
@@ -161,5 +162,6 @@ export const appConfig: ApplicationConfig = {
     UserTrackingService,
     provideFirestore(() => getFirestore()),
     provideDatabase(() => getDatabase()),
+    provideStorage(() => getStorage()),
   ],
 };
