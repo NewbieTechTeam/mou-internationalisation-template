@@ -37,7 +37,7 @@ export class LoginService {
             id: user.uid,
             email: user.email || '',
             name: user.displayName || '',
-            avatar: '../../../assets/images/silhouette.png',
+            avatar: 'images/matero.png',
           };
           observer.next(mappedUser);
         } else {

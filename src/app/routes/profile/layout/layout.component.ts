@@ -31,6 +31,9 @@ export class ProfileLayoutComponent implements OnInit {
   user!: User;
 
   ngOnInit(): void {
-    this.auth.user().subscribe(user => (this.user = user));
+    this.auth.user().subscribe(user => {
+      console.log(this.user);
+      this.user = user;
+    });
   }
 }
