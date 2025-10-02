@@ -2,13 +2,13 @@ import { User } from './interface';
 
 export const admin: User = {
   id: 1,
-  name: 'Revelation Bafana Manganyi',
-  email: 'manganyirb@tut.ac.za',
-  avatar: './assets/images/tut.png',
+  name: 'Zongbin',
+  email: 'nzb329@163.com',
+  avatar: 'images/avatar.jpg',
 };
 
 export const guest: User = {
   name: 'unknown',
   email: 'unknown',
-  avatar: './assets/images/tut.png',
+  avatar: 'images/avatar-default.jpg',
 };

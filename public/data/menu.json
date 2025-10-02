@@ -1,0 +1,75 @@
+{
+  "menu": [
+    {
+      "route": "dashboard",
+      "name": "dashboard",
+      "type": "link",
+      "icon": "dashboard",
+      "badge": {
+        "color": "red-500",
+        "value": "5"
+      }
+    },
+    {
+      "route": "permissions",
+      "name": "permissions",
+      "type": "sub",
+      "icon": "lock",
+      "children": [
+
+        {
+          "route": "route-guard",
+          "name": "route-guard",
+          "type": "link",
+          "permissions": {
+            "except": "GUEST"
+          }
+        },
+        {
+          "route": "test",
+          "name": "test",
+          "type": "link",
+          "permissions": {
+            "except": "GUEST"
+          }
+        }
+      ]
+    },
+
+    {
+      "route": "tables",
+      "name": "tables",
+      "type": "sub",
+      "icon": "format_line_spacing",
+      "children": [
+        {
+          "route": "kitchen-sink",
+          "name": "kitchen-sink",
+          "type": "link"
+        }
+      ],
+      "permissions": {
+        "except": "GUEST"
+      }
+    },
+    {
+      "route": "profile",
+      "name": "profile",
+      "type": "sub",
+      "icon": "person",
+      "children": [
+        {
+          "route": "overview",
+          "name": "overview",
+          "type": "link"
+        },
+        {
+          "route": "settings",
+          "name": "settings",
+          "type": "link"
+        }
+      ]
+    }
+
+  ]
+}

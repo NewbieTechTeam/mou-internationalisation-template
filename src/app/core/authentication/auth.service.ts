@@ -45,11 +45,7 @@ export class AuthService {
     );
   }
 
-  check(): boolean {
-    console.log('checking');
-    console.log(this.user$.getValue());
-
-    console.log(!this.user$.getValue().uid);
+  check2(): boolean {
     return !this.user$.getValue().uid || true;
     //return !!this.user$.getValue().uid;
     //TODO: get back to tokenservice where
@@ -57,6 +53,11 @@ export class AuthService {
     /*
       return this.tokenService.valid();
     } */
+  }
+
+  check(): boolean {
+    const user = this.user$.getValue();
+    return !!user && !!user.uid;
   }
 
   init(): Observable<User | null> {
@@ -99,21 +100,6 @@ export class AuthService {
     );
   }
 
-  loginzz(email: any, password: any): Observable<boolean> {
-    return from(signInWithEmailAndPassword(this.auth, email, password)).pipe(
-      tap((result: any) => {
-        this.user$.next(result.user);
-        result.user.getIdToken().then((token: string) => {
-          this.tokenService.set({
-            accessToken: 'user.stsTokenManager.accessToken',
-            refreshToken: 'user.stsTokenManager.refreshToken',
-          });
-        });
-      }),
-      map((result: any) => !!result.user),
-      catchError(() => of(false))
-    );
-  }
   logout(): Observable<boolean> {
     return this.loginService.logout().pipe(
       tap(() => {
@@ -130,8 +116,6 @@ export class AuthService {
   }
 
   menu(): Observable<any[]> {
-    console.log('this.check()');
-    console.log(this.check());
     return this.check() ? this.loginService.menu() : of([]);
   }
 

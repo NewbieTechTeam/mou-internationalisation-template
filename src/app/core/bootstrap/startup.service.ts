@@ -30,8 +30,10 @@ export class StartupService {
         .pipe(
           tap(user => {
             if (!user) {
-              console.error('User is null, redirecting to login');
-              this.router.navigate(['/auth/login']);
+              //console.error('User is null, redirecting to login');
+              this.router.navigate(['/landing/welcome']);
+              // TODO : review this route
+              //this.router.navigate(['/auth/login']);
               resolve();
               return;
             }
@@ -48,8 +50,7 @@ export class StartupService {
               console.log('Load completed successfully');
               resolve();
             },
-            error: err => {
-              console.error('Error during load:', err);
+            error: () => {
               resolve(); // Ensure the application proceeds even if there is an error
             },
           })
@@ -78,8 +79,9 @@ export class StartupService {
 
       const adminEmail1 = 'kolawolegolulana@gmail.com';
       const adminEmail2 = 'manganyirb@tut.ac.za';
+      const adminEmail3 = 'abc@def.com';
 
-      if (user.email == adminEmail1 || user.email == adminEmail2) {
+      if (user.email == adminEmail1 || user.email == adminEmail2 || user.email == adminEmail3) {
         console.log('ADMDIDNDMD');
 
         const defaultPermissions = ['canAdd', 'canDelete', 'canEdit', 'canRead'];

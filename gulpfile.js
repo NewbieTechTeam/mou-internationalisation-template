@@ -15,10 +15,10 @@ function copyDotVscode() {
 // root
 function copyRoot() {
   return src([
-    '.eslintrc.json',
     '.prettierignore',
     '.prettierrc',
     '.stylelintrc',
+    'eslint.config.js',
     'LICENSE',
     'proxy.config.js',
     'tsconfig.json',
@@ -33,11 +33,12 @@ function copySrcRoot() {
 // src/assets
 function copyAssets() {
   return src([
-    'src/assets/**/*',
-    '!src/assets/data/menu.json',
-    '!src/assets/images/heros/**',
-    '!src/assets/images/pixabay/**',
-  ]).pipe(dest(`${FILES}/src/assets`));
+    'public/**/*',
+    '!public/favicon.ico',
+    '!public/data/menu.json',
+    '!public/images/heros/**',
+    '!public/images/pixabay/**',
+  ]).pipe(dest(`${FILES}/public`));
 }
 
 // src/styles
@@ -74,28 +75,23 @@ function updateVersions(cb) {
     .pipe(
       each(function (content, file, callback) {
         [
+          '@angular/animations',
           '@angular/cdk',
           '@angular/material',
-          '@angular/material-moment-adapter',
+          '@angular/material-date-fns-adapter',
           '@ng-matero/extensions',
-          '@ng-matero/extensions-moment-adapter',
+          '@ng-matero/extensions-date-fns-adapter',
           '@ngx-formly/core',
           '@ngx-formly/material',
           '@ngx-translate/core',
           '@ngx-translate/http-loader',
-          'moment',
+          'date-fns',
           'ngx-permissions',
           'ngx-progressbar',
           'ngx-toastr',
           'photoviewer',
           'screenfull',
-          '@angular-eslint/builder',
-          '@angular-eslint/eslint-plugin',
-          '@angular-eslint/eslint-plugin-template',
-          '@angular-eslint/schematics',
-          '@angular-eslint/template-parser',
-          '@typescript-eslint/eslint-plugin',
-          '@typescript-eslint/parser',
+          'angular-eslint',
           'eslint',
           'parse5',
           'prettier',
@@ -103,6 +99,7 @@ function updateVersions(cb) {
           'stylelint-config-recess-order',
           'stylelint-config-recommended-scss',
           'stylelint-config-standard',
+          'typescript-eslint',
         ].forEach(name => {
           if (!pkg.dependencies[name] && !pkg.devDependencies[name]) {
             cb(`${name} not found!`);

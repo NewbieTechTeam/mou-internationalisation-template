@@ -12,7 +12,7 @@ import { Observable } from 'rxjs';
   templateUrl: './test.component.html',
   styleUrl: './test.component.scss',
   standalone: true,
-  imports: [JsonPipe, MtxAlertModule, NgxPermissionsModule, PageHeaderComponent, CommonModule],
+  imports: [MtxAlertModule, NgxPermissionsModule, CommonModule],
 })
 export class PermissionsTestComponent implements OnInit {
   users$: Observable<any[]> | undefined; // Initialize with undefined

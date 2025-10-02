@@ -10,7 +10,8 @@ import {
 } from '@angular/core';
 import { MatSidenav, MatSidenavContent, MatSidenavModule } from '@angular/material/sidenav';
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
-import { NgProgressComponent } from 'ngx-progressbar';
+import { NgProgressbar } from 'ngx-progressbar';
+import { NgProgressRouter } from 'ngx-progressbar/router';
 import { Subscription, filter } from 'rxjs';
 
 import { AppSettings, SettingsService } from '@core';
@@ -29,12 +30,12 @@ const MONITOR_MEDIAQUERY = 'screen and (min-width: 960px)';
   templateUrl: './admin-layout.component.html',
   styleUrl: './admin-layout.component.scss',
   encapsulation: ViewEncapsulation.None,
-  standalone: true,
   imports: [
     RouterOutlet,
     BidiModule,
     MatSidenavModule,
-    NgProgressComponent,
+    NgProgressbar,
+    NgProgressRouter,
     HeaderComponent,
     TopmenuComponent,
     SidebarComponent,
@@ -53,7 +54,7 @@ export class AdminLayoutComponent implements OnDestroy {
   options = this.settings.options;
 
   get themeColor() {
-    return this.settings.themeColor;
+    return this.settings.getThemeColor();
   }
 
   get isOver() {
@@ -62,7 +63,8 @@ export class AdminLayoutComponent implements OnDestroy {
 
   private isMobileScreen = false;
 
-  @HostBinding('class.matero-content-width-fix') get contentWidthFix() {
+  @HostBinding('class.matero-content-width-fix')
+  get contentWidthFix() {
     return (
       this.isContentWidthFixed &&
       this.options.navPos === 'side' &&
@@ -73,7 +75,8 @@ export class AdminLayoutComponent implements OnDestroy {
 
   private isContentWidthFixed = true;
 
-  @HostBinding('class.matero-sidenav-collapsed-fix') get collapsedWidthFix() {
+  @HostBinding('class.matero-sidenav-collapsed-fix')
+  get collapsedWidthFix() {
     return (
       this.isCollapsedWidthFixed &&
       (this.options.navPos === 'top' || (this.options.sidenavOpened && this.isOver))
@@ -116,7 +119,9 @@ export class AdminLayoutComponent implements OnDestroy {
 
   // TODO: Trigger when transition end
   resetCollapsedState(timer = 400) {
-    setTimeout(() => this.settings.setOptions(this.options), timer);
+    setTimeout(() => {
+      this.settings.setOptions(this.options);
+    }, timer);
   }
 
   onSidenavClosedStart() {

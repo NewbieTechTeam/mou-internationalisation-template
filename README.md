@@ -41,7 +41,7 @@ Ng-Matero is an Angular admin template made with Material components.
 
 ## 📖 Documentation
 
-[English](https://nzbin.gitbook.io/ng-matero/v/en-2/) ｜[简体中文](https://nzbin.gitbook.io/ng-matero/v/zh-1/)
+[English](https://nzbin.gitbook.io/ng-matero/v/en-2/) | [简体中文](https://nzbin.gitbook.io/ng-matero/v/zh-1/)
 
 ## 📦 Compatibility
 
@@ -49,10 +49,12 @@ Which version to use?
 
 | Angular | Material | Ng-Matero | Extensions |
 | ------- | -------- | --------- | ---------- |
-| v17     | v17      | 17.x.x    | 17.x.x     |
-| v16     | v16      | 16.3.0    | 16.3.2     |
-| v15     | v15      | 15.3.0    | 15.6.1     |
-| v14     | v14      | 14.3.0    | 14.8.2     |
+| v19     | v19      | 19.x.x    | 19.x.x     |
+| v18     | v18      | 18.3.0    | 18.5.0     |
+| v17     | v17      | 17.2.0    | 17.3.8     |
+| v16     | v16      | 16.3.0    | 16.3.11    |
+| v15     | v15      | 15.3.0    | 15.6.5     |
+| v14     | v14      | 14.3.0    | 14.8.5     |
 | v13     | v13      | 13.1.1    | 13.3.3     |
 | v12     | v12      | 12.8.0    | 12.10.3    |
 | v11     | v11      | 11.3.2    | 11.5.2     |
@@ -123,7 +125,7 @@ Take a look at `http://localhost:4200/#/abc/def`, enjoy it!
 $ git clone git@github.com:ng-matero/ng-matero.git
 $ cd ng-matero
 $ npm install
-$ npm run hmr
+$ npm run start
 ```
 
 Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
@@ -165,22 +167,3 @@ Support this project with your organization. Your logo will show up here with a 
 ## 📃 License
 
 MIT
-
-## Node Env
-
-nvm use 18.19.1 
-
-
-- Group By Continent
-- Expiring Soon
-- Assigned MOU
-
-
-Excel Sheet
-upload xls to firebase (priority)
-
-- Notification about Expiring MOU, must sent end
-- Action , edit, delete, view and download (for owner),and view for guest
-- Make capital
-- Bar chart, add user, add guest , remove edit from and delete
-- Look out for white spsces bug , e/g 'Europe ' ahould be same as 'Europe'

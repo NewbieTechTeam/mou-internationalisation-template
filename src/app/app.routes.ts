@@ -63,5 +63,9 @@ export const routes: Routes = [
       { path: 'register', component: RegisterComponent },
     ],
   },
+  {
+    path: 'landing',
+    loadChildren: () => import('./routes/landing/landing.routes').then(m => m.routes),
+  },
   { path: '**', redirectTo: 'dashboard' },
 ];
