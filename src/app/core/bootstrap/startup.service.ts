@@ -1,11 +1,10 @@
-import { guest } from './../authentication/user';
 import { Injectable, inject } from '@angular/core';
 import { AuthService, User } from '@core/authentication';
 import { FirebasePermissionsService } from '../../shared/services/firebase-permissions.service';
 import { Router } from '@angular/router';
 
 import { NgxPermissionsService, NgxRolesService } from 'ngx-permissions';
-import { switchMap, tap } from 'rxjs';
+import { catchError, of, switchMap, tap } from 'rxjs';
 import { Menu, MenuService } from './menu.service';
 
 @Injectable({
@@ -24,37 +23,25 @@ export class StartupService {
    * such as permissions and roles.
    */
   load() {
-    return new Promise<void>((resolve, reject) => {
+    return new Promise<void>(resolve => {
       this.authService
         .change()
         .pipe(
           tap(user => {
             if (!user) {
-              console.error('User is null, redirecting to login');
               this.router.navigate(['/auth/login']);
-              resolve();
               return;
             }
-
-            return this.setPermissions(user);
+            this.setPermissions(user);
           }),
           switchMap(() => this.authService.menu()),
-          tap(menu => {
-            console.log('Menu in StartupService:', menu);
-            this.setMenu(menu);
-          }),
-          tap({
-            next: () => {
-              console.log('Load completed successfully');
-              resolve();
-            },
-            error: err => {
-              console.error('Error during load:', err);
-              resolve(); // Ensure the application proceeds even if there is an error
-            },
-          })
+          catchError(() => of([])),
+          tap(menu => this.setMenu(menu))
         )
-        .subscribe();
+        .subscribe({
+          next: () => resolve(),
+          error: () => resolve(),
+        });
     });
   }
 

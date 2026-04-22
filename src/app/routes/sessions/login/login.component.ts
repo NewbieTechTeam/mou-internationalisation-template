@@ -9,7 +9,6 @@ import { MatInputModule } from '@angular/material/input';
 import { Router } from '@angular/router';
 import { MtxButtonModule } from '@ng-matero/extensions/button';
 import { TranslateModule } from '@ngx-translate/core';
-import { filter } from 'rxjs/operators';
 
 import { AuthService } from '@core/authentication';
 
@@ -58,38 +57,30 @@ export class LoginComponent {
   login() {
     this.isSubmitting = true;
 
-    this.auth
-      //TODO: add back for tokenservice
-      //.login(this.username.value, this.password.value, this.rememberMe.value)
-      .login(this.username.value, this.password.value)
-      .pipe(filter(authenticated => authenticated))
-      .subscribe({
-        next: () => {
-          console.log('logged in');
+    this.auth.login(this.username.value, this.password.value).subscribe({
+      next: authenticated => {
+        if (authenticated) {
           this.router.navigateByUrl('/');
-
-          /*       this.router.navigateByUrl('/dashboard').then(success => {
-            if (!success) {
-              console.error('Navigation to /dashboard failed');
-            }
-          }).catch((err: any)=>{
-            console.log({err});
-
-          }); */
-        },
-        error: (errorRes: HttpErrorResponse) => {
-          if (errorRes.status === 422) {
-            const form = this.loginForm;
-            const errors = errorRes.error.errors;
-            Object.keys(errors).forEach(key => {
-              form.get(key === 'email' ? 'username' : key)?.setErrors({
-                remote: errors[key][0],
-              });
-            });
-          }
+        } else {
+          this.loginForm.setErrors({ serverError: 'Invalid email or password.' });
           this.isSubmitting = false;
-        },
-      });
+        }
+      },
+      error: (errorRes: HttpErrorResponse) => {
+        if (errorRes.status === 422) {
+          const form = this.loginForm;
+          const errors = errorRes.error.errors;
+          Object.keys(errors).forEach(key => {
+            form.get(key === 'email' ? 'username' : key)?.setErrors({
+              remote: errors[key][0],
+            });
+          });
+        } else {
+          this.loginForm.setErrors({ serverError: 'Login failed. Please try again.' });
+        }
+        this.isSubmitting = false;
+      },
+    });
   }
 
   continueAsGuest2(): void {

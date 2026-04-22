@@ -46,17 +46,8 @@ export class AuthService {
   }
 
   check(): boolean {
-    console.log('checking');
-    console.log(this.user$.getValue());
-
-    console.log(!this.user$.getValue().uid);
-    return !this.user$.getValue().uid || true;
-    //return !!this.user$.getValue().uid;
-    //TODO: get back to tokenservice where
-    //check() {
-    /*
-      return this.tokenService.valid();
-    } */
+    const user = this.user$.getValue();
+    return !!(user && user.id);
   }
 
   init(): Observable<User | null> {
@@ -85,11 +76,14 @@ export class AuthService {
 
   login(username: any, password: any): Observable<boolean> {
     return this.loginService.login(username, password).pipe(
-      tap(user => {
-        console.log({ user });
-        if (user) {
-          this.user$.next(user);
-          //this.tokenService.set(user.toke); // Assuming the token is part of the user object
+      tap(firebaseUser => {
+        if (firebaseUser) {
+          this.user$.next({
+            id: firebaseUser.uid,
+            email: firebaseUser.email || '',
+            name: firebaseUser.displayName || '',
+            avatar: '../../../assets/images/silhouette.png',
+          });
         } else {
           this.user$.next(null);
         }
@@ -130,9 +124,7 @@ export class AuthService {
   }
 
   menu(): Observable<any[]> {
-    console.log('this.check()');
-    console.log(this.check());
-    return this.check() ? this.loginService.menu() : of([]);
+    return this.loginService.menu();
   }
 
   private assignUser() {
